@@ -12,6 +12,7 @@ const path = require('path')
 let pointsPossible = 10
 let mcType = 'MC4'
 let numberOfQuestions = 1
+let quizType = 'quiz'
 
 app.get('/', ( req, res ) => {
 	res.sendFile( path.join( __dirname + '/index.html' ) )
@@ -22,24 +23,30 @@ app.get('/test', async ( req, res ) => {
 	courseID = req.query.course
 	mcType = req.query.mcselect
 	numberOfQuestions = req.query.questions
+	quizType = req.query.typeselect
+	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
+		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
 	try {
 		const assignment = await axios({
 			method: 'get',
-			url: `${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`,
+			url: assignmentURL,
 			headers: {
 				'Authorization': token
 			}
 		})
-		pointsPossible = assignment.data.pointsPossible
-		console.log( pointsPossible )
+		// console.log( assignment.data )
+		pointsPossible = assignment.data.points_possible
+		let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions` :
+			`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions`
 		const result = await axios({
 			method: 'get',
-			url: `${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions`,
+			url: submissionsURL,
 			headers: {
 				'Authorization': token
 			}
 		})
 		console.log('ok')
+		console.log( result.data )
 		const getAll = async ( data ) => {
 			let rows = []
 			for ( const single_result of data ) {
@@ -53,11 +60,14 @@ app.get('/test', async ( req, res ) => {
 						}
 					} )
 					let row = []
-					let newScore = single_result.entered_grade ? recalculateScore( single_result.entered_grade ) : 0
-					row.push( user_details.data.name ? user_details.data.name : 'onbekend', 
+					let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
+					let newScore = points ? recalculateScore( points ) : 0
+					row.push( 
+						user_details.data.name ? user_details.data.name : 'onbekend', 
 						user_details.data.email ? user_details.data.email : 'onbekend',
-						single_result.entered_grade ? parseInt( single_result.entered_grade ) : 0,
-						newScore)
+						points ? parseInt( points ) : 0,
+						newScore 
+					)
 					rows.push( row )
 				}
 				catch ( e ) {
@@ -67,7 +77,8 @@ app.get('/test', async ( req, res ) => {
 			}
 			return rows
 		}
-		const rows = await getAll( result.data )	
+		const rows = quizType === 'quiz' ? await getAll( result.data.quiz_submissions ) : 
+			await getAll( result.data )
 		// console.log( 'rows', rows )
 		writeExcel( rows )
 		res.download( './text.xlsx' )
