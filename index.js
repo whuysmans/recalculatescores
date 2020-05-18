@@ -9,6 +9,7 @@ const { token } = require('./creds')
 const XLSX = require('xlsx')
 const FileSaver = require('file-saver')
 const path = require('path')
+const parse = require('parse-link-header')
 let pointsPossible = 10
 let mcType = 'MC4'
 let numberOfQuestions = 1
@@ -36,17 +37,34 @@ app.get('/test', async ( req, res ) => {
 		})
 		// console.log( assignment.data )
 		pointsPossible = assignment.data.points_possible
-		let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions` :
-			`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions`
-		const result = await axios({
-			method: 'get',
-			url: submissionsURL,
-			headers: {
-				'Authorization': token
+		const getSubmissions = async () => {
+			let keepGoing = true
+			let result = []
+			let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions` :
+				`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions`
+			while ( keepGoing ) {
+				let response = await axios({
+					method: 'get',
+					url: submissionsURL,
+					headers: {
+						'Authorization': token
+					}
+				})
+				const resultArray = quizType === 'quiz' ? response.data.quiz_submissions : response.data
+				resultArray.map( ( resultObject ) => {
+					result.push( resultObject )
+				} )
+				let parsed = parse( response.headers.link )
+				if ( parseInt( parsed.current.page ) >= parseInt( parsed.last.page ) ) {
+					console.log( parsed.current )
+					keepGoing = false
+				} else {
+					submissionsURL = parsed.next.url
+				}
 			}
-		})
-		console.log('ok')
-		console.log( result.data )
+			return result
+		}
+		const result = await getSubmissions()
 		const getAll = async ( data ) => {
 			let rows = []
 			for ( const single_result of data ) {
@@ -77,8 +95,7 @@ app.get('/test', async ( req, res ) => {
 			}
 			return rows
 		}
-		const rows = quizType === 'quiz' ? await getAll( result.data.quiz_submissions ) : 
-			await getAll( result.data )
+		const rows = await getAll( result )
 		// console.log( 'rows', rows )
 		writeExcel( rows )
 		res.download( './text.xlsx' )
