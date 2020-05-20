@@ -79,15 +79,20 @@ app.get('/test', async ( req, res ) => {
 						}
 					} )
 					let row = []
-					let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-					let newScore = points ? recalculateScore( points ) : 0
-					row.push( 
-						user_details.data.name ? user_details.data.name : 'onbekend', 
-						user_details.data.email ? user_details.data.email : 'onbekend',
-						points ? parseInt( points ) : 0,
-						newScore 
-					)
-					rows.push( row )
+					if ( ! single_result.score && ! single_result.entered_grade ) {
+						continue
+					} else {
+						let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
+						let newScore = recalculateScore( points )
+						row.push( 
+							user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
+							user_details.data.name ? user_details.data.name : 'onbekend', 
+							user_details.data.email ? user_details.data.email : 'onbekend',
+							parseInt( points ),
+							newScore 
+						)
+						rows.push( row )
+					}					
 				}
 				catch ( e ) {
 					// res.send( e )
@@ -118,7 +123,7 @@ const writeExcel = ( rows ) => {
 	console.log( rows.length )
 	console.log( rows )
 	
-	let data = [ [ 'naam', 'email', 'originele score', 'hereberekende score' ] ]
+	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'hereberekende score' ] ]
 	rows.forEach( ( row ) => {
 		data.push( row )
 	} )
