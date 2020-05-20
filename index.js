@@ -40,8 +40,8 @@ app.get('/test', async ( req, res ) => {
 		const getSubmissions = async () => {
 			let keepGoing = true
 			let result = []
-			let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions` :
-				`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions`
+			let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions?per_page=100` :
+				`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions?per_page=100`
 			while ( keepGoing ) {
 				let response = await axios({
 					method: 'get',
@@ -78,15 +78,20 @@ app.get('/test', async ( req, res ) => {
 						}
 					} )
 					let row = []
-					let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-					let newScore = points ? recalculateScore( points ) : 0
-					row.push( 
-						user_details.data.name ? user_details.data.name : 'onbekend', 
-						user_details.data.email ? user_details.data.email : 'onbekend',
-						points ? parseInt( points ) : 0,
-						newScore 
-					)
-					rows.push( row )
+					if ( ! single_result.score && ! single_result.entered_grade ) {
+						continue
+					} else {
+						let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
+						let newScore = recalculateScore( points )
+						row.push( 
+							user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
+							user_details.data.name ? user_details.data.name : 'onbekend', 
+							user_details.data.email ? user_details.data.email : 'onbekend',
+							parseInt( points ),
+							newScore 
+						)
+						rows.push( row )
+					}			
 				}
 				catch ( e ) {
 					// res.send( e )
@@ -110,14 +115,16 @@ const recalculateScore = ( score ) => {
 	let intScore = parseInt( score )
 	let noemer = mcType === 'MC4' ? 4 : 3
 	let cesuur = ( ( numberOfQuestions - ( numberOfQuestions / noemer ) ) / 2 ) + ( numberOfQuestions / noemer )
-	return Math.round( 10 + ( ( 10 / ( numberOfQuestions - cesuur ) ) * ( intScore - cesuur ) ) )
+	let tmp = 10 + ( ( 10 / ( numberOfQuestions - cesuur ) ) * ( intScore - cesuur ) )
+	return tmp <= 0 ? 0 : Math.round( tmp * 100 ) / 100
 }
+
 
 const writeExcel = ( rows ) => {
 	console.log( rows.length )
 	console.log( rows )
 	
-	let data = [ [ 'naam', 'email', 'originele score', 'hereberekende score' ] ]
+	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'hereberekende score' ] ]
 	rows.forEach( ( row ) => {
 		data.push( row )
 	} )
