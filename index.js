@@ -5,7 +5,7 @@ const axios = require('axios')
 const { baseURL } = require('./creds')
 let assignmentID = 0
 let courseID = 0
-const { token } = require('./creds') 
+let token = '' 
 const XLSX = require('xlsx')
 const FileSaver = require('file-saver')
 const path = require('path')
@@ -25,6 +25,7 @@ app.get('/test', async ( req, res ) => {
 	mcType = req.query.mcselect
 	numberOfQuestions = req.query.questions
 	quizType = req.query.typeselect
+	token = `Bearer ${ req.query.token }`
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
 		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
 	try {
@@ -40,8 +41,8 @@ app.get('/test', async ( req, res ) => {
 		const getSubmissions = async () => {
 			let keepGoing = true
 			let result = []
-			let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions` :
-				`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions`
+			let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions?per_page=50` :
+				`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions?per_page=50`
 			while ( keepGoing ) {
 				let response = await axios({
 					method: 'get',
