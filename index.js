@@ -116,7 +116,8 @@ const recalculateScore = ( score ) => {
 	let intScore = parseInt( score )
 	let noemer = mcType === 'MC4' ? 4 : 3
 	let cesuur = ( ( numberOfQuestions - ( numberOfQuestions / noemer ) ) / 2 ) + ( numberOfQuestions / noemer )
-	return Math.round( 10 + ( ( 10 / ( numberOfQuestions - cesuur ) ) * ( intScore - cesuur ) ) )
+	let tmp =  10 + ( ( 10 / ( numberOfQuestions - cesuur ) ) * ( intScore - cesuur ) )
+	return tmp <= 0 ? 0 : Math.round( tmp * 100 ) / 100
 }
 
 const writeExcel = ( rows ) => {
