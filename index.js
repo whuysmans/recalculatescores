@@ -124,7 +124,7 @@ const writeExcel = ( rows ) => {
 	console.log( rows.length )
 	console.log( rows )
 	
-	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'hereberekende score' ] ]
+	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score' ] ]
 	rows.forEach( ( row ) => {
 		data.push( row )
 	} )
