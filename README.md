@@ -5,4 +5,5 @@ With this tool you can apply correction for guessing in Canvas multiple choice q
 For non-devs I create a desktopversion (see other branch) with Nexe:
 - nexe index.js --target windows-x86-12.16.3 -r "index.html" for Windows
 - nexe index.js --target macos-12.0.0 -r "index.html" for MacOS
+
 In the desktopversion, the user has to paste the accesstoken in an input field, in the other version it has to be pasted in the creds.js file (rename the creds-sample file).
