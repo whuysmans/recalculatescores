@@ -12,7 +12,7 @@ const path = require('path')
 const parse = require('parse-link-header')
 let pointsPossible = 10
 let mcType = 'MC4'
-let numberOfQuestions = 1
+let puntentotaal = 100
 let quizType = 'quiz'
 
 app.get('/', ( req, res ) => {
@@ -23,7 +23,7 @@ app.get('/test', async ( req, res ) => {
 	assignmentID = req.query.assignment
 	courseID = req.query.course
 	mcType = req.query.mcselect
-	numberOfQuestions = req.query.questions
+	puntentotaal = req.query.puntentotaal
 	quizType = req.query.typeselect
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
 		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
@@ -36,7 +36,7 @@ app.get('/test', async ( req, res ) => {
 			}
 		})
 		// console.log( assignment.data )
-		pointsPossible = assignment.data.points_possible
+		pointsPossible = parseInt( assignment.data.points_possible )
 		const getSubmissions = async () => {
 			let keepGoing = true
 			let result = []
@@ -69,6 +69,9 @@ app.get('/test', async ( req, res ) => {
 			let rows = []
 			for ( const single_result of data ) {
 				const user_id = single_result.user_id
+				if ( ! single_result.score && ! single_result.entered_grade ) {
+					continue
+				}
 				try {
 					const user_details = await axios( {
 						method: 'get',
@@ -78,21 +81,17 @@ app.get('/test', async ( req, res ) => {
 						}
 					} )
 					let row = []
-					if ( ! single_result.score && ! single_result.entered_grade ) {
-						continue
-					} else {
-						let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-						let newScore = recalculateScore( points )
-						row.push( 
-							user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
-							user_details.data.name ? user_details.data.name : 'onbekend', 
-							user_details.data.email ? user_details.data.email : 'onbekend',
-							parseInt( points ),
-							newScore 
-						)
-						rows.push( row )
-					}			
-				}
+					let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
+					let newScore = recalculateScore( parseFloat( points ) )
+					row.push( 
+						user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
+						user_details.data.name ? user_details.data.name : 'onbekend', 
+						user_details.data.email ? user_details.data.email : 'onbekend',
+						parseInt( points ),
+						newScore 
+					)
+					rows.push( row )
+				}			
 				catch ( e ) {
 					// res.send( e )
 					console.log(e)
@@ -111,14 +110,28 @@ app.get('/test', async ( req, res ) => {
 	}
 } )
 
-const recalculateScore = ( score ) => {
-	let intScore = parseInt( score )
-	let noemer = mcType === 'MC4' ? 4 : 3
-	let cesuur = ( ( numberOfQuestions - ( numberOfQuestions / noemer ) ) / 2 ) + ( numberOfQuestions / noemer )
-	let tmp = 10 + ( ( 10 / ( numberOfQuestions - cesuur ) ) * ( intScore - cesuur ) )
-	return tmp <= 0 ? 0 : Math.round( tmp * 100 ) / 100
+const recalculateScore2 = ( score ) => {
+	let keuzes = mcType === 'MC4' ? 4 : 3
+	let ces =  pointsPossible  * ( ( keuzes + 1 ) / ( 2 * keuzes ) )
+	let herberekendeScore = puntentotaal / 2 + ( ( ( puntentotaal / 2 ) / ( pointsPossible - ces ) ) * ( score - ces ) )
+	let tmp = roundScore( herberekendeScore, 5 )
+	return tmp <= 0 ? 0 : tmp
 }
 
+const recalculateScore = ( score ) => {
+	let ces = mcType === 'MC4' ? 0.625 : 0.6667
+	let tellerLeft = Math.round( score / pointsPossible * puntentotaal )
+	let tellerRight = puntentotaal * ces
+	let noemer = puntentotaal - ( puntentotaal * ces )
+	let lastFactor = puntentotaal / 2
+	let herberekendeScore = puntentotaal / 2 + ( tellerLeft - tellerRight ) / noemer * lastFactor
+	let tmp = roundScore( herberekendeScore, 4 )
+	return tmp <= 0 ? 0 : tmp
+}
+
+const roundScore = ( x, n ) => {
+	return Math.round( x * Math.pow( 10, n ) ) / Math.pow( 10, n )
+}
 
 const writeExcel = ( rows ) => {
 	console.log( rows.length )
