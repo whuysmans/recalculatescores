@@ -70,6 +70,9 @@ app.get('/test', async ( req, res ) => {
 			let rows = []
 			for ( const single_result of data ) {
 				const user_id = single_result.user_id
+				if ( ! single_result.score && ! single_result.entered_grade ) {
+					continue
+				}
 				try {
 					const user_details = await axios( {
 						method: 'get',
@@ -79,21 +82,17 @@ app.get('/test', async ( req, res ) => {
 						}
 					} )
 					let row = []
-					if ( ! single_result.score && ! single_result.entered_grade ) {
-						continue
-					} else {
-						let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-						let newScore = recalculateScore( parseFloat( points ) )
-						row.push( 
-							user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
-							user_details.data.name ? user_details.data.name : 'onbekend', 
-							user_details.data.email ? user_details.data.email : 'onbekend',
-							points,
-							newScore 
-						)
-						rows.push( row )
+					let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
+					let newScore = recalculateScore( parseFloat( points ) )
+					row.push( 
+						user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
+						user_details.data.name ? user_details.data.name : 'onbekend', 
+						user_details.data.email ? user_details.data.email : 'onbekend',
+						points,
+						newScore 
+					)
+					rows.push( row )
 					}					
-				}
 				catch ( e ) {
 					// res.send( e )
 					console.log(e)
