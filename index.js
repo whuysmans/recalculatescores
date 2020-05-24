@@ -87,7 +87,7 @@ app.get('/test', async ( req, res ) => {
 						user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
 						user_details.data.name ? user_details.data.name : 'onbekend', 
 						user_details.data.email ? user_details.data.email : 'onbekend',
-						parseInt( points ),
+						points,
 						newScore 
 					)
 					rows.push( row )
