@@ -12,7 +12,7 @@ const path = require('path')
 const parse = require('parse-link-header')
 let pointsPossible = 10
 let mcType = 'MC4'
-let numberOfQuestions = 1
+let puntentotaal = 1
 let quizType = 'quiz'
 
 app.get('/', ( req, res ) => {
@@ -23,7 +23,7 @@ app.get('/test', async ( req, res ) => {
 	assignmentID = req.query.assignment
 	courseID = req.query.course
 	mcType = req.query.mcselect
-	numberOfQuestions = req.query.questions
+	puntentotaal = req.query.puntentotaal
 	quizType = req.query.typeselect
 	token = `Bearer ${ req.query.token }`
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
@@ -83,12 +83,12 @@ app.get('/test', async ( req, res ) => {
 						continue
 					} else {
 						let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-						let newScore = recalculateScore( points )
+						let newScore = recalculateScore( parseFloat( points ) )
 						row.push( 
 							user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
 							user_details.data.name ? user_details.data.name : 'onbekend', 
 							user_details.data.email ? user_details.data.email : 'onbekend',
-							parseInt( points ),
+							points,
 							newScore 
 						)
 						rows.push( row )
@@ -113,11 +113,18 @@ app.get('/test', async ( req, res ) => {
 } )
 
 const recalculateScore = ( score ) => {
-	let intScore = parseInt( score )
-	let noemer = mcType === 'MC4' ? 4 : 3
-	let cesuur = ( ( numberOfQuestions - ( numberOfQuestions / noemer ) ) / 2 ) + ( numberOfQuestions / noemer )
-	let tmp =  10 + ( ( 10 / ( numberOfQuestions - cesuur ) ) * ( intScore - cesuur ) )
-	return tmp <= 0 ? 0 : Math.round( tmp * 100 ) / 100
+	let ces = mcType === 'MC4' ? 0.625 : 0.6667
+	let tellerLeft = Math.round( score / pointsPossible * puntentotaal )
+	let tellerRight = puntentotaal * ces
+	let noemer = puntentotaal - ( puntentotaal * ces )
+	let lastFactor = puntentotaal / 2
+	let herberekendeScore = puntentotaal / 2 + ( tellerLeft - tellerRight ) / noemer * lastFactor
+	let tmp = roundScore( herberekendeScore, 4 )
+	return tmp <= 0 ? 0 : tmp
+}
+
+const roundScore = ( x, n ) => {
+	return Math.round( x * Math.pow( 10, n ) ) / Math.pow( 10, n )
 }
 
 const writeExcel = ( rows ) => {
