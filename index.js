@@ -2,7 +2,8 @@ const express = require('express')
 const app = express()
 const port = 3000
 const axios = require('axios')
-const baseURL = 'https://canvas.kdg.be/api/v1/' 
+let school = ''
+let baseURL = '' 
 let assignmentID = 0
 let courseID = 0
 let token = '' 
@@ -26,6 +27,8 @@ app.get('/test', async ( req, res ) => {
 	puntentotaal = req.query.puntentotaal
 	quizType = req.query.typeselect
 	token = `Bearer ${ req.query.token }`
+	school = req.query.school
+	baseURL = `${ school }/api/v1/`
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
 		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
 	try {
