@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+let port = process.env.PORT || 3000
 const axios = require('axios')
 let school = ''
 let baseURL = '' 
