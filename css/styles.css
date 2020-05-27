@@ -27,3 +27,9 @@ div.form {
 p.form {
 	text-align: center;
 }
+
+select {
+	width: 20%;
+	padding: 10px;
+	border-radius: 2px;
+}
