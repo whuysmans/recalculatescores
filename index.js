@@ -81,7 +81,7 @@ app.get('/test', [
 			method: 'get',
 			url: assignmentURL,
 			headers: {
-				'Authorization': token
+				'Authorization': `Bearer ${ token }`
 			}
 		})
 		// console.log( assignment.data )
@@ -96,7 +96,7 @@ app.get('/test', [
 					method: 'get',
 					url: submissionsURL,
 					headers: {
-						'Authorization': token
+						'Authorization': `Bearer ${ token }`
 					}
 				})
 				const resultArray = quizType === 'quiz' ? response.data.quiz_submissions : response.data
@@ -126,7 +126,7 @@ app.get('/test', [
 						method: 'get',
 						url: `${ baseURL }users/${ user_id }`,
 						headers: {
-							'Authorization': token
+							'Authorization': `Bearer ${ token }`
 						}
 					} )
 					let row = []
