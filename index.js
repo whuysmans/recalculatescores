@@ -202,7 +202,7 @@ app.listen( port, () =>  {
 	console.log( `listening on port ${ port }` ) 
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
-		redirect_uri = `${ process.env.APPURL }/callback`,
+		redirect_uri: `${ process.env.APPURL }/callback`,
 		scope: '',
 		state: 'xxyyvvzzulmn56'
 	} )
