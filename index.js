@@ -2,8 +2,7 @@ const express = require('express')
 const app = express()
 let port = process.env.PORT || 3000
 const axios = require('axios')
-let school = ''
-let baseURL = '' 
+let school = process.env.SCHOOL
 let assignmentID = 0
 let courseID = 0
 let token = '' 
@@ -15,19 +14,65 @@ let pointsPossible = 10
 let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
+const credentials = {
+	client: {
+		id: process.env.CLIENTID,
+		secret: process.env.SECRET
+	},
+	auth: {
+		tokenHost: process.env.SCHOOL,
+		authorizePath: '/login/oauth2/auth',
+		tokenPath: '/login/oauth2/token'
+	}
+}
+let oauth2 = null
+let authorizationUri = null
+const { check, validationResult } = require('express-validator')
 
 app.get('/', ( req, res ) => {
-	res.sendFile( path.join( __dirname + '/index.html' ) )
+	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
 } )
 
-app.get('/test', async ( req, res ) => {
+app.get('/auth', ( req, res ) => {
+	res.redirect( authorizationUri )
+} )
+
+app.get('/callback', async ( req, res ) => {
+	const { code } = req.query
+	const options = {
+		code
+	}
+	try {
+		const result = await oauth2.authorizationCode.getToken( options )
+		const tokenObj = oauth2.accessToken.create( result )
+		token = tokenObj.token.access_token
+		res.redirect('/start')
+	} catch ( e ) {
+		console.log( e )
+	}
+} )
+
+app.get( '/start', ( req, res ) => {
+	res.sendFile( path.join( __dirname + '/start.html' ) )
+} )
+
+app.get('/test', [
+	check( 'course' ).isLength({ min: 4, max: 10 }),
+	check( 'course' ).isNumeric(),
+	check( 'assignment' ).isLength({ min: 4, max: 10 }),
+	check( 'assignment' ).isNumeric(),
+	check( 'mcselect' ).isLength({ min: 3, max: 3 }),
+	check( 'puntentotaal' ).isNumeric()
+], async ( req, res ) => {
+	const errors = validationResult( req )
+	if ( ! errors.isEmpty() ) {
+		return res.status( 422 ).json( { errors: errors.array() } )
+	}
 	assignmentID = req.query.assignment
 	courseID = req.query.course
 	mcType = req.query.mcselect
 	puntentotaal = req.query.puntentotaal
 	quizType = req.query.typeselect
-	token = `Bearer ${ req.query.token }`
-	school = req.query.school
 	baseURL = `${ school }/api/v1/`
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
 		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
@@ -153,4 +198,15 @@ const writeExcel = ( rows ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
-app.listen( port, () => console.log( `listening on port ${ port }` ) )
+app.listen( port, () =>  {
+	console.log( `listening on port ${ port }` ) 
+	oauth2 = require('simple-oauth2').create( credentials )
+	authorizationUri = oauth2.authorizationCode.authorizeURL( {
+		redirect_uri = `${ process.env.APPURL }/callback`,
+		scope: '',
+		state: 'xxyyvvzzulmn56'
+	} )
+
+} )
+
+app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )

@@ -4,16 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-	 "test": "echo \"Error: no test specified\" && exit 1",
-	 "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
     "express": "^4.17.1",
+    "express-validator": "^6.5.0",
     "file-saver": "^2.0.2",
     "parse-link-header": "^1.0.1",
+    "simple-oauth2": "^3.4.0",
     "xlsx": "^0.16.0"
   }
 }
