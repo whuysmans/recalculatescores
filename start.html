@@ -9,45 +9,42 @@
 	</head>
 
 	<body>
-
-		<p>Recalculate the scores!</p>
-		<form action="/test" method="get" class="form-example">
-			<div>
-				<label for="course">course ID:</label>
-				<input type="text" id="course" name="course" required minlength="4" maxlength="8" size="10">
-			</div>
-			<div>
-				<label for="assignment">assignment or quiz ID:</label>
-				<input type="text" id="assignment" name="assignment" required minlength="4" maxlength="8" size="10">
-			</div>
-			<div>
-				<label for="puntentotaal">gewenste punten:</label>
-				<input type="text" id="puntentotaal" name="puntentotaal" required minlength="1" maxlength="8" size="10">
-			</div>
-			<div>
-				<label for="mcselect">kies MC #:</label>
-				<select name="mcselect" id="mcselect">
-					<option value="">--Please choose an option--</option>
-					<option value="MC3">MC3</option>
-					<option value="MC4">MC4</option>
-				</select>
-			</div>
-			<div>
-				<label for="typeselect">Quiz or Assignment:</label>
-				<select name="typeselect" id="typeselect">
-					<option value="">--Please choose an option--</option>
-					<option value="quiz">Quiz</option>
-					<option value="assignment">Assignment</option>
-				</select>
-			</div>
-			<div>
-				<button type="submit">Submit</button>
-			</div>
-		</form>
-		
-		
-
-
+		<div class="form">
+			<p class="form">Recalculate the scores!</p>
+			<form action="/test" method="get" class="form-example">
+				<div>
+					<label for="course">course ID:</label>
+					<input type="text" id="course" name="course" required minlength="4" maxlength="8" size="10">
+				</div>
+				<div>
+					<label for="assignment">assignment or quiz ID:</label>
+					<input type="text" id="assignment" name="assignment" required minlength="4" maxlength="8" size="10">
+				</div>
+				<div>
+					<label for="puntentotaal">gewenste punten:</label>
+					<input type="text" id="puntentotaal" name="puntentotaal" required minlength="1" maxlength="8" size="10">
+				</div>
+				<div>
+					<label for="mcselect">kies MC #:</label>
+					<select name="mcselect" id="mcselect">
+						<option value="">--Please choose an option--</option>
+						<option value="MC3">MC3</option>
+						<option value="MC4">MC4</option>
+					</select>
+				</div>
+				<div>
+					<label for="typeselect">Quiz or Assignment:</label>
+					<select name="typeselect" id="typeselect">
+						<option value="">--Please choose an option--</option>
+						<option value="quiz">Quiz</option>
+						<option value="assignment">Assignment</option>
+					</select>
+				</div>
+				<div>
+					<button type="submit">Submit</button>
+				</div>
+			</form>
+		</div>
 	</body>
 
 </html>
