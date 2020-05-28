@@ -118,9 +118,14 @@ const recalculateScore2 = ( score ) => {
 	return tmp <= 0 ? 0 : tmp
 }
 
+const getRandomIdent = () => {
+	const array = new Uint32Array( 4 )
+	return 'i' + window.crypto.getRandomValues(array).join('')
+}
+
 const recalculateScore = ( score ) => {
 	let ces = mcType === 'MC4' ? 0.625 : 0.6667
-	let tellerLeft = Math.round( score / pointsPossible * puntentotaal )
+	let tellerLeft = score / pointsPossible * puntentotaal
 	let tellerRight = puntentotaal * ces
 	let noemer = puntentotaal - ( puntentotaal * ces )
 	let lastFactor = puntentotaal / 2
