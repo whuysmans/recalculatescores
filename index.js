@@ -64,7 +64,7 @@ app.get('/test', [
 	check( 'assignment' ).isNumeric(),
 	check( 'mcselect' ).isLength({ min: 3, max: 3 }),
 	check( 'puntentotaal' ).isNumeric(),
-	check( 'olodselect' ).isLenth({ min: 4, max: 5 })
+	check( 'olodselect' ).isLength({ min: 4, max: 5 })
 ], async ( req, res ) => {
 	const errors = validationResult( req )
 	if ( ! errors.isEmpty() ) {
