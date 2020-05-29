@@ -231,12 +231,12 @@ app.listen( port, () =>  {
 	console.log( `listening on port ${ port }` )
 	state = getRandomIdent()
 	app.use( cookieParser() )
-	app.use( session({ state: state }) )
+	app.use( session({ state: 'l34fhZEGdsdfsdfdf' }) )
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
 		scope: '',
-		state: state
+		state: 'l34fhZEGdsdfsdfdf'
 	} )
 
 } )
