@@ -14,6 +14,7 @@ let pointsPossible = 10
 let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
+let olodType = 'eolod'
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
@@ -62,7 +63,8 @@ app.get('/test', [
 	check( 'assignment' ).isLength({ min: 4, max: 10 }),
 	check( 'assignment' ).isNumeric(),
 	check( 'mcselect' ).isLength({ min: 3, max: 3 }),
-	check( 'puntentotaal' ).isNumeric()
+	check( 'puntentotaal' ).isNumeric(),
+	check( 'olodselect' ).isLenth({ min: 4, max: 5 })
 ], async ( req, res ) => {
 	const errors = validationResult( req )
 	if ( ! errors.isEmpty() ) {
@@ -73,6 +75,7 @@ app.get('/test', [
 	mcType = req.query.mcselect
 	puntentotaal = req.query.puntentotaal
 	quizType = req.query.typeselect
+	olodType = req.query.olodselect
 	baseURL = `${ school }/api/v1/`
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
 		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
@@ -131,13 +134,16 @@ app.get('/test', [
 					} )
 					let row = []
 					let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-					let newScore = recalculateScore( parseFloat( points ) )
+					let correctedScore = recalculateScore( parseFloat( points ) )
+					let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) :
+						roundTo( correctedScore, 1 )
 					row.push( 
 						user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
 						user_details.data.name ? user_details.data.name : 'onbekend', 
 						user_details.data.email ? user_details.data.email : 'onbekend',
 						points,
-						newScore 
+						correctedScore,
+						afgerondeScore
 					)
 					rows.push( row )
 					}					
@@ -174,11 +180,15 @@ const roundScore = ( x, n ) => {
 	return Math.round( x * Math.pow( 10, n ) ) / Math.pow( 10, n )
 }
 
+const roundTo = ( n, to ) => {
+	return to * Math.round( n / to );
+ }
+
 const writeExcel = ( rows ) => {
 	console.log( rows.length )
 	console.log( rows )
 	
-	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score' ] ]
+	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score', 'afgeronde score' ] ]
 	rows.forEach( ( row ) => {
 		data.push( row )
 	} )
