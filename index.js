@@ -32,6 +32,8 @@ let authorizationUri = null
 const { check, validationResult } = require('express-validator')
 const cookieParser = require('cookie-parser')
 let session = require('express-session')
+app.use( cookieParser() )
+app.use( session({ state: 'l34fhZEGdsdfsdfdf' }) )
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -229,9 +231,6 @@ const getRandomIdent = () => {
 
 app.listen( port, () =>  {
 	console.log( `listening on port ${ port }` )
-	state = getRandomIdent()
-	app.use( cookieParser() )
-	app.use( session({ state: 'l34fhZEGdsdfsdfdf' }) )
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
