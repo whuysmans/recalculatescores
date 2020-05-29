@@ -15,7 +15,6 @@ let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
 let olodType = 'eolod'
-let state = ''
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
@@ -30,10 +29,6 @@ const credentials = {
 let oauth2 = null
 let authorizationUri = null
 const { check, validationResult } = require('express-validator')
-const cookieParser = require('cookie-parser')
-let session = require('express-session')
-app.use( cookieParser() )
-app.use( session({ state: 'l34fhZEGdsdfsdfdf' }) )
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -44,30 +39,22 @@ app.get('/auth', ( req, res ) => {
 } )
 
 app.get('/callback', async ( req, res ) => {
-	if ( ! checkState() ) {
-		res.status( 401 ).send( 'Unauthorized!' )
-	} else {
-		const { code } = req.query
-		const options = {
-			code
-		}
-		try {
-			const result = await oauth2.authorizationCode.getToken( options )
-			const tokenObj = oauth2.accessToken.create( result )
-			token = tokenObj.token.access_token
-			res.redirect('/start')
-		} catch ( e ) {
-			console.log( e )
-		}
+	const { code } = req.query
+	const options = {
+		code
+	}
+	try {
+		const result = await oauth2.authorizationCode.getToken( options )
+		const tokenObj = oauth2.accessToken.create( result )
+		token = tokenObj.token.access_token
+		res.redirect('/start')
+	} catch ( e ) {
+		console.log( e )
 	}
 } )
 
 app.get( '/start', ( req, res ) => {
-	if ( ! checkState() ) {
-		res.status( 401 ).send( 'Unauthorized!' )
-	} else {
-		res.sendFile( path.join( __dirname + '/start.html' ) )
-	}
+	res.sendFile( path.join( __dirname + '/start.html' ) )
 } )
 
 app.get('/test', [
@@ -189,10 +176,6 @@ const recalculateScore = ( score ) => {
 	return tmp <= 0 ? 0 : tmp
 }
 
-checkState = ( req, res ) => {
-	return req.session.state && req.session.state === state
-}
-
 const roundScore = ( x, n ) => {
 	return Math.round( x * Math.pow( 10, n ) ) / Math.pow( 10, n )
 }
@@ -225,17 +208,13 @@ const writeExcel = ( rows ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
-const getRandomIdent = () => {
-	return Math.random().toString(36).replace(/[^a-zA-Z0-0]+/g, '').substr(0, 25)
-}
-
 app.listen( port, () =>  {
-	console.log( `listening on port ${ port }` )
+	console.log( `listening on port ${ port }` ) 
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
 		scope: '',
-		state: 'l34fhZEGdsdfsdfdf'
+		state: 'xxyyvvzzulmn56'
 	} )
 
 } )
