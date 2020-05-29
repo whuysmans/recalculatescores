@@ -224,8 +224,7 @@ const writeExcel = ( rows ) => {
 }
 
 const getRandomIdent = () => {
-	const array = new Uint32Array( 4 )
-	return window.crypto.getRandomValues(array).join('')
+	return Math.random().toString(36).replace(/[^a-zA-Z0-0]+/g, '').substr(0, 25)
 }
 
 app.listen( port, () =>  {
