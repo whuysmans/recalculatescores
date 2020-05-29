@@ -15,6 +15,7 @@ let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
 let olodType = 'eolod'
+let state = ''
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
@@ -29,6 +30,8 @@ const credentials = {
 let oauth2 = null
 let authorizationUri = null
 const { check, validationResult } = require('express-validator')
+const cookieParser = require('cookie-parser')
+let session = require('express-session')
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -39,22 +42,30 @@ app.get('/auth', ( req, res ) => {
 } )
 
 app.get('/callback', async ( req, res ) => {
-	const { code } = req.query
-	const options = {
-		code
-	}
-	try {
-		const result = await oauth2.authorizationCode.getToken( options )
-		const tokenObj = oauth2.accessToken.create( result )
-		token = tokenObj.token.access_token
-		res.redirect('/start')
-	} catch ( e ) {
-		console.log( e )
+	if ( ! checkState() ) {
+		res.status( 401 ).send( 'Unauthorized!' )
+	} else {
+		const { code } = req.query
+		const options = {
+			code
+		}
+		try {
+			const result = await oauth2.authorizationCode.getToken( options )
+			const tokenObj = oauth2.accessToken.create( result )
+			token = tokenObj.token.access_token
+			res.redirect('/start')
+		} catch ( e ) {
+			console.log( e )
+		}
 	}
 } )
 
 app.get( '/start', ( req, res ) => {
-	res.sendFile( path.join( __dirname + '/start.html' ) )
+	if ( ! checkState() ) {
+		res.status( 401 ).send( 'Unauthorized!' )
+	} else {
+		res.sendFile( path.join( __dirname + '/start.html' ) )
+	}
 } )
 
 app.get('/test', [
@@ -176,6 +187,10 @@ const recalculateScore = ( score ) => {
 	return tmp <= 0 ? 0 : tmp
 }
 
+checkState = ( req, res ) => {
+	return req.session.state && req.session.state === state
+}
+
 const roundScore = ( x, n ) => {
 	return Math.round( x * Math.pow( 10, n ) ) / Math.pow( 10, n )
 }
@@ -208,13 +223,21 @@ const writeExcel = ( rows ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
+const getRandomIdent = () => {
+	const array = new Uint32Array( 4 )
+	return window.crypto.getRandomValues(array).join('')
+}
+
 app.listen( port, () =>  {
-	console.log( `listening on port ${ port }` ) 
+	console.log( `listening on port ${ port }` )
+	state = getRandomIdent()
+	app.use( cookieParser() )
+	app.use( session({ state: state }) )
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
 		scope: '',
-		state: 'xxyyvvzzulmn56'
+		state: state
 	} )
 
 } )
