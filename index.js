@@ -60,7 +60,6 @@ app.get('/callback', async ( req, res ) => {
 
 app.get( '/start', ( req, res ) => {
 	res.sendFile( path.join( __dirname + '/start.html' ) )
-	console.log( 'state', res.query.state )
 } )
 
 app.get('/test', [
