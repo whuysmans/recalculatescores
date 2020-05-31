@@ -88,7 +88,7 @@ app.get('/test', [
 			}
 		})
 		// console.log( assignment.data )
-		pointsPossible = assignment.data.points_possible
+		pointsPossible = parseInt( assignment.data.points_possible )
 		const getSubmissions = async () => {
 			let keepGoing = true
 			let result = []
@@ -164,6 +164,19 @@ app.get('/test', [
 		res.send( err )
 	}
 } )
+
+const recalculateScore2 = ( score ) => {
+	let keuzes = mcType === 'MC4' ? 4 : 3
+	let ces =  pointsPossible  * ( ( keuzes + 1 ) / ( 2 * keuzes ) )
+	let herberekendeScore = puntentotaal / 2 + ( ( ( puntentotaal / 2 ) / ( pointsPossible - ces ) ) * ( score - ces ) )
+	let tmp = roundScore( herberekendeScore, 5 )
+	return tmp <= 0 ? 0 : tmp
+}
+
+const getRandomIdent = () => {
+	const array = new Uint32Array( 4 )
+	return 'i' + window.crypto.getRandomValues(array).join('')
+}
 
 const recalculateScore = ( score ) => {
 	let ces = mcType === 'MC4' ? 0.625 : 0.6667
