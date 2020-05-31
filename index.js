@@ -15,6 +15,7 @@ let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
 let olodType = 'eolod'
+let state = getRandomIdent()
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
@@ -29,6 +30,14 @@ const credentials = {
 let oauth2 = null
 let authorizationUri = null
 const { check, validationResult } = require('express-validator')
+let session = require('express-session')
+const sessionOptions = {
+	secret: process.env.SESSIONSECRET,
+	resave: false,
+	saveUnitialized: false,
+	coockie: { secure: true }
+}
+app.use( session( sessionOptions ) )
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -47,6 +56,7 @@ app.get('/callback', async ( req, res ) => {
 		const result = await oauth2.authorizationCode.getToken( options )
 		const tokenObj = oauth2.accessToken.create( result )
 		token = tokenObj.token.access_token
+		console.log( tokenObj )
 		res.redirect('/start')
 	} catch ( e ) {
 		console.log( e )
@@ -174,8 +184,7 @@ const recalculateScore2 = ( score ) => {
 }
 
 const getRandomIdent = () => {
-	const array = new Uint32Array( 4 )
-	return 'i' + window.crypto.getRandomValues(array).join('')
+	return Math.random().toString(36).substring(4)
 }
 
 const recalculateScore = ( score ) => {
@@ -227,7 +236,7 @@ app.listen( port, () =>  {
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
 		scope: '',
-		state: 'xxyyvvzzulmn56'
+		state: state
 	} )
 
 } )
