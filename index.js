@@ -49,6 +49,9 @@ app.get('/callback', async ( req, res ) => {
 		const tokenObj = oauth2.accessToken.create( result )
 		token = tokenObj.token.access_token
 		console.log( res )
+		if ( res.query.state !== state ) {
+			return res.sendStatus( 401 )
+		}
 		res.redirect('/start')
 	} catch ( e ) {
 		console.log( e )
@@ -57,6 +60,7 @@ app.get('/callback', async ( req, res ) => {
 
 app.get( '/start', ( req, res ) => {
 	res.sendFile( path.join( __dirname + '/start.html' ) )
+	console.log( 'state', res.query.state )
 } )
 
 app.get('/test', [
@@ -72,7 +76,6 @@ app.get('/test', [
 	if ( ! errors.isEmpty() ) {
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
-	console.log( 'state', res.query.state )
 	assignmentID = req.query.assignment
 	courseID = req.query.course
 	mcType = req.query.mcselect
