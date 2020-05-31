@@ -48,10 +48,10 @@ app.get('/callback', async ( req, res ) => {
 		const result = await oauth2.authorizationCode.getToken( options )
 		const tokenObj = oauth2.accessToken.create( result )
 		token = tokenObj.token.access_token
-		console.log( res )
-		if ( res.query.state !== state ) {
-			return res.sendStatus( 401 )
-		}
+		// console.log( res )
+		// if ( res.query.state !== state ) {
+		// 	return res.sendStatus( 401 )
+		// }
 		res.redirect('/start')
 	} catch ( e ) {
 		console.log( e )
