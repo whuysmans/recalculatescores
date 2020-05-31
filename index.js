@@ -15,7 +15,7 @@ let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
 let olodType = 'eolod'
-let state = getRandomIdent()
+let state = '' 
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
@@ -231,7 +231,8 @@ const writeExcel = ( rows ) => {
 }
 
 app.listen( port, () =>  {
-	console.log( `listening on port ${ port }` ) 
+	console.log( `listening on port ${ port }` )
+	state = getRandomIdent()
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
