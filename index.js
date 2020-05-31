@@ -72,7 +72,7 @@ app.get('/test', [
 	if ( ! errors.isEmpty() ) {
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
-	console.log( res.query.state )
+	console.log( 'state', res.query.state )
 	assignmentID = req.query.assignment
 	courseID = req.query.course
 	mcType = req.query.mcselect
