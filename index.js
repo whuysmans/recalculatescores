@@ -30,17 +30,6 @@ const credentials = {
 let oauth2 = null
 let authorizationUri = null
 const { check, validationResult } = require('express-validator')
-let session = require('express-session')
-const redis = require('redis')
-let RedisStore = require('connect-redis')(session)
-let redisClient = redis.createClient()
-const sessionOptions = {
-	secret: process.env.SESSIONSECRET,
-	resave: false,
-	store: new RedisStore({ client: redisClient })
-}
-app.use( session( sessionOptions ) )
-
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -60,7 +49,6 @@ app.get('/callback', async ( req, res ) => {
 		const tokenObj = oauth2.accessToken.create( result )
 		token = tokenObj.token.access_token
 		console.log( res )
-		req.session.state = state
 		res.redirect('/start')
 	} catch ( e ) {
 		console.log( e )
@@ -84,6 +72,7 @@ app.get('/test', [
 	if ( ! errors.isEmpty() ) {
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
+	console.log( res.query.state )
 	assignmentID = req.query.assignment
 	courseID = req.query.course
 	mcType = req.query.mcselect
