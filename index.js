@@ -62,9 +62,9 @@ app.get( '/start', ( req, res ) => {
 } )
 
 app.get('/test', [
-	check( 'course' ).isLength({ min: 4, max: 10 }),
+	check( 'course' ).isLength({ min: 1, max: 10 }),
 	check( 'course' ).isNumeric(),
-	check( 'assignment' ).isLength({ min: 4, max: 10 }),
+	check( 'assignment' ).isLength({ min: 1, max: 10 }),
 	check( 'assignment' ).isNumeric(),
 	check( 'mcselect' ).isLength({ min: 3, max: 3 }),
 	check( 'puntentotaal' ).isNumeric(),
