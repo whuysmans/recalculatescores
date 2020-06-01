@@ -15,6 +15,7 @@ let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
 let olodType = 'eolod'
+let state = ''
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
@@ -38,7 +39,7 @@ app.get('/auth', ( req, res ) => {
 	res.redirect( authorizationUri )
 } )
 
-app.get('/callback', async ( req, res ) => {
+app.get( '/callback', async ( req, res ) => {
 	const { code } = req.query
 	const options = {
 		code
@@ -47,6 +48,9 @@ app.get('/callback', async ( req, res ) => {
 		const result = await oauth2.authorizationCode.getToken( options )
 		const tokenObj = oauth2.accessToken.create( result )
 		token = tokenObj.token.access_token
+		if( req.query.state !== state ) {
+			return res.sendStatus( 401 )
+		}
 		res.redirect('/start')
 	} catch ( e ) {
 		console.log( e )
@@ -174,8 +178,7 @@ const recalculateScore2 = ( score ) => {
 }
 
 const getRandomIdent = () => {
-	const array = new Uint32Array( 4 )
-	return 'i' + window.crypto.getRandomValues(array).join('')
+	return Math.random().toString(36).substring(4)
 }
 
 const recalculateScore = ( score ) => {
@@ -222,12 +225,13 @@ const writeExcel = ( rows ) => {
 }
 
 app.listen( port, () =>  {
-	console.log( `listening on port ${ port }` ) 
+	console.log( `listening on port ${ port }` )
+	state = getRandomIdent()
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
 		scope: '',
-		state: 'xxyyvvzzulmn56'
+		state: state
 	} )
 
 } )
