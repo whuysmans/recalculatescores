@@ -17,6 +17,7 @@ let quizType = 'quiz'
 let olodType = 'eolod'
 let state = '' 
 let io = null
+const socketIO = require('socket.io');
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
