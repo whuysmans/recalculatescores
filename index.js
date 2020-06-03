@@ -238,4 +238,4 @@ app.listen( port, () =>  {
 } )
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
-io = socketIO( server )
+io = socketIO( app )
