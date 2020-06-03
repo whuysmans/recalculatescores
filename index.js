@@ -170,13 +170,6 @@ app.get('/test', [
 	}
 } )
 
-const recalculateScore2 = ( score ) => {
-	let keuzes = mcType === 'MC4' ? 4 : 3
-	let ces =  pointsPossible  * ( ( keuzes + 1 ) / ( 2 * keuzes ) )
-	let herberekendeScore = puntentotaal / 2 + ( ( ( puntentotaal / 2 ) / ( pointsPossible - ces ) ) * ( score - ces ) )
-	let tmp = roundScore( herberekendeScore, 5 )
-	return tmp <= 0 ? 0 : tmp
-}
 
 const getRandomIdent = () => {
 	return Math.random().toString(36).substring(4)
@@ -190,11 +183,12 @@ const recalculateScore = ( score ) => {
 	let lastFactor = puntentotaal / 2
 	let herberekendeScore = puntentotaal / 2 + ( tellerLeft - tellerRight ) / noemer * lastFactor
 	let tmp = roundScore( herberekendeScore, 4 )
-	return tmp <= 0 ? 0 : tmp
+	return tmp <= 0 ? 0 : roundScore( tmp, 2 )
 }
 
 const roundScore = ( x, n ) => {
-	return Math.round( x * Math.pow( 10, n ) ) / Math.pow( 10, n )
+	let factor = parseFloat( Math.pow( 10, n ) )
+	return Math.trunc( x * factor + 0.5 ) / factor
 }
 
 const roundTo = ( n, to ) => {
