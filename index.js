@@ -223,6 +223,7 @@ const writeExcel = ( rows ) => {
 	wb.Sheets[ "Scores" ] = ws
 	// let wbout = XLSX.write( wb, { bookType: 'xlsx', type: 'binary' } )
 	// saveAs( new Blob( [ s2ab( wbout ) ], { type: 'application/octet-stream' } ), 'test.xlsx' )
+	io.emit( 'ready', 'ready' )
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
@@ -240,3 +241,7 @@ const server = app.listen( port, () =>  {
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 io = socketIO( server )
+io.on( 'connection', ( socket ) => {
+	console.log( 'client connected' )
+	io.emit( 'start-progress', 'start progress' )
+} )

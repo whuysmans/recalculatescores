@@ -62,6 +62,25 @@
 			socket.on( 'time', ( timeString ) => {
 				el.innerHTML = `Time elapsed: ${ timeString }`
 			} )
+			let timerID = 0
+			const keepAlive = () => {
+				const timeout = 5000
+				if ( socket.readyState === socket.OPEN ) {
+					socket.send('')
+				}
+				timerID = setTimeout( keepAlive, timeout )
+			}
+			const cancelKeepAlive = () => {
+				if ( timerID ) {
+					clearTimeout( timerID )
+				}
+			}
+			socket.on( 'start-progress', () => {
+				keepAlive()
+			} )
+			socket.on( 'ready', () => {
+				cancelKeepAlive()
+			} )
 		</script>
 	</body>
 
