@@ -52,7 +52,16 @@
 					<button type="submit">Submit</button>
 				</div>
 			</form>
+			<div id="status">
+			</div>
 		</div>
+		<script>
+			const socket = io()
+			const el = document.querySelector('#status')
+			socket.on( 'time', ( timeString ) => {
+				el.innerHTML = `Time elapsed: ${ timeString }`
+			} )
+		</script>
 	</body>
 
 </html>

@@ -16,6 +16,7 @@ let puntentotaal = 1
 let quizType = 'quiz'
 let olodType = 'eolod'
 let state = '' 
+let io = null
 const credentials = {
 	client: {
 		id: process.env.CLIENTID,
@@ -159,7 +160,11 @@ app.get('/test', [
 			}
 			return rows
 		}
+		const progress = setInterval( () => {
+			io.emit( 'time', new Date().toTimeString() )
+		}, 1000 )
 		const rows = await getAll( result )
+		clearInterval( progress )
 		// console.log( 'rows', rows )
 		writeExcel( rows )
 		res.download( './text.xlsx' )
@@ -232,3 +237,4 @@ app.listen( port, () =>  {
 } )
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
+io = socketIO( server )
