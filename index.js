@@ -225,7 +225,7 @@ const writeExcel = ( rows ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
-app.listen( port, () =>  {
+const server = app.listen( port, () =>  {
 	console.log( `listening on port ${ port }` )
 	state = getRandomIdent()
 	oauth2 = require('simple-oauth2').create( credentials )
@@ -238,4 +238,4 @@ app.listen( port, () =>  {
 } )
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
-io = socketIO( app )
+io = socketIO( server )
