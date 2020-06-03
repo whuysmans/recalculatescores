@@ -181,7 +181,7 @@ const recalculateScore = ( score ) => {
 	let lastFactor = puntentotaal / 2
 	let herberekendeScore = puntentotaal / 2 + ( tellerLeft - tellerRight ) / noemer * lastFactor
 	let tmp = roundScore( herberekendeScore, 4 )
-	return tmp <= 0 ? 0 : roundScore( tmp, 2 )
+	return tmp <= 0 ? 0 : ( mcType === 'MC4' ? tmp : roundScore( tmp, 2 ) )
 }
 
 const roundScore = ( x, n ) => {
