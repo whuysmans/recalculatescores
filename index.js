@@ -123,6 +123,9 @@ app.get('/test', [
 			}
 			return result
 		}
+		const progress = setInterval( () => {
+			io.emit( 'time', new Date().toTimeString() )
+		}, 1000 )
 		const result = await getSubmissions()
 		const getAll = async ( data ) => {
 			let rows = []
@@ -161,9 +164,7 @@ app.get('/test', [
 			}
 			return rows
 		}
-		const progress = setInterval( () => {
-			io.emit( 'time', new Date().toTimeString() )
-		}, 1000 )
+		
 		const rows = await getAll( result )
 		clearInterval( progress )
 		// console.log( 'rows', rows )
