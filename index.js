@@ -117,7 +117,7 @@ app.get('/test', [
 				app.post( '/job', async ( req, res ) => {
 					let job = await workQueue.add( { resultArray, token, quizType } )
 					let result = res.json( { result: job.result } )
-					console.log( 'result', result )
+					console.log( 'result', res )
 					results.push( result )
 				} )
 				let parsed = parse( response.headers.link )
@@ -128,6 +128,7 @@ app.get('/test', [
 					submissionsURL = parsed.next.url
 				}
 			}
+			console.log( 'results', results )
 			return results
 		}
 		const data = await getResultsFromWorkers()
