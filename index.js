@@ -114,12 +114,12 @@ app.get('/test', [
 				// resultArray.map( ( resultObject ) => {
 				// 	result.push( resultObject )
 				// } )
-				app.post( '/job', async ( req, res ) => {
+				// app.post( '/job', async ( req, res ) => {
 					let job = await workQueue.add( { resultArray, token, quizType } )
 					let result = res.json( { result: job.result } )
 					console.log( 'result', res )
 					results.push( result )
-				} )
+				// } )
 				let parsed = parse( response.headers.link )
 				if ( parseInt( parsed.current.page ) >= parseInt( parsed.last.page ) ) {
 					console.log( parsed.current )
