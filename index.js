@@ -115,7 +115,11 @@ app.get('/test', [
 				// 	result.push( resultObject )
 				// } )
 				// app.post( '/job', async ( req, res ) => {
-					let job = await workQueue.add( { resultArray, token, quizType } )
+					let job = await workQueue.add( { 
+						resultArray: resultArray, 
+						token: token, 
+						quizType: quizType 
+					} )
 					let result = res.json()
 					console.log( 'result', res )
 					results.push( result )
