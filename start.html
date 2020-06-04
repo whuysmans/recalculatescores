@@ -6,7 +6,7 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" href="css/styles.css">
-		<script src="/socket.io/socket.io.js"></script>
+		<script src="client.js"></script>
 	</head>
 
 	<body>
@@ -56,33 +56,6 @@
 			<div id="status">
 			</div>
 		</div>
-		<script>
-			const socket = io()
-			const el = document.querySelector('#status')
-			socket.on( 'time', ( timeString ) => {
-				el.innerHTML = `Time elapsed: ${ timeString }`
-			} )
-			let timerID = 0
-			const keepAlive = () => {
-				const timeout = 5000
-				if ( socket.readyState === socket.OPEN ) {
-					socket.send('keep going')
-					console.log( 'keep going' )
-				}
-				timerID = setTimeout( keepAlive, timeout )
-			}
-			const cancelKeepAlive = () => {
-				if ( timerID ) {
-					clearTimeout( timerID )
-				}
-			}
-			socket.on( 'start-progress', () => {
-				keepAlive()
-			} )
-			socket.on( 'ready', () => {
-				cancelKeepAlive()
-			} )
-		</script>
 	</body>
 
 </html>
