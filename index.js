@@ -121,7 +121,7 @@ app.get('/test', [
 						quizType: quizType 
 					} )
 					let result = res.json()
-					console.log( 'result', res )
+					// console.log( 'result', res )
 					results.push( result )
 				// } )
 				let parsed = parse( response.headers.link )
