@@ -122,13 +122,13 @@ app.get('/test', [
 				// } )
 				let parsed = parse( response.headers.link )
 				if ( parseInt( parsed.current.page ) >= parseInt( parsed.last.page ) ) {
-					console.log( parsed.current )
+					// console.log( parsed.current )
 					keepGoing = false
 				} else {
 					submissionsURL = parsed.next.url
 				}
 			}
-			console.log( 'results', results )
+			// console.log( 'results', results )
 			return results
 		}
 		const data = await getResultsFromWorkers()
@@ -148,14 +148,14 @@ const getRandomIdent = () => {
 }
 
 const writeExcel = ( rows ) => {
-	console.log( rows.length )
-	console.log( rows )
+	console.log( 'length', rows.length )
+	// console.log( rows )
 	
 	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score', 'afgeronde score' ] ]
 	rows.forEach( ( row ) => {
 		data.push( row )
 	} )
-	console.log( 'data', data )
+	// console.log( 'data', data )
 	let wb = XLSX.utils.book_new()
 	wb.Props = {
 		Title: "test",
