@@ -51,7 +51,6 @@ app.get('/callback', async ( req, res ) => {
 		const result = await oauth2.authorizationCode.getToken( options )
 		const tokenObj = oauth2.accessToken.create( result )
 		token = tokenObj.token.access_token
-		console.log( req.query )
 		if ( req.query.state !== state ) {
 			return res.sendStatus( 401 )
 		}
@@ -142,7 +141,7 @@ app.get('/test', [
 		// res.status( 200 ).send( rows )
 	}
 	catch ( err ) {
-		res.send( err )
+		// res.send( err )
 	}
 } )
 
