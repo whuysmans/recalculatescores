@@ -11,10 +11,10 @@ let maxJobsPerWorker = 100
 const start = () => {
 	let workQueue = new Queue( 'work', REDIS_URL )
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
-		console.log( 'job', job )
-		const resultArray = job.data.resultArray
-		const token = job.data.token
-		const quizType = job.data.quizType
+		// console.log( 'job', job )
+		const resultArray = job.resultArray
+		const token = job.token
+		const quizType = job.quizType
 		let rows = []
 		for ( const single_result of resultArray ) {
 			const user_id = single_result.user_id
