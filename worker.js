@@ -17,7 +17,7 @@ const start = () => {
 		const quizType = job.quizType
 		let rows = []
 		for ( const single_result of resultArray ) {
-			console.log( single_result )
+			console.log( 'single', single_result )
 			const user_id = single_result.user_id
 			if ( ! single_result.score && ! single_result.entered_grade ) {
 				continue
