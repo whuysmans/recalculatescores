@@ -103,8 +103,6 @@ app.get('/test', [
 			let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions?per_page=50` :
 				`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions?per_page=50`
 			while ( keepGoing ) {
-				
-				
 				let response = await axios({
 					method: 'get',
 					url: submissionsURL,
@@ -119,6 +117,7 @@ app.get('/test', [
 				app.post( '/job', async ( req, res ) => {
 					let job = await workQueue.add( { resultArray, token, quizType } )
 					let result = res.json( { result: job.result } )
+					console.log( 'result', result )
 					results.push( result )
 				} )
 				let parsed = parse( response.headers.link )
@@ -129,10 +128,10 @@ app.get('/test', [
 					submissionsURL = parsed.next.url
 				}
 			}
-			return result
+			return results
 		}
 		const data = await getResultsFromWorkers()
-		// console.log( 'rows', rows )
+		// console.log( 'data', data )
 		writeExcel( data )
 		res.download( './text.xlsx' )
 		// res.status( 200 ).send( rows )
