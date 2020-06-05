@@ -15,7 +15,7 @@ const start = () => {
 		const token = job.token
 		const quizType = job.quizType
 		let rows = []
-		resultArray.forEach( ( single_result ) => {
+		resultArray.forEach( async ( single_result ) => {
 			console.log( 'single', single_result )
 			const user_id = single_result.user_id
 			if ( ! single_result.score && ! single_result.entered_grade ) {
