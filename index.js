@@ -123,7 +123,7 @@ app.get('/test', [
 						puntentotaal: puntentotaal,
 						olodType: olodType
 					} )
-					let result = res.json()
+					let result = job.result
 					// console.log( result )
 					// You can listen to global events to get notified when jobs are processed
 					
