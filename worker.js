@@ -3,6 +3,7 @@ let Queue = require('bull')
 const axios = require('axios')
 let port = process.env.PORT || 3000
 let school = process.env.SCHOOL
+const baseURL = `${ school }/api/v1/`
 
 let REDIS_URL = process.env.REDIS_URL
 let workers = process.env.WEB_CONCURRENCY || 2
