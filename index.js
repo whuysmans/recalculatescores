@@ -124,6 +124,7 @@ app.get('/test', [
 						olodType: olodType
 					} )
 					let result = res.json()
+					console.log( result )
 					// console.log( 'result', res )
 					results.push( result )
 				// } )
