@@ -138,9 +138,6 @@ app.get('/test', [
 					submissionsURL = parsed.next.url
 				}
 			}
-			workQueue.on('global:completed', (jobId, result) => {
-				console.log(`Job completed with result ${result}`);
-			});
 			// console.log( 'results', results )
 			return results
 		}
@@ -159,6 +156,10 @@ app.get('/test', [
 const getRandomIdent = () => {
 	return Math.random().toString(36).substring(4)
 }
+
+workQueue.on('global:completed', (jobId, result) => {
+	console.log(`Job completed with result ${result}`);
+})
 
 const writeExcel = ( rows ) => {
 	console.log( 'length', rows.length )
