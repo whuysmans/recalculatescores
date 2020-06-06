@@ -61,7 +61,7 @@ const start = () => {
 				console.log(e)
 			}	
 		} )
-		return { result:  rows }
+		return Promise.resolve( { result:  rows } )
 	} )
 }
 
