@@ -14,11 +14,8 @@ let mcType = ''
 let olodType = 'eolod'
 let workQueue = new Queue( 'work', REDIS_URL )
 
-const start = () => {
-	
-	workQueue.process( maxJobsPerWorker, async ( job ) => {
-		// console.log( job )
-		const resultArray = job.data.resultArray
+const getUserDetails = ( job ) => {
+	const resultArray = job.data.resultArray
 		const token = job.data.token
 		const quizType = job.data.quizType
 		puntentotaal = job.data.puntentotaal
@@ -61,8 +58,14 @@ const start = () => {
 				console.log(e)
 			}	
 		} )
-		return Promise.resolve( { result:  rows } )
-	} )
+		return { result:  rows }
+	}
+
+const start = () => {
+	workQueue.process( maxJobsPerWorker, async ( job ) => {
+		// console.log( job )
+		return getUserDetails( job )
+	} )	
 }
 
 const recalculateScore = ( score ) => {

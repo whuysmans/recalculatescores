@@ -33,6 +33,7 @@ const { check, validationResult } = require('express-validator')
 let Queue = require('bull')
 let REDIS_URL = process.env.REDIS_URL
 let workQueue = new Queue( 'work', REDIS_URL )
+let answerRes = null
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -74,6 +75,7 @@ app.get('/test', [
 	check( 'olodselect' ).isLength({ min: 4, max: 5 })
 ], async ( req, res ) => {
 	const errors = validationResult( req )
+	answerRes = res
 	if ( ! errors.isEmpty() ) {
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
@@ -123,12 +125,6 @@ app.get('/test', [
 						puntentotaal: puntentotaal,
 						olodType: olodType
 					} )
-					let result = job.result
-					// console.log( result )
-					// You can listen to global events to get notified when jobs are processed
-					
-					// console.log( 'result', res )
-					results.push( result )
 				// } )
 				let parsed = parse( response.headers.link )
 				if ( parseInt( parsed.current.page ) >= parseInt( parsed.last.page ) ) {
@@ -139,12 +135,9 @@ app.get('/test', [
 				}
 			}
 			// console.log( 'results', results )
-			return results
 		}
-		const data = await getResultsFromWorkers()
 		// console.log( 'data', data )
-		writeExcel( data )
-		res.download( './text.xlsx' )
+		
 		// res.status( 200 ).send( rows )
 	}
 	catch ( err ) {
@@ -158,7 +151,10 @@ const getRandomIdent = () => {
 }
 
 workQueue.on('global:completed', (jobId, result) => {
-	console.log(`Job completed with result ${result}`);
+	console.log(`Job completed with result ${result}`)
+	const data = result
+	writeExcel( data )
+	answerRes.download( './text.xlsx' )
 })
 
 const writeExcel = ( rows ) => {
