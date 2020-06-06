@@ -150,12 +150,11 @@ const getRandomIdent = () => {
 	return Math.random().toString(36).substring(4)
 }
 
-workQueue.on('global:completed', (jobId, result) => {
+workQueue.on( 'global:completed', ( jobId, result ) => {
 	console.log(`Job completed with result ${result}`)
-	const data = result
-	writeExcel( data )
+	writeExcel( result )
 	answerRes.download( './text.xlsx' )
-})
+} )
 
 const writeExcel = ( rows ) => {
 	console.log( 'length', rows.length )

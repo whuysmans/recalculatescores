@@ -16,50 +16,50 @@ let workQueue = new Queue( 'work', REDIS_URL )
 
 const getUserDetails = ( job ) => {
 	const resultArray = job.data.resultArray
-		const token = job.data.token
-		const quizType = job.data.quizType
-		puntentotaal = job.data.puntentotaal
-		pointsPossible = job.data.pointsPossible
-		mcType = job.data.mcType
-		olodType = job.data.olodType
-		let rows = []
-		resultArray.forEach( async ( single_result ) => {
-			// console.log( 'single', single_result )
-			const user_id = single_result.user_id
-			if ( ! single_result.score && ! single_result.entered_grade ) {
-				return	
-			}
-			try {
-				const user_details = await axios( {
-					method: 'get',
-					url: `${ baseURL }users/${ user_id }`,
-					headers: {
-						'Authorization': `Bearer ${ token }`
-					}
-				} )
-				let row = []
-				let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-				let correctedScore = recalculateScore( parseFloat( points ) )
-				let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) :
-					roundTo( correctedScore, 1 )
-				row.push( 
-					user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
-					user_details.data.name ? user_details.data.name : 'onbekend', 
-					user_details.data.email ? user_details.data.email : 'onbekend',
-					points,
-					correctedScore,
-					afgerondeScore
-				)
-				console.log( 'row', row )
-				rows.push( row )
-				}					
-			catch ( e ) {
-				// res.send( e )
-				console.log(e)
-			}	
-		} )
-		return { result:  rows }
-	}
+	const token = job.data.token
+	const quizType = job.data.quizType
+	puntentotaal = job.data.puntentotaal
+	pointsPossible = job.data.pointsPossible
+	mcType = job.data.mcType
+	olodType = job.data.olodType
+	let rows = []
+	resultArray.forEach( async ( single_result ) => {
+		// console.log( 'single', single_result )
+		const user_id = single_result.user_id
+		if ( ! single_result.score && ! single_result.entered_grade ) {
+			return	
+		}
+		try {
+			const user_details = await axios( {
+				method: 'get',
+				url: `${ baseURL }users/${ user_id }`,
+				headers: {
+					'Authorization': `Bearer ${ token }`
+				}
+			} )
+			let row = []
+			let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
+			let correctedScore = recalculateScore( parseFloat( points ) )
+			let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) :
+				roundTo( correctedScore, 1 )
+			row.push( 
+				user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
+				user_details.data.name ? user_details.data.name : 'onbekend', 
+				user_details.data.email ? user_details.data.email : 'onbekend',
+				points,
+				correctedScore,
+				afgerondeScore
+			)
+			console.log( 'row', row )
+			rows.push( row )
+			}					
+		catch ( e ) {
+			// res.send( e )
+			console.log(e)
+		}	
+	} )
+	return { result:  rows }
+}
 
 const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
