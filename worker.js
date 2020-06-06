@@ -8,6 +8,8 @@ const baseURL = `${ school }/api/v1/`
 let REDIS_URL = process.env.REDIS_URL
 let workers = process.env.WEB_CONCURRENCY || 2
 let maxJobsPerWorker = 100
+let pointsPossible = 0
+let puntentotaal = 0
 
 const start = () => {
 	let workQueue = new Queue( 'work', REDIS_URL )
@@ -16,6 +18,8 @@ const start = () => {
 		const resultArray = job.data.resultArray
 		const token = job.data.token
 		const quizType = job.data.quizType
+		puntentotaal = job.data.puntentotaal
+		pointsPossible = job.data.pointsPossible
 		let rows = []
 		resultArray.forEach( async ( single_result ) => {
 			console.log( 'single', single_result )

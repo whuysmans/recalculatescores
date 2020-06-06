@@ -117,7 +117,10 @@ app.get('/test', [
 					let job = await workQueue.add( { 
 						resultArray: resultArray, 
 						token: token, 
-						quizType: quizType 
+						quizType: quizType,
+						mcType: mcType,
+						pointsPossible: pointsPossible,
+						puntentotaal: puntentotaal
 					} )
 					let result = res.json()
 					// console.log( 'result', res )
