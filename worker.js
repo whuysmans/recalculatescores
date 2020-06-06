@@ -14,7 +14,7 @@ let mcType = ''
 let olodType = 'eolod'
 let workQueue = new Queue( 'work', REDIS_URL )
 
-const getUserDetails = ( job ) => {
+const getUserDetails = async ( job ) => {
 	const resultArray = job.data.resultArray
 	const token = job.data.token
 	const quizType = job.data.quizType
