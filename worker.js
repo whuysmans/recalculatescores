@@ -16,7 +16,7 @@ let olodType = 'eolod'
 const start = () => {
 	let workQueue = new Queue( 'work', REDIS_URL )
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
-		console.log( job )
+		// console.log( job )
 		const resultArray = job.data.resultArray
 		const token = job.data.token
 		const quizType = job.data.quizType
@@ -52,6 +52,7 @@ const start = () => {
 					correctedScore,
 					afgerondeScore
 				)
+				console.log( 'row', row )
 				rows.push( row )
 				}					
 			catch ( e ) {

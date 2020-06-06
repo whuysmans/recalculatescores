@@ -124,7 +124,7 @@ app.get('/test', [
 						olodType: olodType
 					} )
 					let result = res.json()
-					console.log( result )
+					// console.log( result )
 					// You can listen to global events to get notified when jobs are processed
 					
 					// console.log( 'result', res )
