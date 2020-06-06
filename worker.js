@@ -10,6 +10,7 @@ let workers = process.env.WEB_CONCURRENCY || 2
 let maxJobsPerWorker = 100
 let pointsPossible = 0
 let puntentotaal = 0
+let mcType = ''
 
 const start = () => {
 	let workQueue = new Queue( 'work', REDIS_URL )
@@ -20,6 +21,7 @@ const start = () => {
 		const quizType = job.data.quizType
 		puntentotaal = job.data.puntentotaal
 		pointsPossible = job.data.pointsPossible
+		mcType = job.data.mcType
 		let rows = []
 		resultArray.forEach( async ( single_result ) => {
 			console.log( 'single', single_result )
