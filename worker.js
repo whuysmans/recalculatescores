@@ -64,7 +64,8 @@ const getUserDetails = ( job ) => {
 const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
-		return getUserDetails( job )
+		const result = await getUserDetails( job )
+		return result
 	} )	
 }
 
