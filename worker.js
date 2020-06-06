@@ -12,9 +12,10 @@ let pointsPossible = 0
 let puntentotaal = 0
 let mcType = ''
 let olodType = 'eolod'
+let workQueue = new Queue( 'work', REDIS_URL )
 
 const start = () => {
-	let workQueue = new Queue( 'work', REDIS_URL )
+	
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		const resultArray = job.data.resultArray
