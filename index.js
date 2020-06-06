@@ -120,7 +120,8 @@ app.get('/test', [
 						quizType: quizType,
 						mcType: mcType,
 						pointsPossible: pointsPossible,
-						puntentotaal: puntentotaal
+						puntentotaal: puntentotaal,
+						olodType: olodType
 					} )
 					let result = res.json()
 					// console.log( 'result', res )

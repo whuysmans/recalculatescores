@@ -11,6 +11,7 @@ let maxJobsPerWorker = 100
 let pointsPossible = 0
 let puntentotaal = 0
 let mcType = ''
+let olodType = 'eolod'
 
 const start = () => {
 	let workQueue = new Queue( 'work', REDIS_URL )
@@ -22,6 +23,7 @@ const start = () => {
 		puntentotaal = job.data.puntentotaal
 		pointsPossible = job.data.pointsPossible
 		mcType = job.data.mcType
+		olodType = job.data.olodType
 		let rows = []
 		resultArray.forEach( async ( single_result ) => {
 			console.log( 'single', single_result )
