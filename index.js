@@ -125,6 +125,8 @@ app.get('/test', [
 					} )
 					let result = res.json()
 					console.log( result )
+					// You can listen to global events to get notified when jobs are processed
+					
 					// console.log( 'result', res )
 					results.push( result )
 				// } )
@@ -136,6 +138,9 @@ app.get('/test', [
 					submissionsURL = parsed.next.url
 				}
 			}
+			workQueue.on('global:completed', (jobId, result) => {
+				console.log(`Job completed with result ${result}`);
+			});
 			// console.log( 'results', results )
 			return results
 		}
