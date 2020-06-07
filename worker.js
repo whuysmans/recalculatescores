@@ -61,7 +61,7 @@ const getUserDetails = async ( job ) => {
 		const user_id = single_result.user_id
 		console.log( 'get details for: ', user_id )
 		if ( ! single_result.score && ! single_result.entered_grade ) {
-			return	
+			continue	
 		}
 		try {
 			const user_details = await axios( {
