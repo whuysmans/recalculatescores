@@ -55,9 +55,11 @@ const getSubmissions = async ( job ) => {
 
 const getUserDetials = async ( job ) => {
 	const result = await getSubmissions( job )
+	console.log( 'result from submissions', result )
 	let rows = []
 	for ( const single_result of result ) {
 		const user_id = single_result.user_id
+		console.log( 'get details for: ', user_id )
 		if ( ! single_result.score && ! single_result.entered_grade ) {
 			return	
 		}
