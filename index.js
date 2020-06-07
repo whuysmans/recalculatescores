@@ -159,7 +159,7 @@ workQueue.on( 'global:completed', ( jobId, result ) => {
 
 const writeExcel = ( rows ) => {
 	console.log( 'length', rows.length )
-	// console.log( rows )
+	console.log( rows )
 	
 	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score', 'afgeronde score' ] ]
 	rows.forEach( ( row ) => {
