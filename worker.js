@@ -13,8 +13,11 @@ let puntentotaal = 0
 let mcType = ''
 let olodType = 'eolod'
 let workQueue = new Queue( 'work', REDIS_URL )
+let courseID = 0
+let assignmentID = 0
+const parse = require('parse-link-header')
 
-const getUserDetails = async ( job ) => {
+const getSubmissions = async ( job ) => {
 	const resultArray = job.data.resultArray
 	const token = job.data.token
 	const quizType = job.data.quizType
@@ -22,9 +25,39 @@ const getUserDetails = async ( job ) => {
 	pointsPossible = job.data.pointsPossible
 	mcType = job.data.mcType
 	olodType = job.data.olodType
+	courseID = job.data.courseID
+	assignmentID = job.data.assignmentID
 	let rows = []
-	resultArray.forEach( async ( single_result ) => {
-		// console.log( 'single', single_result )
+	let keepGoing = true
+	let result = []
+	let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions?per_page=50` :
+		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions?per_page=50`
+	while ( keepGoing ) {
+		let response = await axios({
+			method: 'get',
+			url: submissionsURL,
+			headers: {
+				'Authorization': `Bearer ${ token }`
+			}
+		})
+		const resultArray = quizType === 'quiz' ? response.data.quiz_submissions : response.data
+		resultArray.map( ( resultObject ) => {
+			result.push( resultObject )
+		} )
+		let parsed = parse( response.headers.link )
+		if ( parseInt( parsed.current.page ) >= parseInt( parsed.last.page ) ) {
+			keepGoing = false
+		} else {
+			submissionsURL = parsed.next.url
+		}
+	}
+	return result
+}
+
+const getUserDetials = async ( job ) => {
+	const result = await getSubmissions( job )
+	let rows = []
+	for ( const single_result of result ) {
 		const user_id = single_result.user_id
 		if ( ! single_result.score && ! single_result.entered_grade ) {
 			return	
@@ -52,15 +85,12 @@ const getUserDetails = async ( job ) => {
 			)
 			console.log( 'row', row )
 			rows.push( row )
-			}					
-		catch ( e ) {
-			// res.send( e )
-			console.log(e)
-		}	
-	} )
-	return rows
+		} catch ( err ) {
+			console.log( err )
+		}
+	}
 }
-
+		
 const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
@@ -78,7 +108,7 @@ const recalculateScore = ( score ) => {
 	let lastFactor = puntentotaal / 2
 	let herberekendeScore = puntentotaal / 2 + ( tellerLeft - tellerRight ) / noemer * lastFactor
 	let tmp = roundScore( herberekendeScore, 4 )
-	return tmp <= 0 ? 0 : roundScore( tmp, 2 )
+	return tmp <= 0 ? 0 : ( mcType === 'MC4' ? tmp : roundScore( tmp, 2 ) )
 }
 
 const roundScore = ( x, n ) => {

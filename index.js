@@ -99,41 +99,17 @@ app.get('/test', [
 		// console.log( assignment.data )
 		pointsPossible = parseInt( assignment.data.points_possible )
 		const getResultsFromWorkers = async () => {
-			let keepGoing = true
-			let results = []
-			let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions?per_page=50` :
-				`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions?per_page=50`
-			while ( keepGoing ) {
-				let response = await axios({
-					method: 'get',
-					url: submissionsURL,
-					headers: {
-						'Authorization': `Bearer ${ token }`
-					}
-				})
-				const resultArray = quizType === 'quiz' ? response.data.quiz_submissions : response.data
-				// resultArray.map( ( resultObject ) => {
-				// 	result.push( resultObject )
-				// } )
-				// app.post( '/job', async ( req, res ) => {
-					let job = await workQueue.add( { 
-						resultArray: resultArray, 
-						token: token, 
-						quizType: quizType,
-						mcType: mcType,
-						pointsPossible: pointsPossible,
-						puntentotaal: puntentotaal,
-						olodType: olodType
-					} )
-				// } )
-				let parsed = parse( response.headers.link )
-				if ( parseInt( parsed.current.page ) >= parseInt( parsed.last.page ) ) {
-					// console.log( parsed.current )
-					keepGoing = false
-				} else {
-					submissionsURL = parsed.next.url
-				}
-			}
+			let job = await workQueue.add( { 
+				resultArray: resultArray, 
+				token: token, 
+				quizType: quizType,
+				mcType: mcType,
+				pointsPossible: pointsPossible,
+				puntentotaal: puntentotaal,
+				olodType: olodType,
+				courseID: courseID,
+				assignmentID: assignmentID
+			} )
 			// console.log( 'results', results )
 		}
 		getResultsFromWorkers()
