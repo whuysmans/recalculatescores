@@ -161,11 +161,13 @@ const writeExcel = ( result ) => {
 const updateStatus = () => {
 	statusElement.innerHTML = job.progress 
 }
-
-window.onload = () => {
-	statusElement = document.querySelector( "#status" )
-	intervalID = setInterval( updateStatus, 2000 )
+if ( typeof window !== 'undefined' ) {
+	window.onload = () => {
+		statusElement = document.querySelector( "#status" )
+		intervalID = setInterval( updateStatus, 2000 )
+	}
 }
+
 
 app.listen( port, () =>  {
 	console.log( `listening on port ${ port }` )
