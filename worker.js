@@ -39,7 +39,6 @@ const getSubmissions = async ( job ) => {
 				'Authorization': `Bearer ${ token }`
 			}
 		})
-		console.log( 'response', response )
 		const resultArray = quizType === 'quiz' ? response.data.quiz_submissions : response.data
 		resultArray.map( ( resultObject ) => {
 			result.push( resultObject )
@@ -91,6 +90,7 @@ const getUserDetails = async ( job ) => {
 			console.log( err )
 		}
 	}
+	return rows
 }
 		
 const start = () => {
