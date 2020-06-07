@@ -35,7 +35,6 @@ let REDIS_URL = process.env.REDIS_URL
 let workQueue = new Queue( 'work', REDIS_URL )
 let answerRes = null
 let statusElement = null
-const intervalID = null
 let job = null
 const EventEmitter = require( 'events' )
 class MyEmitter extends EventEmitter {}
@@ -45,7 +44,7 @@ const updateStatus = () => {
 	console.log( 'progress', 100 / job.progress )
 	myEmitter.emi( 'statusUpdate', 100 / job.progress )
 }
-intervalID = setInterval( updateStatus, 2000 )
+let intervalID = setInterval( updateStatus, 2000 )
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
