@@ -159,7 +159,8 @@ const writeExcel = ( result ) => {
 }
 
 const updateStatus = () => {
-	statusElement.innerHTML = job.progress 
+	console.log( 'progress', 100 / job.progress )
+	statusElement.innerHTML = 100 / job.progress 
 }
 if ( typeof window !== 'undefined' ) {
 	window.onload = () => {
