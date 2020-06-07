@@ -132,10 +132,9 @@ workQueue.on( 'global:completed', ( jobId, result ) => {
 	answerRes.download( './text.xlsx' )
 } )
 
-const writeExcel = ( rows ) => {
-	console.log( 'length', rows.length )
+const writeExcel = ( result ) => {
+	const rows = JSON.parse( result )
 	console.log( rows )
-	
 	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score', 'afgeronde score' ] ]
 	rows.forEach( ( row ) => {
 		data.push( row )
