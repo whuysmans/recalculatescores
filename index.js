@@ -128,8 +128,8 @@ const getRandomIdent = () => {
 
 workQueue.on( 'global:completed', ( jobId, result ) => {
 	console.log(`Job completed with result ${ result }`)
-	writeExcel( result )
-	answerRes.download( './text.xlsx' )
+	// writeExcel( result )
+	// answerRes.download( './text.xlsx' )
 } )
 
 const writeExcel = ( rows ) => {

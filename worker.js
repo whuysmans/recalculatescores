@@ -55,7 +55,7 @@ const getSubmissions = async ( job ) => {
 
 const getUserDetails = async ( job ) => {
 	const result = await getSubmissions( job )
-	console.log( 'result from submissions', result )
+	// console.log( 'result from submissions', result )
 	let rows = []
 	for ( const single_result of result ) {
 		const user_id = single_result.user_id
@@ -72,6 +72,7 @@ const getUserDetails = async ( job ) => {
 				}
 			} )
 			let row = []
+			console.log( 'details', user_details )
 			let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
 			let correctedScore = recalculateScore( parseFloat( points ) )
 			let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) :
