@@ -136,6 +136,7 @@ app.get('/test', [
 			}
 			// console.log( 'results', results )
 		}
+		getResultsFromWorkers()
 		// console.log( 'data', data )
 		
 		// res.status( 200 ).send( rows )
