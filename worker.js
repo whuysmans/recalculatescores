@@ -58,7 +58,7 @@ const getUserDetails = async ( job ) => {
 			console.log(e)
 		}	
 	} )
-	return { result:  rows }
+	return rows
 }
 
 const start = () => {
