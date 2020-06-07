@@ -16,9 +16,10 @@ let workQueue = new Queue( 'work', REDIS_URL )
 let courseID = 0
 let assignmentID = 0
 const parse = require('parse-link-header')
+let token = ''
 
 const getSubmissions = async ( job ) => {
-	const token = job.data.token
+	token = job.data.token
 	const quizType = job.data.quizType
 	puntentotaal = job.data.puntentotaal
 	pointsPossible = job.data.pointsPossible
