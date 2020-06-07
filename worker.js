@@ -17,10 +17,11 @@ let courseID = 0
 let assignmentID = 0
 const parse = require('parse-link-header')
 let token = ''
+let quizType = ''
 
 const getSubmissions = async ( job ) => {
 	token = job.data.token
-	const quizType = job.data.quizType
+	quizType = job.data.quizType
 	puntentotaal = job.data.puntentotaal
 	pointsPossible = job.data.pointsPossible
 	mcType = job.data.mcType
