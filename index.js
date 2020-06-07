@@ -61,10 +61,15 @@ app.get('/callback', async ( req, res ) => {
 		if ( req.query.state !== state ) {
 			return res.sendStatus( 401 )
 		}
-		res.render('index', { progress: 0 })
+		res.redirect('/start')
 	} catch ( e ) {
 		console.log( e )
 	}
+} )
+
+app.get( '/start', ( req, res ) => {
+	startRes = res
+	res.render( 'index', { progress: 0 } )
 } )
 
 app.get('/test', [
@@ -116,7 +121,7 @@ app.get('/test', [
 		getResultsFromWorkers()
 		const updateStatus = () => {
 			console.log( 'progress', 100 / job.progress )
-			res.render( 'index', { progress: 100 / job.progress } )
+			startRes.send( { progress: 100 / job.progress } )
 		}
 		let intervalID = setInterval( updateStatus, 2000 )
 		// console.log( 'data', data )
