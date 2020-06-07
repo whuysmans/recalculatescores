@@ -34,7 +34,7 @@ let Queue = require('bull')
 let REDIS_URL = process.env.REDIS_URL
 let workQueue = new Queue( 'work', REDIS_URL )
 let answerRes = null
-let statusElement = document.querySelector( "#status" )
+let statusElement = null
 const intervalID = null
 let job = null
 
@@ -163,6 +163,7 @@ const updateStatus = () => {
 }
 
 window.onload = () => {
+	statusElement = document.querySelector( "#status" )
 	intervalID = setInterval( updateStatus, 2000 )
 }
 
