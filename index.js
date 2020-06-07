@@ -39,12 +39,9 @@ let job = null
 const EventEmitter = require( 'events' )
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter()
+let intervalID = null
 
-const updateStatus = () => {
-	console.log( 'progress', 100 / job.progress )
-	myEmitter.emi( 'statusUpdate', 100 / job.progress )
-}
-let intervalID = setInterval( updateStatus, 2000 )
+
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -123,6 +120,11 @@ app.get('/test', [
 			// console.log( 'results', results )
 		}
 		getResultsFromWorkers()
+		const updateStatus = () => {
+			console.log( 'progress', 100 / job.progress )
+			myEmitter.emi( 'statusUpdate', 100 / job.progress )
+		}
+		let intervalID = setInterval( updateStatus, 2000 )
 		// console.log( 'data', data )
 		
 		// res.status( 200 ).send( rows )
