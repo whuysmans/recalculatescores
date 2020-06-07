@@ -40,6 +40,11 @@ let job = null
 const EventEmitter = require( 'events' )
 class MyEmitter extends EventEmitter {}
 const myEmitter = new MyEmitter()
+
+const updateStatus = () => {
+	console.log( 'progress', 100 / job.progress )
+	myEmitter.emi( 'statusUpdate', 100 / job.progress )
+}
 intervalID = setInterval( updateStatus, 2000 )
 
 app.get('/', ( req, res ) => {
@@ -162,10 +167,7 @@ const writeExcel = ( result ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
-const updateStatus = () => {
-	console.log( 'progress', 100 / job.progress )
-	myEmitter.emi( 'statusUpdate', 100 / job.progress )
-}
+
 
 
 app.listen( port, () =>  {
