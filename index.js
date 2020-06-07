@@ -34,6 +34,9 @@ let Queue = require('bull')
 let REDIS_URL = process.env.REDIS_URL
 let workQueue = new Queue( 'work', REDIS_URL )
 let answerRes = null
+let statusElement = document.querySelector( "#status" )
+const intervalID = null
+let job = null
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -99,7 +102,7 @@ app.get('/test', [
 		// console.log( assignment.data )
 		pointsPossible = parseInt( assignment.data.points_possible )
 		const getResultsFromWorkers = async () => {
-			let job = await workQueue.add( { 
+				job = await workQueue.add( { 
 				token: token, 
 				quizType: quizType,
 				mcType: mcType,
@@ -129,12 +132,12 @@ const getRandomIdent = () => {
 workQueue.on( 'global:completed', ( jobId, result ) => {
 	console.log(`Job completed with result ${ result }`)
 	writeExcel( result )
+	clearInterval( intervalID )
 	answerRes.download( './text.xlsx' )
 } )
 
 const writeExcel = ( result ) => {
 	const rows = JSON.parse( result )
-	console.log( rows )
 	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score', 'afgeronde score' ] ]
 	rows.forEach( ( row ) => {
 		data.push( row )
@@ -154,6 +157,15 @@ const writeExcel = ( result ) => {
 	// saveAs( new Blob( [ s2ab( wbout ) ], { type: 'application/octet-stream' } ), 'test.xlsx' )
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
+
+const updateStatus = ( status ) => {
+	statusElement.innerHTML = status
+}
+
+window.onload = () => {
+	intervalID = setInterval( updateStatus, 2000 )
+}
+
 app.listen( port, () =>  {
 	console.log( `listening on port ${ port }` )
 	state = getRandomIdent()

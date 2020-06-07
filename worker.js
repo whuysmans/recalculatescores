@@ -57,11 +57,13 @@ const getSubmissions = async ( job ) => {
 
 const getUserDetails = async ( job ) => {
 	const result = await getSubmissions( job )
-	// console.log( 'result from submissions', result )
 	let rows = []
+	let progress = 0
+	let iteration = 0
 	for ( const single_result of result ) {
+		iteration++
+		job.progress = result.length / iteration
 		const user_id = single_result.user_id
-		console.log( 'get details for: ', user_id )
 		if ( ! single_result.score && ! single_result.entered_grade ) {
 			continue	
 		}
@@ -74,7 +76,6 @@ const getUserDetails = async ( job ) => {
 				}
 			} )
 			let row = []
-			console.log( 'details', user_details )
 			let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
 			let correctedScore = recalculateScore( parseFloat( points ) )
 			let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) :
@@ -87,7 +88,6 @@ const getUserDetails = async ( job ) => {
 				correctedScore,
 				afgerondeScore
 			)
-			console.log( 'row', row )
 			rows.push( row )
 		} catch ( err ) {
 			console.log( err )
