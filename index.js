@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const router = express.Router()
 let port = process.env.PORT || 3000
 const axios = require('axios')
 let school = process.env.SCHOOL
@@ -42,15 +41,15 @@ let startRes = null
 
 
 
-router.get('/', ( req, res ) => {
+app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
 } )
 
-router.get('/auth', ( req, res ) => {
+app.get('/auth', ( req, res ) => {
 	res.redirect( authorizationUri )
 } )
 
-router.get('/callback', async ( req, res ) => {
+app.get('/callback', async ( req, res ) => {
 	const { code } = req.query
 	const options = {
 		code
@@ -68,12 +67,14 @@ router.get('/callback', async ( req, res ) => {
 	}
 } )
 
-router.get( '/start', ( req, res ) => {
+app.get( '/start', ( req, res ) => {
 	startRes = res
-	res.render( 'index', { progress: 0 } )
+	res.render( 'index', { progress: 0 }, ( err, html ) => {
+		res.send( html )
+	} )
 } )
 
-router.get('/test', [
+app.get('/test', [
 	check( 'course' ).isLength({ min: 4, max: 10 }),
 	check( 'course' ).isNumeric(),
 	check( 'assignment' ).isLength({ min: 4, max: 10 }),
@@ -184,5 +185,5 @@ app.listen( port, () =>  {
 } )
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
-router.get('/index.js', (req, res) => res.sendFile('index.js', { root: __dirname }));
+app.get('/index.js', (req, res) => res.sendFile('index.js', { root: __dirname }));
 app.use( 'view engine', 'pug' )
