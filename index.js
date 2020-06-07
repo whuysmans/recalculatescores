@@ -36,10 +36,8 @@ let workQueue = new Queue( 'work', REDIS_URL )
 let answerRes = null
 let statusElement = null
 let job = null
-const EventEmitter = require( 'events' )
-class MyEmitter extends EventEmitter {}
-const myEmitter = new MyEmitter()
 let intervalID = null
+let startRes = null
 
 
 
@@ -70,7 +68,8 @@ app.get('/callback', async ( req, res ) => {
 } )
 
 app.get( '/start', ( req, res ) => {
-	res.sendFile( path.join( __dirname + '/start.html' ) )
+	startRes = res
+	res.sendFile( path.join( __dirname + '/index.pug' ) )
 } )
 
 app.get('/test', [
@@ -122,7 +121,7 @@ app.get('/test', [
 		getResultsFromWorkers()
 		const updateStatus = () => {
 			console.log( 'progress', 100 / job.progress )
-			myEmitter.emit( 'statusUpdate', 100 / job.progress )
+			res.render( 'index', { progress: 100 / job.progress } )
 		}
 		let intervalID = setInterval( updateStatus, 2000 )
 		// console.log( 'data', data )

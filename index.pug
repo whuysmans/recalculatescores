@@ -1,0 +1,45 @@
+doctype html
+html(lang='en')
+	head
+		title Recalculate to standard setting
+		meta(charset='utf-8')
+		link(rel='stylesheet', href='css/styles.css')
+		script(src='index.js')
+	body
+		div.form 
+			p.form Recalculate the scores!
+			form.form-example (action='/test', method='/get')
+				div
+					label(for='course') course ID:
+					input(type='text', id='course', name='course', required, minlength='4', maxlength='8', size='10')
+				div
+					label(for='assignment') quiz or assignment ID:
+					input(type='text', id='assignment', name='assignment', required, minlength='1', maxlength='8', size='10')
+				div
+					label(for='puntentotoaal') gewenste punten:
+					input(type='text', id='puntentotaal', name='puntentotaal', required, minlength='1', maxlength='8', size='10')
+				div
+					label(for='olodselect') kies (s/e)olod:
+					select(name='olodselect', id='olodselect')
+						option(value='olod') olod
+						option(value='dolod') dolod
+						option(value='eolod', selected) eolod
+				div
+					label(for='mcselect') kies (s/e)olod:
+					select(name='mcselect', id='mcselect')
+						option(value='') kies MC #:
+						option(value='MC3') MC3
+						option(value='MC4', selected) MC4
+				div
+					label(for='typeselect') Quiz or Assignment:
+					select(name='typeselect', id='typeselect')
+						option(value='') kies een optie:
+						option(value='quiz') Quiz
+						option(value='assignment')  Assignment
+				div
+					button(type='submit') Submit
+			div
+				span status
+				span= progress	
+
+
