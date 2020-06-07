@@ -122,7 +122,7 @@ app.get('/test', [
 		getResultsFromWorkers()
 		const updateStatus = () => {
 			console.log( 'progress', 100 / job.progress )
-			myEmitter.emi( 'statusUpdate', 100 / job.progress )
+			myEmitter.emit( 'statusUpdate', 100 / job.progress )
 		}
 		let intervalID = setInterval( updateStatus, 2000 )
 		// console.log( 'data', data )
