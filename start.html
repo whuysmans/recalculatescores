@@ -56,6 +56,13 @@
 			<div id="status">
 			</div>
 		</div>
+		<script>
+			let statusElement = document.querySelector("#status")
+			statusElement.addEventListener( 'statusUpdate', ( progress ) => {
+				console.log( progress )
+				statusElement.innerHTML = progress
+			} )
+		</script>
 	</body>
 
 </html>

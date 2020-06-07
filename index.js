@@ -37,6 +37,10 @@ let answerRes = null
 let statusElement = null
 const intervalID = null
 let job = null
+const EventEmitter = require( 'events' )
+class MyEmitter extends EventEmitter {}
+const myEmitter = new MyEmitter()
+intervalID = setInterval( updateStatus, 2000 )
 
 app.get('/', ( req, res ) => {
 	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
@@ -160,13 +164,7 @@ const writeExcel = ( result ) => {
 
 const updateStatus = () => {
 	console.log( 'progress', 100 / job.progress )
-	statusElement.innerHTML = 100 / job.progress 
-}
-if ( typeof window !== 'undefined' ) {
-	window.onload = () => {
-		statusElement = document.querySelector( "#status" )
-		intervalID = setInterval( updateStatus, 2000 )
-	}
+	myEmitter.emi( 'statusUpdate', 100 / job.progress )
 }
 
 
