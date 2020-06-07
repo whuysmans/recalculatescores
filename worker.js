@@ -54,7 +54,7 @@ const getSubmissions = async ( job ) => {
 	return result
 }
 
-const getUserDetials = async ( job ) => {
+const getUserDetails = async ( job ) => {
 	const result = await getSubmissions( job )
 	console.log( 'result from submissions', result )
 	let rows = []
