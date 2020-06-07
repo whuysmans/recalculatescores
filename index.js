@@ -158,8 +158,8 @@ const writeExcel = ( result ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
-const updateStatus = ( status ) => {
-	statusElement.innerHTML = status
+const updateStatus = () => {
+	statusElement.innerHTML = job.progress 
 }
 
 window.onload = () => {
