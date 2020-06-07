@@ -61,15 +61,10 @@ app.get('/callback', async ( req, res ) => {
 		if ( req.query.state !== state ) {
 			return res.sendStatus( 401 )
 		}
-		res.redirect('/start')
+		res.render('index', { progress: 0 })
 	} catch ( e ) {
 		console.log( e )
 	}
-} )
-
-app.get( '/start', ( req, res ) => {
-	startRes = res
-	res.sendFile( path.join( __dirname + '/index.pug' ) )
 } )
 
 app.get('/test', [
@@ -184,3 +179,4 @@ app.listen( port, () =>  {
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/index.js', (req, res) => res.sendFile('index.js', { root: __dirname }));
+app.use( 'view engine', 'pug' )
