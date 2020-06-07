@@ -100,7 +100,6 @@ app.get('/test', [
 		pointsPossible = parseInt( assignment.data.points_possible )
 		const getResultsFromWorkers = async () => {
 			let job = await workQueue.add( { 
-				resultArray: resultArray, 
 				token: token, 
 				quizType: quizType,
 				mcType: mcType,

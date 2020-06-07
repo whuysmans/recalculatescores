@@ -18,7 +18,6 @@ let assignmentID = 0
 const parse = require('parse-link-header')
 
 const getSubmissions = async ( job ) => {
-	const resultArray = job.data.resultArray
 	const token = job.data.token
 	const quizType = job.data.quizType
 	puntentotaal = job.data.puntentotaal
