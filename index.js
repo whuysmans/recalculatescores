@@ -69,9 +69,7 @@ app.get('/callback', async ( req, res ) => {
 
 app.get( '/start', ( req, res ) => {
 	startRes = res
-	res.render( 'index', { progress: 0 }, ( err, html ) => {
-		res.send( html )
-	} )
+	res.render( 'index', { progress: 0 } )
 } )
 
 app.get('/test', [
@@ -186,4 +184,4 @@ app.listen( port, () =>  {
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/index.js', (req, res) => res.sendFile('index.js', { root: __dirname }));
-app.use( 'view engine', 'pug' )
+app.set( 'view engine', 'pug' )
