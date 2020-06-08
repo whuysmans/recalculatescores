@@ -37,7 +37,6 @@ let answerRes = null
 let statusElement = null
 let job = null
 let intervalID = null
-let startRes = null
 
 
 
@@ -68,8 +67,14 @@ app.get('/callback', async ( req, res ) => {
 } )
 
 app.get( '/start', ( req, res ) => {
-	startRes = res
 	res.render( 'index', { progress: 0 } )
+	const updateStatus = () => {
+		if ( job ) {
+			console.log( 'progress', 100 / job.progress )
+			res.send( { progress: 100 / job.progress } )
+		}
+	}
+	intervalID = setInterval( updateStatus, 2000 )
 } )
 
 app.get('/test', [
@@ -119,11 +124,12 @@ app.get('/test', [
 			// console.log( 'results', results )
 		}
 		getResultsFromWorkers()
-		const updateStatus = () => {
-			console.log( 'progress', 100 / job.progress )
-			startRes.send( { progress: 100 / job.progress } )
-		}
-		let intervalID = setInterval( updateStatus, 2000 )
+		workQueue.on( 'global:completed', ( jobId, result ) => {
+			console.log(`Job completed with result ${ result }`)
+			writeExcel( result )
+			clearInterval( intervalID )
+			res.download( './text.xlsx' )
+		} )	
 		// console.log( 'data', data )
 		
 		// res.status( 200 ).send( rows )
@@ -138,12 +144,7 @@ const getRandomIdent = () => {
 	return Math.random().toString(36).substring(4)
 }
 
-workQueue.on( 'global:completed', ( jobId, result ) => {
-	console.log(`Job completed with result ${ result }`)
-	writeExcel( result )
-	clearInterval( intervalID )
-	answerRes.download( './text.xlsx' )
-} )
+
 
 const writeExcel = ( result ) => {
 	const rows = JSON.parse( result )
