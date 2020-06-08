@@ -71,7 +71,7 @@ app.get( '/start', ( req, res ) => {
 	const updateStatus = () => {
 		if ( job ) {
 			console.log( 'progress', 100 / job.progress )
-			res.render( 'index', { progress: 100 / job.progress } )
+			res.json( { progress: 100 / job.progress } )
 		}
 	}
 	intervalID = setInterval( updateStatus, 2000 )
