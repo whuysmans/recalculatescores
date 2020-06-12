@@ -180,7 +180,7 @@ const server = app.listen( port, () =>  {
 const wss = new Server( { server } )
 wss.on( 'connection', ( ws ) => {
 	console.log( 'client connected' )
-	while ( !job ) {}
+	while ( !job ) { }
 	intervalID = setInterval( () => {
 		ws.send( `Progress: ${ 100 / job.progress }` )	
 	}, 1000);
