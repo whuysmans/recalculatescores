@@ -178,13 +178,17 @@ const server = app.listen( port, () =>  {
 } )
 
 const wss = new Server( { server } )
-intervalID = setInterval( () => {
-	wss.clients.forEach( ( client ) => {
-		if ( job ) {
-			client.send( `Progress: ${ 100 / job.progress }` );
-		} 
-	});
- }, 1000);
+wss.on( 'connection', ( ws ) => {
+	console.log( 'client connected' )
+	intervalID = setInterval( () => {
+		wss.clients.forEach( ( client ) => {
+			if ( job ) {
+				client.send( `Progress: ${ 100 / job.progress }` );
+			} 
+		});
+	 }, 1000);
+} )
+
  
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
