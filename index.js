@@ -181,12 +181,8 @@ const wss = new Server( { server } )
 wss.on( 'connection', ( ws ) => {
 	console.log( 'client connected' )
 	intervalID = setInterval( () => {
-		wss.clients.forEach( ( client ) => {
-			if ( job ) {
-				client.send( `Progress: ${ 100 / job.progress }` );
-			} 
-		});
-	 }, 1000);
+		ws.send( job ? `Progress: ${ 100 / job.progress }` : 'no job yet' )	
+	}, 1000);
 } )
 
  
