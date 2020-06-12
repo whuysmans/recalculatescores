@@ -39,7 +39,14 @@ html(lang='en')
 				div
 					button(type='submit') Submit
 			div
-				span status
+				span#status status
 				span= progress	
+			script. 
+				const HOST = location.origin.replace( /^http/, 'ws' )
+				const ws = new WebSocket( HOST )
+				let el = document.querySelector( '#status' )
+				ws.onmessage = ( event ) => {
+					el.innerHTML = 'Status: ' + event.data
+				}
 
 

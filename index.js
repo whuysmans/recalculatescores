@@ -37,6 +37,7 @@ let answerRes = null
 let statusElement = null
 let job = null
 let intervalID = null
+const { Server } = require( 'ws' )
 
 
 
@@ -171,7 +172,7 @@ const writeExcel = ( result ) => {
 
 
 
-app.listen( port, () =>  {
+const server = app.listen( port, () =>  {
 	console.log( `listening on port ${ port }` )
 	state = getRandomIdent()
 	oauth2 = require('simple-oauth2').create( credentials )
@@ -182,6 +183,16 @@ app.listen( port, () =>  {
 	} )
 
 } )
+
+const wss = new Server( { server } )
+intervalID = setInterval( () => {
+	wss.clients.forEach( ( client ) => {
+		if ( job ) {
+			client.send( `Progress: ${ 100 / job.progress }` );
+		} 
+	});
+ }, 1000);
+ 
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/index.js', (req, res) => res.sendFile('index.js', { root: __dirname }));
