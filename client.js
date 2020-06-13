@@ -10,8 +10,8 @@ const getResults = async ( event ) => {
 		data.append( pair[0], pair[1] )
 	}
 	console.log( data )
-	let results = await( fetch( '/test', {
-		method: 'post',
+	let results = await( fetch( '/test2', {
+		method: 'POST',
 		body: data
 	} ) )
 	clearInterval( intervalID )

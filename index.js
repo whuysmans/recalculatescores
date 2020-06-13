@@ -71,6 +71,10 @@ app.get( '/start', ( req, res ) => {
 	res.render( 'index', { progress: 0 } )
 } )
 
+app.post( '/test2', ( req, res ) => {
+	console.log( 'data', req.data )
+} )
+
 app.get('/test', [
 	check( 'course' ).isLength({ min: 4, max: 10 }),
 	check( 'course' ).isNumeric(),
