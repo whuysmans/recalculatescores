@@ -183,6 +183,7 @@ wss.on( 'connection', ( ws ) => {
 	intervalID = setInterval( () => {
 		console.log( 'tick' )
 		if ( job ) {
+			console.log( 'we have a job' )
 			ws.send( `Progress: ${ job.progress > 0 ? 100 / job.progress : 0 }` )	
 		} else {
 			console.log( 'no job yet' )
