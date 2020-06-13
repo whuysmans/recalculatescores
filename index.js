@@ -80,6 +80,7 @@ app.get('/test', [
 	check( 'puntentotaal' ).isNumeric(),
 	check( 'olodselect' ).isLength({ min: 4, max: 5 })
 ], async ( req, res ) => {
+	console.log( 'received' )
 	const errors = validationResult( req )
 	answerRes = res
 	if ( ! errors.isEmpty() ) {
