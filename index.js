@@ -72,7 +72,7 @@ app.get( '/start', ( req, res ) => {
 } )
 
 app.post( '/test2', ( req, res ) => {
-	console.log( 'data', req.data )
+	console.log( 'data', req )
 } )
 
 app.get('/test', [
