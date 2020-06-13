@@ -182,16 +182,17 @@ wss.on( 'connection', ( ws ) => {
 	console.log( 'client connected' )
 	intervalID = setInterval( () => {
 		console.log( 'tick' )
+		let job = await workQueue.getJob( job.id )
 		if ( job ) {
 			console.log( 'we have a job' )
-			let msg = job.progress > 0 ? 100 / job.progress : 0
-			ws.send( JSON.stringify( new Date() ) )	
+			let msg = job._progress > 0 ? 100 / job._progress : 0
+			ws.send( JSON.stringify( msg ) )	
 		} else {
 			console.log( 'no job yet' )
 		}		
 	}, 1000)
 	ws.on( 'close', () => {
-		clearInterval( intervalID )
+		console.log( 'client disconnected' )	
 	} )
 } )
 
