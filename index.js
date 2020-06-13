@@ -180,7 +180,7 @@ const server = app.listen( port, () =>  {
 const wss = new Server( { server } )
 wss.on( 'connection', ( ws ) => {
 	console.log( 'client connected' )
-	intervalID = setInterval( () => {
+	intervalID = setInterval( async () => {
 		console.log( 'tick' )
 		let currentJob = await workQueue.getJob( job.id )
 		if ( currentJob ) {
