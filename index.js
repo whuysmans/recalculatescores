@@ -184,14 +184,18 @@ wss.on( 'connection', ( ws ) => {
 		console.log( 'tick' )
 		if ( job ) {
 			console.log( 'we have a job' )
-			ws.send( `Progress: ${ job.progress > 0 ? 100 / job.progress : 0 }` )	
+			let msg = job.progress > 0 ? 100 / job.progress : 0
+			ws.send( JSON.stringify( new Date() ) )	
 		} else {
 			console.log( 'no job yet' )
 		}		
-	}, 1000);
+	}, 1000)
+	ws.on( 'close', () => {
+		clearInterval( intervalID )
+	} )
 } )
 
- 
+
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/index.js', (req, res) => res.sendFile('index.js', { root: __dirname }));
