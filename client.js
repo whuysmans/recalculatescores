@@ -5,9 +5,15 @@ let intervalID = 0
 const getResults = async ( event ) => {
 	// event.preventDefault()
 	const form = document.querySelector( '#resultForm' )
-	const formData = new FormData( form )
-	console.log( formData )
-	let results = await( fetch( '/test', formData ) )
+	const data = new URLSearchParams()
+	for ( const pair of new FormData( form ) ) {
+		data.append( pair[0], pair[1] )
+	}
+	console.log( data )
+	let results = await( fetch( '/test', {
+		method: 'post',
+		body: data
+	} ) )
 	clearInterval( intervalID )
 }
 
