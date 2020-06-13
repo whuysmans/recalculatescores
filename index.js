@@ -185,6 +185,7 @@ wss.on( 'connection', ( ws ) => {
 		let currentJob = await workQueue.getJob( job.id )
 		if ( currentJob ) {
 			console.log( 'we have a job' )
+			console.log( 'progress ', currentJob._progress )
 			let msg = currentJob._progress > 0 ? 100 / currentJob._progress : 0
 			ws.send( JSON.stringify( msg ) )	
 		} else {
