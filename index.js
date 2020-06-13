@@ -207,5 +207,5 @@ const server = app.listen( port, () =>  {
 
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
-app.get('/index.js', (req, res) => res.sendFile('index.js', { root: __dirname }));
+app.get('/client.js', (req, res) => res.sendFile('client.js', { root: __dirname }));
 app.set( 'view engine', 'pug' )
