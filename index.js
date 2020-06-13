@@ -129,7 +129,7 @@ app.get('/test', [
 		// res.status( 200 ).send( rows )
 	}
 	catch ( err ) {
-		// res.send( err )
+		res.send( err )
 	}
 } )
 
