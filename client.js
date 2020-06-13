@@ -3,7 +3,7 @@ let statusElement = null
 let intervalID = 0
 
 const getResults = async ( event ) => {
-	// event.preventDefault()
+	event.preventDefault()
 	const form = document.querySelector( '#resultForm' )
 	const data = new URLSearchParams()
 	for ( const pair of new FormData( form ) ) {

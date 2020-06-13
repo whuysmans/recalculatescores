@@ -185,28 +185,6 @@ const server = app.listen( port, () =>  {
 
 } )
 
-// // const wss = new Server( { server } )
-// wss.on( 'connection', ( ws ) => {
-// 	console.log( 'client connected' )
-// 	intervalID = setInterval( async () => {
-// 		console.log( 'tick' )
-// 		let currentJob = await workQueue.getJob( job.id )
-// 		if ( currentJob ) {
-// 			console.log( 'we have a job' )
-// 			console.log( 'progress ', currentJob._progress )
-// 			let msg = currentJob._progress > 0 ? 100 / currentJob._progress : 0
-// 			ws.send( JSON.stringify( msg ) )	
-// 		} else {
-// 			console.log( 'no job yet' )
-// 		}		
-// 	}, 1000)
-// 	ws.on( 'close', () => {
-// 		console.log( 'client disconnected' )	
-// 	} )
-// } )
-
-
-
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/client.js', (req, res) => res.sendFile('client.js', { root: __dirname }));
 app.set( 'view engine', 'pug' )
