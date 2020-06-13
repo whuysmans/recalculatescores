@@ -4,11 +4,11 @@ html(lang='en')
 		title Recalculate to standard setting
 		meta(charset='utf-8')
 		link(rel='stylesheet', href='css/styles.css')
-		script(src='index.js')
+		script(src='client.js')
 	body
 		div.form 
 			p.form Recalculate the scores!
-			form.form-example(action='/test', method='/get')
+			form#resultForm.form-example(action='#')
 				div
 					label(for='course') course ID:
 					input(type='text', id='course', name='course', required, minlength='4', maxlength='8', size='10')
@@ -37,16 +37,9 @@ html(lang='en')
 						option(value='quiz') Quiz
 						option(value='assignment')  Assignment
 				div
-					button(type='submit') Submit
+					button#resultSubmit(type='submit') Submit
 			div
 				span#status status
-			script. 
-				const HOST = location.origin.replace( /^http/, 'ws' )
-				const ws = new WebSocket( HOST )
-				let el = document.querySelector( '#status' )
-				ws.onmessage = ( event ) => {
-					console.log( event )
-					el.innerHTML = 'Status: ' + event.data
-				}
+			
 
 

@@ -121,7 +121,6 @@ app.get('/test', [
 		workQueue.on( 'global:completed', ( jobId, result ) => {
 			console.log(`Job completed with result ${ result }`)
 			writeExcel( result )
-			clearInterval( intervalID )
 			res.download( './text.xlsx' )
 		} )	
 		// console.log( 'data', data )
@@ -130,6 +129,14 @@ app.get('/test', [
 	}
 	catch ( err ) {
 		// res.send( err )
+	}
+} )
+
+app.get( '/update', async ( req, res ) => {
+	if ( job ) {
+		res.send( JSON.stringify( job._progress ) )
+	} else {
+		res.send( 'no job yet' )
 	}
 } )
 
@@ -177,25 +184,25 @@ const server = app.listen( port, () =>  {
 
 } )
 
-const wss = new Server( { server } )
-wss.on( 'connection', ( ws ) => {
-	console.log( 'client connected' )
-	intervalID = setInterval( async () => {
-		console.log( 'tick' )
-		let currentJob = await workQueue.getJob( job.id )
-		if ( currentJob ) {
-			console.log( 'we have a job' )
-			console.log( 'progress ', currentJob._progress )
-			let msg = currentJob._progress > 0 ? 100 / currentJob._progress : 0
-			ws.send( JSON.stringify( msg ) )	
-		} else {
-			console.log( 'no job yet' )
-		}		
-	}, 1000)
-	ws.on( 'close', () => {
-		console.log( 'client disconnected' )	
-	} )
-} )
+// // const wss = new Server( { server } )
+// wss.on( 'connection', ( ws ) => {
+// 	console.log( 'client connected' )
+// 	intervalID = setInterval( async () => {
+// 		console.log( 'tick' )
+// 		let currentJob = await workQueue.getJob( job.id )
+// 		if ( currentJob ) {
+// 			console.log( 'we have a job' )
+// 			console.log( 'progress ', currentJob._progress )
+// 			let msg = currentJob._progress > 0 ? 100 / currentJob._progress : 0
+// 			ws.send( JSON.stringify( msg ) )	
+// 		} else {
+// 			console.log( 'no job yet' )
+// 		}		
+// 	}, 1000)
+// 	ws.on( 'close', () => {
+// 		console.log( 'client disconnected' )	
+// 	} )
+// } )
 
 
 
