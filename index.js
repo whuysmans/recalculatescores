@@ -143,7 +143,7 @@ app.get( '/update', async ( req, res ) => {
 	if ( job ) {
 		res.json( { progress: job._progress } )
 	} else {
-		res.json( { progress: 'no job yet' } )
+		res.json( { progress: 'no jobs yet...' } )
 	}
 } )
 
