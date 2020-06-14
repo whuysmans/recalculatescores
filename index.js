@@ -72,7 +72,7 @@ app.get( '/start', ( req, res ) => {
 } )
 
 app.post( '/test2', ( req, res ) => {
-	console.log( 'data', req )
+	console.log( 'data', req.body )
 } )
 
 app.get('/test', [
@@ -90,12 +90,13 @@ app.get('/test', [
 	if ( ! errors.isEmpty() ) {
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
-	assignmentID = req.body.assignment
-	courseID = req.body.course
-	mcType = req.body.mcselect
-	puntentotaal = req.body.puntentotaal
-	quizType = req.body.typeselect
-	olodType = req.body.olodselect
+	// { assignmentID, courseID, mcType, puntentotaal, quizType, olodType,  } = JSON.parse( req.body )
+	// assignmentID = req.body.assignment
+	// courseID = req.body.course
+	// mcType = req.body.mcselect
+	// puntentotaal = req.body.puntentotaal
+	// quizType = req.body.typeselect
+	// olodType = req.body.olodselect
 	baseURL = `${ school }/api/v1/`
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
 		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
