@@ -15,6 +15,7 @@
     "bull": "^3.14.0",
     "connect-redis": "^4.0.4",
     "cookie-parser": "^1.4.5",
+    "events": "^3.1.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "express-validator": "^6.5.0",

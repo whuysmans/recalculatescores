@@ -4,6 +4,8 @@ const axios = require('axios')
 let port = process.env.PORT || 3000
 let school = process.env.SCHOOL
 const baseURL = `${ school }/api/v1/`
+const events = require('events')
+const eventEmitter = new events.EventEmitter()
 
 let REDIS_URL = process.env.REDIS_URL
 let workers = process.env.WEB_CONCURRENCY || 2
@@ -85,6 +87,7 @@ const getUserDetails = async ( job ) => {
 				afgerondeScore
 			)
 			rows.push( row )
+			eventEmitter.emit('progress')
 		} catch ( err ) {
 			console.log( err )
 		}
@@ -96,14 +99,12 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		let result = null
 		let progress = 0
-		while( ! result || result.length === 0 ) {
+		eventEmitter.on( 'progress', () => {
 			progress++
 			job.progress( progress )
-		}
-		result = await getUserDetails( job )
-
+		} )
+		const result = await getUserDetails( job )
 		return result
 	} )	
 }
