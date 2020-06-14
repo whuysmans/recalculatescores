@@ -105,8 +105,8 @@ const start = () => {
 			job.progress( progress )
 		} )
 		const result = await getUserDetails( job )
-		done( job.id, result ) 
-		//return result
+		// return result
+		done( null, result ) 
 	} )	
 }
 
