@@ -58,13 +58,7 @@ const getSubmissions = async ( job ) => {
 const getUserDetails = async ( job ) => {
 	const result = await getSubmissions( job )
 	let rows = []
-	let progress = 0
-	let iteration = 0
 	for ( const single_result of result ) {
-		iteration++
-		let progress = result.length - parseFloat( result.length / iteration )
-		console.log( progress )
-		job.progress( progress )
 		const user_id = single_result.user_id
 		if ( ! single_result.score && ! single_result.entered_grade ) {
 			continue	
@@ -103,6 +97,11 @@ const start = () => {
 		// console.log( job )
 		console.log( 'start process' )
 		const result = await getUserDetails( job )
+		let progress = 0
+		while( ! result || result.length === 0 ) {
+			progress++
+			job.progress( progress )
+		}
 		return result
 	} )	
 }
