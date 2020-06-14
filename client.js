@@ -24,10 +24,10 @@ const getResults = async ( event ) => {
 }
 
 const getUpdate = async () => {
-	let update = await( fetch( '/update' ), ( req, res ) => {
-		console.log( 'update', res )
-	} )
-	statusElement.innerHTML = update
+	let update = await( fetch( '/update' ) )
+	let response = await update.json()
+	console.log( 'update', response )
+	statusElement.innerHTML = response
 }
 
 window.onload = () => {
