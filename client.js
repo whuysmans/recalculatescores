@@ -24,7 +24,9 @@ const getResults = async ( event ) => {
 }
 
 const getUpdate = async () => {
-	let update = await( fetch( '/update' ) )
+	let update = await( fetch( '/update' ), ( req, res ) => {
+		console.log( 'update', res )
+	} )
 	console.log( 'update', update )
 	statusElement.innerHTML = update
 }
