@@ -11,6 +11,7 @@ const getResults = async ( event ) => {
 		let item = elements.item(i)
 		obj[item.name] = item.value
 	}
+	console.log( 'obj', obj )
 	let results = await( fetch( '/test2', {
 		method: 'POST',
 		body: JSON.stringify( obj )
