@@ -13,7 +13,7 @@ const getResults = async ( event ) => {
 	}
 	let results = await( fetch( '/test2', {
 		method: 'POST',
-		body: obj
+		body: JSON.stringify( obj )
 	} ) )
 	clearInterval( intervalID )
 }
