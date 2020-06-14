@@ -35,6 +35,6 @@ window.onload = () => {
 	statusElement = document.querySelector( '#status' )
 	intervalID = setInterval( async () => {
 		await getUpdate()
-	}, 1000 )
+	}, 5000 )
 	btn.addEventListener( 'click', getResults  )
 }
