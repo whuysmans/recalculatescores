@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+const jsonParser = bodyParser.json()
 let port = process.env.PORT || 3000
 const axios = require('axios')
 let school = process.env.SCHOOL
@@ -71,7 +73,7 @@ app.get( '/start', ( req, res ) => {
 	res.render( 'index', { progress: 0 } )
 } )
 
-app.post( '/test2', ( req, res ) => {
+app.post( '/test2', jsonParser, ( req, res ) => {
 	console.log( 'data', req.body )
 } )
 
