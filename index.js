@@ -77,7 +77,7 @@ app.post( '/test2', jsonParser, ( req, res ) => {
 	console.log( 'data', req.body )
 } )
 
-app.get('/test', [
+app.get('/test', jsonParser, [
 	check( 'course' ).isLength({ min: 4, max: 10 }),
 	check( 'course' ).isNumeric(),
 	check( 'assignment' ).isLength({ min: 4, max: 10 }),
@@ -92,13 +92,12 @@ app.get('/test', [
 	if ( ! errors.isEmpty() ) {
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
-	// { assignmentID, courseID, mcType, puntentotaal, quizType, olodType,  } = JSON.parse( req.body )
-	// assignmentID = req.body.assignment
-	// courseID = req.body.course
-	// mcType = req.body.mcselect
-	// puntentotaal = req.body.puntentotaal
-	// quizType = req.body.typeselect
-	// olodType = req.body.olodselect
+	assignmentID = req.body.assignment
+	courseID = req.body.course
+	mcType = req.body.mcselect
+	puntentotaal = req.body.puntentotaal
+	quizType = req.body.typeselect
+	olodType = req.body.olodselect
 	baseURL = `${ school }/api/v1/`
 	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
 		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
