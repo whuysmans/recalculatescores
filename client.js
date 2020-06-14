@@ -14,6 +14,10 @@ const getResults = async ( event ) => {
 	console.log( 'obj', obj )
 	let results = await( fetch( '/test2', {
 		method: 'POST',
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json'
+		 },
 		body: JSON.stringify( obj )
 	} ) )
 	clearInterval( intervalID )
