@@ -141,9 +141,9 @@ app.post('/test', jsonParser, [
 
 app.get( '/update', async ( req, res ) => {
 	if ( job ) {
-		res.send( `progress: ${ job._progress }` )
+		res.json( { progress: job._progress } )
 	} else {
-		res.send( 'no job yet' )
+		res.json( { progress: 'no job yet' } )
 	}
 } )
 
