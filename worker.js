@@ -96,12 +96,14 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		const result = await getUserDetails( job )
+		let result = null
 		let progress = 0
 		while( ! result || result.length === 0 ) {
 			progress++
 			job.progress( progress )
 		}
+		result = await getUserDetails( job )
+
 		return result
 	} )	
 }
