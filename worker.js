@@ -62,7 +62,8 @@ const getUserDetails = async ( job ) => {
 	let iteration = 0
 	for ( const single_result of result ) {
 		iteration++
-		let progress = result.length / iteration
+		let progress = result.length - parseFloat( result.length / iteration )
+		console.log( progress )
 		job.progress( progress )
 		const user_id = single_result.user_id
 		if ( ! single_result.score && ! single_result.entered_grade ) {
