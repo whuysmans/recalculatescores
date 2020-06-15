@@ -12,15 +12,16 @@ const getResults = async ( event ) => {
 		obj[item.name] = item.value
 	}
 	console.log( 'obj', obj )
-	let results = await( fetch( '/test', {
+	fetch( '/test', {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		 },
 		body: JSON.stringify( obj )
-	} ) )
-	clearInterval( intervalID )
+	} ) 
+	fetch( '/results' )
+	// clearInterval( intervalID )
 }
 
 const getUpdate = async () => {

@@ -78,6 +78,15 @@ app.post( '/test2', jsonParser, ( req, res ) => {
 	console.log( 'data', req.body )
 } )
 
+app.get( '/results', ( req, res ) => {
+	res.render( 'results' )
+	workQueue.on( 'global:completed', ( jobId, result ) => {
+		console.log(`Job completed with result ${ result }`)
+		writeExcel( result )
+		res.download( './text.xlsx' )
+	} )
+} )
+
 app.post('/test', jsonParser, [
 	check( 'course' ).isLength({ min: 4, max: 10 }),
 	check( 'course' ).isNumeric(),
