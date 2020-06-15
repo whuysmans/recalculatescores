@@ -139,11 +139,11 @@ app.post('/test', jsonParser, [
 			p = progress
 			console.log( `Job ${ jobId } is ${ progress * 100 }% ready!` )
 		} )
-		workQueue.on( 'global:completed', ( jobId, result ) => {
-			console.log(`Job completed with result ${ result }`)
-			writeExcel( result )
-			res.download( './text.xlsx' )
-		} )	
+		// workQueue.on( 'global:completed', ( jobId, result ) => {
+		// 	console.log(`Job completed with result ${ result }`)
+		// 	writeExcel( result )
+		// 	res.download( './text.xlsx' )
+		// } )	
 		// console.log( 'data', data )
 		
 		// res.status( 200 ).send( rows )
