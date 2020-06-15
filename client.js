@@ -28,6 +28,9 @@ const getUpdate = async () => {
 	let update = await( fetch( '/update' ) )
 	let response = await update.json()
 	console.log( 'update', response )
+	if ( response.progress === 'complete' ) {
+		clearInterval( intervalID )
+	}
 	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
 }
 

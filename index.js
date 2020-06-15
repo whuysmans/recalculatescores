@@ -141,6 +141,7 @@ app.post('/test', jsonParser, [
 		} )
 		workQueue.on( 'global:completed', ( jobId, result ) => {
 			console.log(`Job completed with result ${ result }`)
+			p = 'complete'
 			writeExcel( result )
 			res.download( './text.xlsx' )
 		} )	
