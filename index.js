@@ -39,7 +39,7 @@ let answerRes = null
 let statusElement = null
 let job = null
 let intervalID = null
-let progress = 0
+let p = 0
 const { Server } = require( 'ws' )
 
 
@@ -127,7 +127,7 @@ app.post('/test', jsonParser, [
 		}
 		getResultsFromWorkers()
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
-			progress = progress
+			p = progress
 			console.log( `Job ${ jobId } is ${ progress * 100 }% ready!` )
 		} )
 		workQueue.on( 'global:completed', ( jobId, result ) => {
@@ -146,7 +146,7 @@ app.post('/test', jsonParser, [
 
 app.get( '/update', async ( req, res ) => {
 	if ( job ) {
-		res.json( { progress: progress } )
+		res.json( { progress: p } )
 	} else {
 		res.json( { progress: 'no jobs yet...' } )
 	}
