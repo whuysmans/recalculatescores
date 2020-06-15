@@ -27,7 +27,7 @@ const getUpdate = async () => {
 	let update = await( fetch( '/update' ) )
 	let response = await update.json()
 	console.log( 'update', response )
-	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
+	return statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
 }
 
 window.onload = () => {
