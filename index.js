@@ -125,6 +125,9 @@ app.post('/test', jsonParser, [
 			// console.log( 'results', results )
 		}
 		getResultsFromWorkers()
+		workQueue.on( 'global:progress', ( jobId, result ) => {
+			console.log( `Job ${jobId} is ${progress * 100}% ready!` )
+		} )
 		workQueue.on( 'global:completed', ( jobId, result ) => {
 			console.log(`Job completed with result ${ result }`)
 			writeExcel( result )
@@ -141,7 +144,6 @@ app.post('/test', jsonParser, [
 
 app.get( '/update', async ( req, res ) => {
 	if ( job ) {
-		console.log( job )
 		res.json( { progress: job._progress } )
 	} else {
 		res.json( { progress: 'no jobs yet...' } )
