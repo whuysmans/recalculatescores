@@ -27,12 +27,12 @@ const getUpdate = async () => {
 	let update = await( fetch( '/update' ) )
 	let response = await update.json()
 	console.log( 'update', response )
-	return statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
+	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
 }
 
 window.onload = () => {
 	const btn = document.querySelector( '#resultSubmit' )
 	statusElement = document.querySelector( '#status' )
-	intervalID = setInterval( getUpdate, 5000 )
+	intervalID = setInterval( getUpdate, 500 )
 	btn.addEventListener( 'click', getResults  )
 }
