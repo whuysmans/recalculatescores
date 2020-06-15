@@ -5,7 +5,6 @@ let port = process.env.PORT || 3000
 let school = process.env.SCHOOL
 const baseURL = `${ school }/api/v1/`
 const events = require('events')
-const eventEmitter = new events.EventEmitter()
 
 let REDIS_URL = process.env.REDIS_URL
 let workers = process.env.WEB_CONCURRENCY || 2
@@ -62,6 +61,7 @@ const getUserDetails = async ( job ) => {
 	let rows = []
 	for ( const single_result of result ) {
 		const user_id = single_result.user_id
+
 		if ( ! single_result.score && ! single_result.entered_grade ) {
 			continue	
 		}
@@ -87,7 +87,7 @@ const getUserDetails = async ( job ) => {
 				afgerondeScore
 			)
 			rows.push( row )
-			eventEmitter.emit('progress')
+			job.progress( rows.length )
 		} catch ( err ) {
 			console.log( err )
 		}
@@ -99,14 +99,8 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		let progress = 0
-		eventEmitter.on( 'progress', () => {
-			progress++
-			job.progress( progress )
-		} )
 		const result = await getUserDetails( job )
-		// return result
-		done( null, result ) 
+		return result
 	} )	
 }
 
