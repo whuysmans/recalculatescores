@@ -137,7 +137,6 @@ app.post('/test', jsonParser, [
 		getResultsFromWorkers()
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
 			p = progress
-			console.log( `Job ${ jobId } is ${ progress * 100 }% ready!` )
 		} )
 		workQueue.on( 'global:completed', ( jobId, result ) => {
 			console.log(`Job completed with result ${ result }`)
@@ -170,6 +169,7 @@ const getRandomIdent = () => {
 
 
 const writeExcel = ( result ) => {
+	console.log( 'write order received' )
 	const rows = JSON.parse( result )
 	let data = [ [ 'sorteernaam', 'naam', 'email', 'originele score', 'herberekende score', 'afgeronde score' ] ]
 	rows.forEach( ( row ) => {
