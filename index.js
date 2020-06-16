@@ -81,8 +81,14 @@ app.post( '/test2', jsonParser, ( req, res ) => {
 
 app.get( '/results', ( req, res ) => {
 	res.render( 'results' )
-	writeExcel( result )
-	res.download( './text.xlsx' )
+	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
+		console.log(`Job completed with result ${ apiResult }`)
+		p = 'complete'
+		result = apiResult
+		writeExcel( result )
+		res.download( './text.xlsx' )
+	} )
+
 	// workQueue.on( 'global:completed', ( jobId, result ) => {
 	// 	console.log(`Job completed with result ${ result }`)
 	// 	writeExcel( result )
@@ -141,12 +147,8 @@ app.post('/test', jsonParser, [
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
 			p = progress
 		} )
-		workQueue.on( 'global:completed', ( jobId, apiResult ) => {
-			console.log(`Job completed with result ${ apiResult }`)
-			p = 'complete'
-			result = apiResult
-			res.redirect( '/results' )
-		} )	
+		res.redirect( '/results' )
+			
 		// console.log( 'data', data )
 		
 		// res.status( 200 ).send( rows )
