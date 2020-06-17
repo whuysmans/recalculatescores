@@ -6,7 +6,7 @@ html(lang='en')
 		link(rel='stylesheet', href='css/styles.css')
 		script(src='client.js')
 	body
-		div.form 
+		div#scoreForm.form
 			p.form Recalculate the scores!
 			form#resultForm.form-example
 				div
@@ -38,8 +38,8 @@ html(lang='en')
 						option(value='assignment')  Assignment
 				div
 					button#resultSubmit(type='submit') Submit
-			div
-				span#status status
+		div
+			span#status status
 			
 
 

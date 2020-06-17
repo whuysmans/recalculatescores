@@ -72,6 +72,13 @@ app.get('/callback', async ( req, res ) => {
 } )
 
 app.get( '/start', ( req, res ) => {
+	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
+		console.log(`Job completed with result ${ apiResult }`)
+		p = 'complete'
+		result = apiResult
+		writeExcel( result )
+		res.download( './text.xlsx' )
+	} )
 	res.render( 'index', { progress: 0 } )
 } )
 
@@ -82,13 +89,7 @@ app.post( '/test2', jsonParser, ( req, res ) => {
 app.get( '/results', ( req, res ) => {
 	// res.render( 'results' )
 	console.log( 'results asked' )
-	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
-		console.log(`Job completed with result ${ apiResult }`)
-		p = 'complete'
-		result = apiResult
-		writeExcel( result )
-		res.download( './text.xlsx' )
-	} )
+	
 
 	// workQueue.on( 'global:completed', ( jobId, result ) => {
 	// 	console.log(`Job completed with result ${ result }`)
@@ -145,11 +146,10 @@ app.post('/test', jsonParser, [
 			// console.log( 'results', results )
 		}
 		res.redirect( '/results' )
-		getResultsFromWorkers()
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
 			p = progress
 		} )
-			
+		getResultsFromWorkers()
 		// console.log( 'data', data )
 		
 		// res.status( 200 ).send( rows )

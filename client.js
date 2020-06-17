@@ -36,7 +36,11 @@ const getUpdate = async () => {
 
 window.onload = () => {
 	const btn = document.querySelector( '#resultSubmit' )
+	const form = document.querySelector( '#scoreForm' )
 	statusElement = document.querySelector( '#status' )
 	intervalID = setInterval( getUpdate, 500 )
-	btn.addEventListener( 'click', getResults  )
+	btn.addEventListener( 'click', () => {
+		form.remove()
+		getResults()
+	} )
 }
