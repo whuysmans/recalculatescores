@@ -148,8 +148,9 @@ app.post('/test', jsonParser, [
 			writeExcel( result )
 			res.download( './text.xlsx' )
 		} )
+		
+		await getResultsFromWorkers()
 		res.redirect( '/results' )
-		getResultsFromWorkers()
 		// console.log( 'data', data )
 		
 		// res.status( 200 ).send( rows )
