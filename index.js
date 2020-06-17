@@ -80,7 +80,7 @@ app.post( '/test2', jsonParser, ( req, res ) => {
 } )
 
 app.get( '/results', ( req, res ) => {
-	// res.render( 'results' )
+	res.render( 'results' )
 	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 		console.log(`Job completed with result ${ apiResult }`)
 		p = 'complete'
@@ -143,11 +143,11 @@ app.post('/test', jsonParser, [
 			} )
 			// console.log( 'results', results )
 		}
+		res.redirect( '/results' )
 		getResultsFromWorkers()
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
 			p = progress
 		} )
-		res.redirect( '/results' )
 			
 		// console.log( 'data', data )
 		
