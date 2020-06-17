@@ -73,13 +73,6 @@ app.get('/callback', async ( req, res ) => {
 
 app.get( '/start', ( req, res ) => {
 	res.render( 'index', { progress: 0 } )
-	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
-		console.log(`Job completed with result ${ apiResult }`)
-		p = 'complete'
-		result = apiResult
-		writeExcel( result )
-		res.download( './text.xlsx' )
-	} )
 } )
 
 app.post( '/test2', jsonParser, ( req, res ) => {
@@ -147,6 +140,13 @@ app.post('/test', jsonParser, [
 		}
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
 			p = progress
+		} )
+		workQueue.on( 'global:completed', ( jobId, apiResult ) => {
+			console.log(`Job completed with result ${ apiResult }`)
+			p = 'complete'
+			result = apiResult
+			writeExcel( result )
+			res.download( './text.xlsx' )
 		} )
 		getResultsFromWorkers()
 		// console.log( 'data', data )
