@@ -82,7 +82,9 @@ app.post( '/test2', jsonParser, ( req, res ) => {
 app.get( '/results', ( req, res ) => {
 	// res.render( 'results' )
 	console.log( 'results asked' )
-	
+	workQueue.on( 'global:progress', ( jobId, progress ) => {
+		p = progress
+	} )	
 
 	// workQueue.on( 'global:completed', ( jobId, result ) => {
 	// 	console.log(`Job completed with result ${ result }`)
@@ -138,9 +140,7 @@ app.post('/test', jsonParser, [
 			} )
 			// console.log( 'results', results )
 		}
-		workQueue.on( 'global:progress', ( jobId, progress ) => {
-			p = progress
-		} )
+		
 		workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 			console.log(`Job completed with result ${ apiResult }`)
 			p = 'complete'
@@ -148,6 +148,7 @@ app.post('/test', jsonParser, [
 			writeExcel( result )
 			res.download( './text.xlsx' )
 		} )
+		res.redirect( '/results' )
 		getResultsFromWorkers()
 		// console.log( 'data', data )
 		
