@@ -38,9 +38,10 @@ window.onload = () => {
 	const btn = document.querySelector( '#resultSubmit' )
 	const form = document.querySelector( '#scoreForm' )
 	statusElement = document.querySelector( '#status' )
-	intervalID = setInterval( getUpdate, 5000 )
+	intervalID = setInterval( getUpdate, 10000 )
 	btn.addEventListener( 'click', () => {
 		// form.remove()
+		console.log( 'clicked' )
 		getResults()
 	} )
 }
