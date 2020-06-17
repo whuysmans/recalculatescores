@@ -72,6 +72,7 @@ app.get('/callback', async ( req, res ) => {
 } )
 
 app.get( '/start', ( req, res ) => {
+	res.render( 'index', { progress: 0 } )
 	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 		console.log(`Job completed with result ${ apiResult }`)
 		p = 'complete'
@@ -79,7 +80,6 @@ app.get( '/start', ( req, res ) => {
 		writeExcel( result )
 		res.download( './text.xlsx' )
 	} )
-	res.render( 'index', { progress: 0 } )
 } )
 
 app.post( '/test2', jsonParser, ( req, res ) => {
