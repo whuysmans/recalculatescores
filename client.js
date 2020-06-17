@@ -12,7 +12,7 @@ const getResults = async ( event ) => {
 		obj[item.name] = item.value
 	}
 	console.log( 'obj', obj )
-	fetch( '/test', {
+	await fetch( '/test', {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
@@ -20,7 +20,7 @@ const getResults = async ( event ) => {
 		 },
 		body: JSON.stringify( obj )
 	} ) 
-	fetch( '/results' )
+	// fetch( '/results' )
 	// clearInterval( intervalID )
 }
 
@@ -40,7 +40,7 @@ window.onload = () => {
 	statusElement = document.querySelector( '#status' )
 	intervalID = setInterval( getUpdate, 500 )
 	btn.addEventListener( 'click', () => {
-		form.remove()
+		// form.remove()
 		getResults()
 	} )
 }
