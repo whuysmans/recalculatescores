@@ -42,6 +42,6 @@ window.onload = () => {
 	btn.addEventListener( 'click', () => {
 		// form.remove()
 		console.log( 'clicked' )
-		getResults()
+		await getResults()
 	} )
 }
