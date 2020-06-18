@@ -25,7 +25,7 @@ const getResults = async ( event ) => {
 }
 
 const getUpdate = async () => {
-	let update = await( fetch( '/update' ) )
+	let update = await fetch( '/update' )
 	let response = await update.json()
 	console.log( 'update', response )
 	if ( response.progress === 'complete' ) {
