@@ -81,7 +81,7 @@ app.get( '/start', ( req, res ) => {
 		// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
 		// console.log("ok")
 		// res.download( './text.xlsx' )
-		res.redirect( '/results' )
+		return res.redirect( '/results' )
 	} )
 	workQueue.on( 'global:progress', ( jobId, progress ) => {
 		p = progress
