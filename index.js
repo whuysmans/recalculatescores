@@ -151,7 +151,7 @@ app.post('/test', jsonParser, [
 			p = progress
 		} )
 		
-		await getResultsFromWorkers()
+		getResultsFromWorkers()
 		// res.redirect( '/results' )
 		// console.log( 'data', data )
 		
