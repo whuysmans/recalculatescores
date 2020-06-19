@@ -150,7 +150,7 @@ app.post('/test', jsonParser, [
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
 			p = progress
 		} )
-		
+		res.redirect( '/results' )
 		getResultsFromWorkers()
 		// res.redirect( '/results' )
 		// console.log( 'data', data )
