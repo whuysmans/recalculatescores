@@ -72,7 +72,7 @@ app.get('/callback', async ( req, res ) => {
 } )
 
 app.get( '/start', ( req, res ) => {
-	res.render( 'index', { progress: 0 } )
+	res.render( 'index', { progress: p } )
 } )
 
 app.post( '/test2', jsonParser, ( req, res ) => {
@@ -151,7 +151,7 @@ app.post('/test', jsonParser, [
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
 			p = progress
 		} )
-		res.redirect( '/results' )
+		res.redirect( '/start' )
 		getResultsFromWorkers()
 		// res.redirect( '/results' )
 		// console.log( 'data', data )
