@@ -12,7 +12,7 @@ const getResults = async ( event ) => {
 		obj[item.name] = item.value
 	}
 	console.log( 'obj', obj )
-	await fetch( '/test', {
+	fetch( '/test', {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
