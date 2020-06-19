@@ -73,6 +73,18 @@ app.get('/callback', async ( req, res ) => {
 
 app.get( '/start', ( req, res ) => {
 	res.render( 'index', { progress: p } )
+	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
+		console.log(`Job completed with result ${ apiResult }`)
+		p = 'complete'
+		result = apiResult
+		writeExcel( result )
+		res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
+		console.log("ok")
+		res.download( './text.xlsx' )
+	} )
+	workQueue.on( 'global:progress', ( jobId, progress ) => {
+		p = progress
+	} )
 } )
 
 app.post( '/test2', jsonParser, ( req, res ) => {
@@ -139,18 +151,7 @@ app.post('/test', jsonParser, [
 			// console.log( 'results', results )
 		}
 		
-		workQueue.on( 'global:completed', ( jobId, apiResult ) => {
-			console.log(`Job completed with result ${ apiResult }`)
-			p = 'complete'
-			result = apiResult
-			writeExcel( result )
-			// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
-			console.log("ok")
-			res.download( './text.xlsx' )
-		} )
-		workQueue.on( 'global:progress', ( jobId, progress ) => {
-			p = progress
-		} )
+		
 		res.redirect( '/start' )
 		getResultsFromWorkers()
 		// res.redirect( '/results' )
