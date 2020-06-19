@@ -144,7 +144,8 @@ app.post('/test', jsonParser, [
 			p = 'complete'
 			result = apiResult
 			writeExcel( result )
-			res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
+			// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
+			console.log("ok")
 			res.download( './text.xlsx' )
 		} )
 		workQueue.on( 'global:progress', ( jobId, progress ) => {
