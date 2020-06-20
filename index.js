@@ -76,29 +76,6 @@ app.get( '/start', ( req, res ) => {
 	
 } )
 
-const isReady = () => {
-	return p === 'complete'
-}
-
-app.post( '/test2', jsonParser, ( req, res ) => {
-	console.log( 'data', req.body )
-} )
-
-app.get( '/results', ( req, res ) => {
-	// res.render( 'results' )
-	console.log( 'results asked' )
-	writeExcel( result )
-	res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
-	console.log("ok")
-	res.download( './text.xlsx' )	
-
-	// workQueue.on( 'global:completed', ( jobId, result ) => {
-	// 	console.log(`Job completed with result ${ result }`)
-	// 	writeExcel( result )
-	// 	res.download( './text.xlsx' )
-	// } )
-} )
-
 app.post('/test', jsonParser, [
 	check( 'course' ).isLength({ min: 4, max: 10 }),
 	check( 'course' ).isNumeric(),
@@ -147,7 +124,7 @@ app.post('/test', jsonParser, [
 			// console.log( 'results', results )
 		}
 		
-		next()	
+		res.redirect( '/start' )
 		getResultsFromWorkers()
 		// res.redirect( '/results' )
 		// console.log( 'data', data )
@@ -162,18 +139,7 @@ app.post('/test', jsonParser, [
 app.post( '/test', ( req, res ) => {
 
 	console.log( 'next test' )
-	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
-		console.log(`Job completed with result ${ apiResult }`)
-		p = 'complete'
-		result = apiResult
-		writeExcel( result )
-		res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
-		console.log("ok")
-		res.download( './text.xlsx' )
-	} )
-	workQueue.on( 'global:progress', ( jobId, progress ) => {
-		p = progress
-	} )
+	
 } )
 
 app.get( '/update', async ( req, res ) => {
@@ -227,6 +193,23 @@ const server = app.listen( port, () =>  {
 		state: state
 	} )
 
+} )
+
+workQueue.on( 'global:completed', ( jobId, apiResult ) => {
+	console.log(`Job completed with result ${ apiResult }`)
+	p = 'complete'
+	result = apiResult
+	fetch( '/result' )
+} )
+workQueue.on( 'global:progress', ( jobId, progress ) => {
+	p = progress
+} )
+
+app.get( '/result', ( req, res ) => {
+	writeExcel( result )
+	res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
+	console.log("ok")
+	res.download( './text.xlsx' )
 } )
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
