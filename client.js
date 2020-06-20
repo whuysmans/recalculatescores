@@ -2,6 +2,7 @@ let progress = 0
 let statusElement = null
 let intervalID = 0
 let downloadLink = null
+let refreshLink = null
 
 const getResults = async ( event ) => {
 	event.preventDefault()
@@ -40,12 +41,18 @@ window.onload = () => {
 	const btn = document.querySelector( '#resultSubmit' )
 	const form = document.querySelector( '#scoreForm' )
 	downloadLink = document.querySelector( '#downloadLink' )
+	refreshLink = document.querySelector( '#refreshLink' )
 	statusElement = document.querySelector( '#status' )
 	intervalID = setInterval( getUpdate, 1000 )
 	btn.addEventListener( 'click', ( event ) => {
 		// form.remove()
 		console.log( 'clicked!' )
 		getResults( event )
+	} )
+	refreshLink.addEventListener( 'click', ( event ) => {
+		// form.remove()
+		event.preventDefault()
+		console.log( 'refresh clicked!' )
 	} )
 	downloadLink.style.visibility = 'hidden'
 	// downloadLink.addEventListener( 'click', ( event ) => {

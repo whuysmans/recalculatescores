@@ -210,6 +210,7 @@ app.get( '/download', ( req, res ) => {
 	// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
 	console.log("ok")
 	res.download( './text.xlsx' )
+	workQueue.clean()
 } )
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
