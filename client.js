@@ -49,7 +49,6 @@ window.onload = () => {
 	} )
 	downloadLink.style.visibility = 'hidden'
 	downloadLink.addEventListener( 'click', ( event ) => {
-		event.preventDefault()
 		fetch( '/download' )
 	} )
 }
