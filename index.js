@@ -42,6 +42,7 @@ let intervalID = null
 let p = 0
 const { Server } = require( 'ws' )
 let result = null
+let started = false
 
 
 
@@ -71,22 +72,29 @@ app.get('/callback', async ( req, res ) => {
 	}
 } )
 
-app.get( '/start', ( req, res ) => {
-	res.render( 'index', { progress: p } )
+app.get( '/start', isStarted(), ( req, res ) => {
 	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 		console.log(`Job completed with result ${ apiResult }`)
 		p = 'complete'
 		result = apiResult
-		// writeExcel( result )
-		// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
-		// console.log("ok")
-		// res.download( './text.xlsx' )
-		return res.redirect( '/results' )
+		writeExcel( result )
+		res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
+		console.log("ok")
+		res.download( './text.xlsx' )
+		// return res.redirect( '/results' )
 	} )
 	workQueue.on( 'global:progress', ( jobId, progress ) => {
 		p = progress
 	} )
 } )
+
+app.get( '/start', ( req, res ) => {
+	res.render( 'index', { progress: p } )
+} )
+
+const isStarted = () => {
+	return started
+}
 
 app.post( '/test2', jsonParser, ( req, res ) => {
 	console.log( 'data', req.body )
@@ -154,8 +162,7 @@ app.post('/test', jsonParser, [
 			} )
 			// console.log( 'results', results )
 		}
-		
-		
+		started = true
 		res.redirect( '/start' )
 		getResultsFromWorkers()
 		// res.redirect( '/results' )
