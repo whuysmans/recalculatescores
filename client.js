@@ -51,5 +51,6 @@ window.onload = () => {
 	downloadLink.addEventListener( 'click', ( event ) => {
 		event.preventDefault()
 		fetch( '/download' )
+		window.open( 'https://node-recalculate-scores-test.herokuapp.com/download' )
 	} )
 }
