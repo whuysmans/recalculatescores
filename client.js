@@ -39,6 +39,7 @@ const getUpdate = async () => {
 window.onload = () => {
 	const btn = document.querySelector( '#resultSubmit' )
 	const form = document.querySelector( '#scoreForm' )
+	// const downloadLink = document.querySelector( '#downloadLink' )
 	statusElement = document.querySelector( '#status' )
 	intervalID = setInterval( getUpdate, 10000 )
 	btn.addEventListener( 'click', ( event ) => {
