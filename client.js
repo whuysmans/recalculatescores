@@ -1,6 +1,7 @@
 let progress = 0
 let statusElement = null
 let intervalID = 0
+let downloadLink = null
 
 const getResults = async ( event ) => {
 	event.preventDefault()
@@ -30,8 +31,7 @@ const getUpdate = async () => {
 	console.log( 'update', response )
 	if ( response.progress === 'complete' ) {
 		clearInterval( intervalID )
-		await fetch( '/download' )
-		// window.location = 'https://node-recalculate-scores-test.herokuapp.com/download'
+		downloadLink.style.display = 'block'
 	}
 	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
 }
@@ -39,12 +39,17 @@ const getUpdate = async () => {
 window.onload = () => {
 	const btn = document.querySelector( '#resultSubmit' )
 	const form = document.querySelector( '#scoreForm' )
-	// const downloadLink = document.querySelector( '#downloadLink' )
+	downloadLink = document.querySelector( '#downloadLink' )
 	statusElement = document.querySelector( '#status' )
 	intervalID = setInterval( getUpdate, 10000 )
 	btn.addEventListener( 'click', ( event ) => {
 		// form.remove()
 		console.log( 'clicked' )
 		getResults( event )
+	} )
+	downloadLink.style.display = 'none'
+	downloadLink.addEventListener( 'click', ( event ) => {
+		event.preventDefault()
+		await fetch( '/download' )
 	} )
 }
