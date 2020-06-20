@@ -31,7 +31,7 @@ const getUpdate = async () => {
 	if ( response.progress === 'complete' ) {
 		clearInterval( intervalID )
 		await fetch( '/download' )
-		window.location = 'https://node-recalculate-scores-test.herokuapp.com/download'
+		// window.location = 'https://node-recalculate-scores-test.herokuapp.com/download'
 	}
 	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
 }
