@@ -213,7 +213,7 @@ app.get( '/download', ( req, res ) => {
 } )
 
 app.get( '/reset', async ( req, res ) => {
-	await cleanQueue()
+	// await cleanQueue()
 	job = null
 } )
 
