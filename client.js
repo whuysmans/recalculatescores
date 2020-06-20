@@ -41,7 +41,7 @@ window.onload = () => {
 	const form = document.querySelector( '#scoreForm' )
 	downloadLink = document.querySelector( '#downloadLink' )
 	statusElement = document.querySelector( '#status' )
-	intervalID = setInterval( getUpdate, 10000 )
+	intervalID = setInterval( getUpdate, 1000 )
 	btn.addEventListener( 'click', ( event ) => {
 		// form.remove()
 		console.log( 'clicked' )
@@ -51,6 +51,5 @@ window.onload = () => {
 	downloadLink.addEventListener( 'click', ( event ) => {
 		event.preventDefault()
 		fetch( '/download' )
-		window.open( 'https://node-recalculate-scores-test.herokuapp.com/download' )
 	} )
 }
