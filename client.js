@@ -44,7 +44,7 @@ window.onload = () => {
 	intervalID = setInterval( getUpdate, 1000 )
 	btn.addEventListener( 'click', ( event ) => {
 		// form.remove()
-		console.log( 'clicked' )
+		console.log( 'clicked!' )
 		getResults( event )
 	} )
 	downloadLink.style.visibility = 'hidden'
