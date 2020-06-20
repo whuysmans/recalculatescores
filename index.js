@@ -147,9 +147,8 @@ app.post('/test', jsonParser, [
 			// console.log( 'results', results )
 		}
 		
-		
+		next()	
 		getResultsFromWorkers()
-		next()
 		// res.redirect( '/results' )
 		// console.log( 'data', data )
 		
@@ -162,6 +161,7 @@ app.post('/test', jsonParser, [
 
 app.post( '/test', ( req, res ) => {
 
+	console.log( 'next test' )
 	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 		console.log(`Job completed with result ${ apiResult }`)
 		p = 'complete'
