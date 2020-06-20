@@ -200,14 +200,13 @@ workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 	console.log(`Job completed with result ${ apiResult }`)
 	p = 'complete'
 	result = apiResult
-	fetch( 'https://recalculate-scores-test.herokuapp.com/result' )
+	writeExcel( result )
 } )
 workQueue.on( 'global:progress', ( jobId, progress ) => {
 	p = progress
 } )
 
-app.get( '/result', ( req, res ) => {
-	writeExcel( result )
+app.get( '/download', ( req, res ) => {
 	// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
 	console.log("ok")
 	res.download( './text.xlsx' )

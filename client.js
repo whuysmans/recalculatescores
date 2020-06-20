@@ -30,6 +30,7 @@ const getUpdate = async () => {
 	console.log( 'update', response )
 	if ( response.progress === 'complete' ) {
 		clearInterval( intervalID )
+		fetch( '/download' )
 	}
 	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
 }
