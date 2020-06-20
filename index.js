@@ -42,6 +42,7 @@ let intervalID = null
 let p = 0
 const { Server } = require( 'ws' )
 let result = null
+const fetch = require( 'node-fetch' )
 
 
 
