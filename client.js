@@ -31,7 +31,7 @@ const getUpdate = async () => {
 	console.log( 'update', response )
 	if ( response.progress === 'complete' ) {
 		clearInterval( intervalID )
-		downloadLink.style.display = 'block'
+		downloadLink.style.visibility = 'visible'
 	}
 	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
 }
@@ -47,9 +47,9 @@ window.onload = () => {
 		console.log( 'clicked' )
 		getResults( event )
 	} )
-	downloadLink.style.display = 'none'
+	downloadLink.style.visibility = 'hidden'
 	downloadLink.addEventListener( 'click', ( event ) => {
 		event.preventDefault()
-		await fetch( '/download' )
+		fetch( '/download' )
 	} )
 }
