@@ -42,7 +42,6 @@ let intervalID = null
 let p = 0
 const { Server } = require( 'ws' )
 let result = null
-let started = false
 
 
 
@@ -72,28 +71,13 @@ app.get('/callback', async ( req, res ) => {
 	}
 } )
 
-app.get( '/start', isStarted(), ( req, res ) => {
-	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
-		console.log(`Job completed with result ${ apiResult }`)
-		p = 'complete'
-		result = apiResult
-		writeExcel( result )
-		res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
-		console.log("ok")
-		res.download( './text.xlsx' )
-		// return res.redirect( '/results' )
-	} )
-	workQueue.on( 'global:progress', ( jobId, progress ) => {
-		p = progress
-	} )
-} )
-
 app.get( '/start', ( req, res ) => {
 	res.render( 'index', { progress: p } )
+	
 } )
 
-const isStarted = () => {
-	return started
+const isReady = () => {
+	return p === 'complete'
 }
 
 app.post( '/test2', jsonParser, ( req, res ) => {
@@ -123,7 +107,7 @@ app.post('/test', jsonParser, [
 	check( 'mcselect' ).isLength({ min: 3, max: 3 }),
 	check( 'puntentotaal' ).isNumeric(),
 	check( 'olodselect' ).isLength({ min: 4, max: 5 })
-], async ( req, res ) => {
+], async ( req, res, next ) => {
 	console.log( 'received' )
 	const errors = validationResult( req )
 	answerRes = res
@@ -162,9 +146,10 @@ app.post('/test', jsonParser, [
 			} )
 			// console.log( 'results', results )
 		}
-		started = true
-		res.redirect( '/start' )
+		
+		
 		getResultsFromWorkers()
+		next()
 		// res.redirect( '/results' )
 		// console.log( 'data', data )
 		
@@ -173,6 +158,22 @@ app.post('/test', jsonParser, [
 	catch ( err ) {
 		res.send( err )
 	}
+} )
+
+app.post( '/test', ( req, res ) => {
+
+	workQueue.on( 'global:completed', ( jobId, apiResult ) => {
+		console.log(`Job completed with result ${ apiResult }`)
+		p = 'complete'
+		result = apiResult
+		writeExcel( result )
+		res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
+		console.log("ok")
+		res.download( './text.xlsx' )
+	} )
+	workQueue.on( 'global:progress', ( jobId, progress ) => {
+		p = progress
+	} )
 } )
 
 app.get( '/update', async ( req, res ) => {
