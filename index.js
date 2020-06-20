@@ -210,7 +210,11 @@ app.get( '/download', ( req, res ) => {
 	// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
 	console.log("ok")
 	res.download( './text.xlsx' )
-	cleanQueue()
+} )
+
+app.get( '/reset', ( req, res ) => {
+	await cleanQueue()
+	job = null
 } )
 
 const cleanQueue = async () => {

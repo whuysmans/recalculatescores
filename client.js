@@ -53,6 +53,7 @@ window.onload = () => {
 		// form.remove()
 		event.preventDefault()
 		console.log( 'refresh clicked!' )
+		fetch( '/reset' )
 	} )
 	downloadLink.style.visibility = 'hidden'
 	// downloadLink.addEventListener( 'click', ( event ) => {
