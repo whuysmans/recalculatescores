@@ -210,8 +210,16 @@ app.get( '/download', ( req, res ) => {
 	// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
 	console.log("ok")
 	res.download( './text.xlsx' )
-	workQueue.clean()
+	cleanQueue()
 } )
+
+const cleanQueue = async () => {
+	await workQueue.empty()
+	await workQueue.clean( 0, 'active' )
+	await workQueue.clean( 0, 'completed' )
+	await workQueue.clean( 0, 'delayed' )
+	await workQueue.clean( 0, 'failed' )
+}
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/client.js', (req, res) => res.sendFile('client.js', { root: __dirname }));
