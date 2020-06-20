@@ -200,7 +200,7 @@ workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 	console.log(`Job completed with result ${ apiResult }`)
 	p = 'complete'
 	result = apiResult
-	fetch( '/result' )
+	fetch( 'https://recalculate-scores-test.herokuapp.com/result' )
 } )
 workQueue.on( 'global:progress', ( jobId, progress ) => {
 	p = progress
