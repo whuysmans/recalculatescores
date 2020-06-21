@@ -31,6 +31,7 @@ const getUpdate = async () => {
 	let response = await update.json()
 	console.log( 'update', response )
 	if ( response.progress === 'complete' ) {
+		clearInterval( intervalID )
 		downloadLink.style.visibility = 'visible'
 	}
 	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
@@ -52,7 +53,6 @@ window.onload = () => {
 		// form.remove()
 		event.preventDefault()
 		console.log( 'refresh clicked!' )
-		clearInterval( intervalID )
 		fetch( '/reset' )
 	} )
 	downloadLink.style.visibility = 'hidden'
