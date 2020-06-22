@@ -55,6 +55,7 @@ window.onload = () => {
 		console.log( 'refresh clicked!' )
 		fetch( '/reset' )
 		intervalID = setInterval( getUpdate, 1000 )
+		window.open( '/start' )
 	} )
 	downloadLink.style.visibility = 'hidden'
 	// downloadLink.addEventListener( 'click', ( event ) => {
