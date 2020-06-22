@@ -212,9 +212,11 @@ app.get( '/download', ( req, res ) => {
 	res.download( './text.xlsx' )
 } )
 
-app.get( '/reset', ( req, res ) => {
+app.get( '/reset', async ( req, res ) => {
 	// await cleanQueue()
 	job = null
+	await cleanQueue()
+	res.redirect( '/start' )
 } )
 
 const cleanQueue = async () => {
