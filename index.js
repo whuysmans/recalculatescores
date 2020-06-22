@@ -74,7 +74,6 @@ app.get('/callback', async ( req, res ) => {
 
 app.get( '/start', ( req, res ) => {
 	res.render( 'index', { progress: p } )
-	
 } )
 
 app.post('/test', jsonParser, [
@@ -215,6 +214,7 @@ app.get( '/download', ( req, res ) => {
 app.get( '/reset', async ( req, res ) => {
 	// await cleanQueue()
 	job = null
+	p = 0
 	await cleanQueue()
 	res.redirect( '/start' )
 } )
