@@ -59,6 +59,7 @@ const getSubmissions = async ( job ) => {
 const getUserDetails = async ( job ) => {
 	const result = await getSubmissions( job )
 	let rows = []
+	const numberOfSubmissions = result.length
 	for ( const single_result of result ) {
 		const user_id = single_result.user_id
 
@@ -87,7 +88,7 @@ const getUserDetails = async ( job ) => {
 				afgerondeScore
 			)
 			rows.push( row )
-			job.progress( rows.length )
+			job.progress( parseInt( ( rows.length / numberOfSubmissions ) * 100 ) )
 		} catch ( err ) {
 			console.log( err )
 		}
