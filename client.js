@@ -38,7 +38,7 @@ const getUpdate = async () => {
 	progressElement.innerHTML = response.progress
 }
 
-const clearForm = () {
+const clearForm = () => {
 	const form = document.querySelector( '#resultForm' )
 	const elements = form.elements
 	for ( let i = 0; i < elements.length; i++ ) {
