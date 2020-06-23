@@ -3,6 +3,7 @@ let statusElement = null
 let intervalID = 0
 let downloadLink = null
 let refreshLink = null
+let progressElement = null
 
 const getResults = async ( event ) => {
 	event.preventDefault()
@@ -35,6 +36,8 @@ const getUpdate = async () => {
 		downloadLink.style.visibility = 'visible'
 	}
 	statusElement.innerHTML = `${ new Date().toTimeString() } - ${ response.progress }`
+	progressElement.value = response.progress
+	progressElement.innerHTML = response.progress
 }
 
 window.onload = () => {
@@ -43,6 +46,7 @@ window.onload = () => {
 	downloadLink = document.querySelector( '#downloadLink' )
 	refreshLink = document.querySelector( '#refreshLink' )
 	statusElement = document.querySelector( '#status' )
+	progressElement = document.querySelector( '#progress' )
 	intervalID = setInterval( getUpdate, 1000 )
 	btn.addEventListener( 'click', ( event ) => {
 		// form.remove()
