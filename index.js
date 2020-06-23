@@ -40,10 +40,7 @@ let statusElement = null
 let job = null
 let intervalID = null
 let p = 0
-const { Server } = require( 'ws' )
 let result = null
-const fetch = require( 'node-fetch' )
-
 
 
 app.get('/', ( req, res ) => {
@@ -108,7 +105,6 @@ app.post('/test', jsonParser, [
 				'Authorization': `Bearer ${ token }`
 			}
 		})
-		// console.log( assignment.data )
 		pointsPossible = parseInt( assignment.data.points_possible )
 		const getResultsFromWorkers = async () => {
 				job = await workQueue.add( { 
@@ -121,25 +117,15 @@ app.post('/test', jsonParser, [
 				courseID: courseID,
 				assignmentID: assignmentID
 			} )
-			// console.log( 'results', results )
 		}
-		
+		p = 1	
 		res.redirect( '/start' )
 		getResultsFromWorkers()
-		// res.redirect( '/results' )
-		// console.log( 'data', data )
 		
-		// res.status( 200 ).send( rows )
 	}
 	catch ( err ) {
 		res.send( err )
 	}
-} )
-
-app.post( '/test', ( req, res ) => {
-
-	console.log( 'next test' )
-	
 } )
 
 app.get( '/update', async ( req, res ) => {
