@@ -31,7 +31,7 @@ const getUpdate = async () => {
 	let update = await fetch( '/update' )
 	let response = await update.json()
 	console.log( 'update', response )
-	if ( response.progress === 'complete' ) {
+	if ( response.progress === 100 ) {
 		clearInterval( intervalID )
 		downloadLink.style.visibility = 'visible'
 	}
