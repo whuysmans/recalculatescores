@@ -197,7 +197,6 @@ const server = app.listen( port, () =>  {
 
 workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 	console.log(`Job completed with result ${ apiResult }`)
-	p = 'complete'
 	result = apiResult
 	writeExcel( result )
 } )
