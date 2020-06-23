@@ -38,6 +38,16 @@ const getUpdate = async () => {
 	progressElement.innerHTML = response.progress
 }
 
+const clearForm = () {
+	const form = document.querySelector( '#resultForm' )
+	const elements = form.elements
+	for ( let i = 0; i < elements.length; i++ ) {
+		let item = elements.item(i)
+		item.value = ''
+		elements.item(0).focus()
+	}
+}
+
 window.onload = () => {
 	const btn = document.querySelector( '#resultSubmit' )
 	const form = document.querySelector( '#scoreForm' )
