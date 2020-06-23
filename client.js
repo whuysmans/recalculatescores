@@ -67,6 +67,7 @@ window.onload = () => {
 		fetch( '/reset' )
 		downloadLink.style.visibility = 'hidden'
 		intervalID = setInterval( getUpdate, 1000 )
+		clearForm()
 	} )
 	downloadLink.style.visibility = 'hidden'
 	// downloadLink.addEventListener( 'click', ( event ) => {
