@@ -3,12 +3,12 @@ html(lang='en')
 	head
 		title Recalculate to standard setting
 		meta(charset='utf-8')
-		link(rel='stylesheet', href='css/styles.css')
+		link(rel='stylesheet', href="https://unpkg.com/purecss@2.0.3/build/pure-min.css", integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ", crossorigin="anonymous")
 		script(src='client.js')
 	body
 		div#scoreForm.form
-			p.form Recalculate the scores!
-			form#resultForm.form-example
+			p Recalculate the scores!
+			form#resultForm.form-example.pure-form.pure-form-aligned
 				div
 					label(for='course') course ID:
 					input(type='text', id='course', name='course', required, minlength='4', maxlength='8', size='10')

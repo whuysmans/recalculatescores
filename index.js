@@ -213,6 +213,6 @@ const cleanQueue = async () => {
 	await workQueue.clean( 0, 'failed' )
 }
 
-app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
+// app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/client.js', (req, res) => res.sendFile('client.js', { root: __dirname }));
 app.set( 'view engine', 'pug' )
