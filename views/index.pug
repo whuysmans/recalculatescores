@@ -9,34 +9,34 @@ html(lang='en')
 		div#scoreForm.form
 			p Recalculate the scores!
 			form#resultForm.form-example.pure-form.pure-form-aligned
-				div
+				div.pure-control-group
 					label(for='course') course ID:
 					input(type='text', id='course', name='course', required, minlength='4', maxlength='8', size='10')
-				div
+				div.pure-control-group
 					label(for='assignment') quiz or assignment ID:
 					input(type='text', id='assignment', name='assignment', required, minlength='1', maxlength='8', size='10')
-				div
+				div.pure-control-group
 					label(for='puntentotoaal') gewenste punten:
 					input(type='text', id='puntentotaal', name='puntentotaal', required, minlength='1', maxlength='8', size='10')
-				div
+				div.pure-control-group
 					label(for='olodselect') kies (s/e)olod:
 					select(name='olodselect', id='olodselect')
 						option(value='olod') olod
 						option(value='dolod') dolod
 						option(value='eolod', selected) eolod
-				div
+				div.pure-control-group
 					label(for='mcselect') kies (s/e)olod:
 					select(name='mcselect', id='mcselect')
 						option(value='') kies MC #:
 						option(value='MC3') MC3
 						option(value='MC4', selected) MC4
-				div
+				div.pure-control-group
 					label(for='typeselect') Quiz or Assignment:
 					select(name='typeselect', id='typeselect')
 						option(value='') kies een optie:
 						option(value='quiz') Quiz
 						option(value='assignment')  Assignment
-				div
+				div.pure-controls
 					button#resultSubmit(type='submit') Submit
 		div
 			label(for="progress") Progress:
