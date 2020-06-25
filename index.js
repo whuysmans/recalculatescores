@@ -44,7 +44,7 @@ let result = null
 
 
 app.get('/', ( req, res ) => {
-	res.send('<h2 class="form"><a href="/auth">Login via Canvas</a></h2>')
+	res.send('<body><div id="main"><h2 class="form"><a href="/auth">Login via Canvas</a></h2></div></body>')
 } )
 
 app.get('/auth', ( req, res ) => {
@@ -213,6 +213,6 @@ const cleanQueue = async () => {
 	await workQueue.clean( 0, 'failed' )
 }
 
-// app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
+app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
 app.get('/client.js', (req, res) => res.sendFile('client.js', { root: __dirname }));
 app.set( 'view engine', 'pug' )
