@@ -1,36 +1,27 @@
-*, *:before, *:after {
-	box-sizing: border-box;
-}
+body {
+	line-height: 1.7em;
+	color: #7f8c8d;
+	font-size: 13px;
+ }
+ 
+ #main {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 600px;
+ }
+ 
+ #progress-part {
+	margin: 2em 0 2em 4em;
+ }
+ 
+ progress {
+	margin: .5em 0 0 1em;
+ }
+ 
+ #result-buttons {
+	margin-left: 2em;
+ }
 
-input {
-	width: 20%;
-}
-
-input[type=text] {
-	padding: 10px;
-	margin: 10px 0;
-	border: 1px solid gray;
-	border-radius: 2px;
-}
-
-button {
-	padding: 10px;
-	font-weight: 600;
-	width: 10%;
-	border-radius: 2px;
-}
-
-div.form {
-	text-align: center;
-}
-
-p.form {
-	text-align: center;
-}
-
-select {
-	width: 20%;
-	padding: 10px;
-	border-radius: 2px;
-	margin: 10px 0;
-}
+ #result-buttons > a {
+	 margin-right: 1em;
+ }

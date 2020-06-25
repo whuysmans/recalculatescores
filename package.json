@@ -11,13 +11,23 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
+    "bull": "^3.14.0",
+    "connect-redis": "^4.0.4",
     "cookie-parser": "^1.4.5",
+    "events": "^3.1.0",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "express-validator": "^6.5.0",
     "file-saver": "^2.0.2",
+    "node-fetch": "^2.6.0",
     "parse-link-header": "^1.0.1",
+    "pug": "^3.0.0",
+    "redis": "^3.0.2",
     "simple-oauth2": "^3.4.0",
+    "socket.io": "^2.3.0",
+    "throng": "^4.0.0",
+    "ws": "^7.3.0",
     "xlsx": "^0.16.0"
   }
 }
