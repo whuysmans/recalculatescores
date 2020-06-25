@@ -3,6 +3,7 @@ let intervalID = 0
 let downloadLink = null
 let refreshLink = null
 let progressElement = null
+let btn = null
 
 const getResults = async ( event ) => {
 	event.preventDefault()
@@ -46,10 +47,11 @@ const clearForm = () => {
 		item.value = ''
 		elements.item(0).focus()
 	}
+	btn.classList.remove( 'pure-button-disabled' )
 }
 
 window.onload = () => {
-	const btn = document.querySelector( '#resultSubmit' )
+	btn = document.querySelector( '#resultSubmit' )
 	const form = document.querySelector( '#scoreForm' )
 	downloadLink = document.querySelector( '#downloadLink' )
 	refreshLink = document.querySelector( '#refreshLink' )
@@ -58,6 +60,7 @@ window.onload = () => {
 	btn.addEventListener( 'click', ( event ) => {
 		// form.remove()
 		console.log( 'clicked!' )
+		btn.classList.add( 'pure-button-disabled' )
 		getResults( event )
 	} )
 	refreshLink.addEventListener( 'click', ( event ) => {
