@@ -4,6 +4,7 @@ html(lang='en')
 		title Recalculate to standard setting
 		meta(charset='utf-8')
 		link(rel='stylesheet', href="https://unpkg.com/purecss@2.0.3/build/pure-min.css", integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ", crossorigin="anonymous")
+		link(rel='stylesheet', href="css/styles.css")
 		script(src='client.js')
 	body
 		div#main
@@ -39,11 +40,12 @@ html(lang='en')
 							option(value='assignment')  Assignment
 					div.pure-controls
 						button#resultSubmit.pure-button.pure-button-primary(type='submit') Submit
-			div
+			div#progress-part
 				label(for="progress") Progress:
 				progress#progress(max="100", value="0")
-				a(id="downloadLink", href="/download", download) Download Excel
-				a(id="refreshLink", href="/start") Calculate other scores
+			div#result-buttons
+				a.pure-button.pure-button-primary(id="downloadLink", href="/download", download) Download Excel
+				a.pure-button.pure-button-primary(id="refreshLink", href="/start") Calculate other scores
 				
 
 
