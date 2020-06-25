@@ -33,7 +33,7 @@ const getUpdate = async () => {
 	console.log( 'update', response )
 	if ( response.progress === 100 ) {
 		clearInterval( intervalID )
-		downloadLink.style.visibility = 'visible'
+		downloadLink.classList.remove( 'pure-button-disabled' )
 	}
 	progressElement.value = response.progress
 	progressElement.innerHTML = response.progress
@@ -68,11 +68,11 @@ window.onload = () => {
 		event.preventDefault()
 		console.log( 'refresh clicked!' )
 		fetch( '/reset' )
-		downloadLink.style.visibility = 'hidden'
+		downloadLink.classList.add( 'pure-button-disabled' )
 		intervalID = setInterval( getUpdate, 1000 )
 		clearForm()
 	} )
-	downloadLink.style.visibility = 'hidden'
+	downloadLink.classList.add( 'pure-button-disabled' )
 	// downloadLink.addEventListener( 'click', ( event ) => {
 	// 	fetch( '/download' )
 	// } )
