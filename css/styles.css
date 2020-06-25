@@ -21,3 +21,7 @@ body {
  #result-buttons {
 	margin-left: 2em;
  }
+
+ #result-buttons > a {
+	 margin-right: 1em;
+ }
