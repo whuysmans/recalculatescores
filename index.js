@@ -74,7 +74,7 @@ app.get( '/start', ( req, res ) => {
 } )
 
 app.post('/test', jsonParser, [
-	check( 'course' ).isLength({ min: 4, max: 10 }),
+	check( 'course' ).isLength({ min: 1, max: 10 }),
 	check( 'course' ).isNumeric(),
 	check( 'assignment' ).isLength({ min: 1, max: 10 }),
 	check( 'assignment' ).isNumeric(),
