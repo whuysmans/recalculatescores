@@ -174,7 +174,8 @@ const writeExcel = ( result ) => {
 
 app.get( '/logout', async ( req, res ) => {
 	token = ''
-	let logoutURL = `${ school }/api/v1/login/oauth2/token`
+	let logoutURL = `${ school }/login/oauth2/token`
+	console.log( logoutURL )
 	await axios({
 		method: 'delete',
 		url: logoutURL
