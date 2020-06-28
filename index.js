@@ -176,13 +176,7 @@ app.get( '/logout', async ( req, res ) => {
 	token = ''
 	let logoutURL = `${ school }/login/oauth2/token`
 	console.log( logoutURL )
-	await axios({
-		method: 'delete',
-		url: logoutURL,
-		headers: {
-			'Authorization': `Bearer ${ token }`
-		}
-	})
+	await axios.delete( logoutURL, { headers: { 'Authorization': `Bearer ${ token }`	} } )
 	return res.redirect( '/' )
 } )
 
