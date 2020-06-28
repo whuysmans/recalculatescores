@@ -70,6 +70,9 @@ app.get( '/callback', async ( req, res ) => {
 } )
 
 app.get( '/start', ( req, res ) => {
+	if ( token === '' ) {
+		return res.redirect( '/' )
+	}
 	res.render( 'index', { progress: p } )
 } )
 
@@ -82,6 +85,9 @@ app.post('/test', jsonParser, [
 	check( 'puntentotaal' ).isNumeric(),
 	check( 'olodselect' ).isLength({ min: 4, max: 5 })
 ], async ( req, res, next ) => {
+	if ( token === '' ) {
+		return res.redirect( '/' )
+	}
 	console.log( 'received' )
 	const errors = validationResult( req )
 	answerRes = res
@@ -192,6 +198,9 @@ workQueue.on( 'global:progress', ( jobId, progress ) => {
 } )
 
 app.get( '/download', ( req, res ) => {
+	if ( token === '' ) {
+		return res.redirect( '/' )
+	}
 	// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
 	console.log("ok")
 	res.download( './text.xlsx' )
