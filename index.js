@@ -177,7 +177,6 @@ app.get( '/logout', async ( req, res ) => {
 	console.log( logoutURL )
 	await axios.delete( logoutURL, { headers: { 'Authorization': `Bearer ${ token }`	} } )
 	token = ''
-	return res.redirect( '/' )
 } )
 
 

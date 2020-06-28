@@ -75,8 +75,9 @@ window.onload = () => {
 	} )
 	downloadLink.classList.add( 'pure-button-disabled' )
 	logoutBtn = document.querySelector('#logoutButton')
-	logoutBtn.addEventListener( 'click', ( event ) => {
+	logoutBtn.addEventListener( 'click', async ( event ) => {
 		event.preventDefault()
-		fetch( '/logout' )
+		await fetch( '/logout' )
+		window.open( '/' )
 	} )
 }
