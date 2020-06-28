@@ -4,6 +4,7 @@ let downloadLink = null
 let refreshLink = null
 let progressElement = null
 let btn = null
+let logoutBtn = null
 
 const getResults = async ( event ) => {
 	event.preventDefault()
@@ -73,7 +74,9 @@ window.onload = () => {
 		clearForm()
 	} )
 	downloadLink.classList.add( 'pure-button-disabled' )
-	// downloadLink.addEventListener( 'click', ( event ) => {
-	// 	fetch( '/download' )
-	// } )
+	logoutBtn = document.querySelector('#logoutButton')
+	logoutBtn.addEventListener( 'click', ( event ) => {
+		event.preventDefault()
+		fetch( '/logout' )
+	} )
 }
