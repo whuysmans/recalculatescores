@@ -172,7 +172,15 @@ const writeExcel = ( result ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
-
+app.get( '/logout', async ( req, res ) => {
+	token = ''
+	let logoutURL = `${ school }/api/v1/login/oauth2/token`
+	await axios({
+		method: 'delete',
+		url: logoutURL
+	})
+	return res.redirect( '/' )
+} )
 
 
 const server = app.listen( port, () =>  {
