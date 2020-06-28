@@ -178,7 +178,10 @@ app.get( '/logout', async ( req, res ) => {
 	console.log( logoutURL )
 	await axios({
 		method: 'delete',
-		url: logoutURL
+		url: logoutURL,
+		headers: {
+			'Authorization': `Bearer ${ token }`
+		}
 	})
 	return res.redirect( '/' )
 } )
