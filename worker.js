@@ -33,12 +33,12 @@ const getAllData = async ( job ) => {
 		}
 	} )
 	const query = `
-	query getAllData( $id: Int!, first: Int!, after: String, orderBy: Object )
+	query getAllData( $id: ID!, $first: Int!, $after: String )
 		assignment(id: $id) {
 			quiz {
 			_id
 			}
-			submissionsConnection(first: $first, after: $after, orderBy: $orderBy) {
+			submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
 			edges {
 				cursor
 				node {
@@ -62,8 +62,7 @@ const getAllData = async ( job ) => {
 	let variables = {
 		id: assignmentID,
 		first: 50,
-		after: "",
-		orderBy: { field: username }
+		after: ""
 	}
 	while ( keepGoing ) {
 		try {
