@@ -21,6 +21,7 @@ let token = ''
 let quizType = ''
 
 const getAllData = async ( job ) => {
+	console.log( 'baseURL', baseURL )
 	token = job.data.token
 	puntentotaal = job.data.puntentotaal
 	mcType = job.data.mcType
