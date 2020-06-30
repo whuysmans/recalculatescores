@@ -66,36 +66,40 @@ const getAllData = async ( job ) => {
 		orderBy: { field: username }
 	}
 	while ( keepGoing ) {
-		let response = await graphQLClient.request( {
-			baseURL,
-			query,
-			variables
-		} )
-		console.log( response )
-		let resultArray = response.data.assignment.submissionsConnection.edges
-		if ( ! pointsPossible ) {
-			pointsPossible = response.data.assignment.pointsPossible
-		} 
-		resultArray.map( ( resultObject ) => {
-			let row = []
-			let correctedScore = recalculateScore( parseFloat( resultObject.node.grade ) )
-			let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) : roundTo( correctedScore, 1 )
-			row.push( 
-				resultObject.node.user.sortableName,
-				resultObject.node.user.name,
-				resultObject.node.user.email,
-				resultObject.node.grade,
-				correctedScore,
-				afgerondeScore
-			)
-			rows.push( row )
-		} )
-		if ( ! response.data.assignment.submissionsConnection.pageInfo.hasNextPage ) {
-			keepGoing = false
-		} else {
-			variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
+		try {
+			let response = await graphQLClient.request( {
+				baseURL,
+				query,
+				variables
+			} )
+			console.log( 'first round' )
+			console.log( response )
+			let resultArray = response.data.assignment.submissionsConnection.edges
+			if ( ! pointsPossible ) {
+				pointsPossible = response.data.assignment.pointsPossible
+			} 
+			resultArray.map( ( resultObject ) => {
+				let row = []
+				let correctedScore = recalculateScore( parseFloat( resultObject.node.grade ) )
+				let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) : roundTo( correctedScore, 1 )
+				row.push( 
+					resultObject.node.user.sortableName,
+					resultObject.node.user.name,
+					resultObject.node.user.email,
+					resultObject.node.grade,
+					correctedScore,
+					afgerondeScore
+				)
+				rows.push( row )
+			} )
+			if ( ! response.data.assignment.submissionsConnection.pageInfo.hasNextPage ) {
+				keepGoing = false
+			} else {
+				variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
+			}
+		} catch ( err ) {
+			console.error( JSON.stringify( err ) )
 		}
-	}
 	return rows 
 }
 		
@@ -103,7 +107,7 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		const result = await getAllData( job )
+		const result = await getAllData( job ).catch( ( error ) => console.error( error ) )
 		return result
 	} )	
 }
