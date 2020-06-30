@@ -66,6 +66,7 @@ const getAllData = async ( job ) => {
 	}
 	while ( keepGoing ) {
 		try {
+			console.log( 'start query' )
 			let response = await graphQLClient.request( {
 				baseURL,
 				query,
@@ -97,7 +98,7 @@ const getAllData = async ( job ) => {
 				variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 			}
 		} catch ( err ) {
-			console.error( JSON.stringify( err ) )
+			console.log( err )
 		}
 	}
 	return rows 
@@ -107,7 +108,7 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		const result = await getAllData( job ).catch( ( error ) => console.error( error ) )
+		const result = await getAllData( job )
 		return result
 	} )	
 }
