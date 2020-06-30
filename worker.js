@@ -71,6 +71,7 @@ const getAllData = async ( job ) => {
 			query,
 			variables
 		} )
+		console.log( response )
 		let resultArray = response.data.assignment.submissionsConnection.edges
 		if ( ! pointsPossible ) {
 			pointsPossible = response.data.assignment.pointsPossible

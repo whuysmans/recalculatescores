@@ -10,7 +10,6 @@ let token = ''
 const XLSX = require('xlsx')
 const FileSaver = require('file-saver')
 const path = require('path')
-const parse = require('parse-link-header')
 let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
@@ -90,7 +89,6 @@ app.post('/test', jsonParser, [
 	mcType = req.body.mcselect
 	puntentotaal = req.body.puntentotaal
 	olodType = req.body.olodselect
-	baseURL = `${ school }/api/v1/`
 	const getResultsFromWorkers = async () => {
 		job = await workQueue.add( { 
 			token: token, 
