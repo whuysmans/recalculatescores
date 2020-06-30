@@ -96,7 +96,7 @@ const getAllData = async ( job ) => {
 			variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 		}
 	}
-	return result
+	return rows 
 }
 		
 const start = () => {
