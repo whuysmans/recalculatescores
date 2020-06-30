@@ -6,7 +6,7 @@ let school = process.env.SCHOOL
 const baseURL = `${ school }/api/graphql`
 const events = require('events')
 const { GraphQLClient } = require('graphql-request')
-const fetch = require( 'node-fetch' )
+const { request } = require('graphql-request')
 
 let REDIS_URL = process.env.REDIS_URL
 let workers = process.env.WEB_CONCURRENCY || 2
@@ -108,7 +108,7 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		const result = getAllData( job )
+		const result = await getAllData( job )
 		return result
 	} )	
 }
