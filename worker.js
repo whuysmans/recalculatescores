@@ -35,7 +35,7 @@ const getAllData = async ( job ) => {
 		}
 	} )
 	const query = `
-	query getAllData( $id: ID!, $first: Int!, $after: String )
+	query getAllData( $id: ID!, $first: Int!, $after: String ) {
 		assignment(id: $id) {
 			quiz {
 			_id
