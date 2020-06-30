@@ -67,7 +67,7 @@ app.get( '/start', ( req, res ) => {
 	if ( token === '' ) {
 		return res.redirect( '/' )
 	}
-	res.render( 'index', { progress: p } )
+	res.render( 'index' )
 } )
 
 app.post('/test', jsonParser, [
