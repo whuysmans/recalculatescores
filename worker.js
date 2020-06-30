@@ -102,7 +102,7 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		const result = await getUserDetails( job )
+		const result = await getAllData( job )
 		return result
 	} )	
 }

@@ -12,9 +12,6 @@ html(lang='en')
 				h3 Recalculate the scores to standard setting
 				form#resultForm.form-example.pure-form.pure-form-aligned
 					div.pure-control-group
-						label(for='course') course ID:
-						input(type='text', id='course', name='course', required, minlength='4', maxlength='8', size='10')
-					div.pure-control-group
 						label(for='assignment') quiz or assignment ID:
 						input(type='text', id='assignment', name='assignment', required, minlength='1', maxlength='8', size='10')
 					div.pure-control-group
@@ -32,12 +29,6 @@ html(lang='en')
 							option(value='') kies MC #:
 							option(value='MC3') MC3
 							option(value='MC4', selected) MC4
-					div.pure-control-group
-						label(for='typeselect') Quiz or Assignment:
-						select(name='typeselect', id='typeselect')
-							option(value='') kies een optie:
-							option(value='quiz') Quiz
-							option(value='assignment')  Assignment
 					div.pure-controls
 						button#resultSubmit.pure-button.pure-button-primary(type='submit') Submit
 			div#result-buttons
