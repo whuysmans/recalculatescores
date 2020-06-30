@@ -33,12 +33,12 @@ const getAllData = async ( job ) => {
 		}
 	} )
 	const query = `
-	query getAllData( $id: Int! )
+	query getAllData( $id: Int!, first: Int!, after: String, orderBy: Object )
 		assignment(id: $id) {
 			quiz {
 			_id
 			}
-			submissionsConnection(first: Int!, after: String, orderBy: Object) {
+			submissionsConnection(first: $first, after: $after, orderBy: $orderBy) {
 			edges {
 				cursor
 				node {
