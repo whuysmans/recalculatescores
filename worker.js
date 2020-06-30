@@ -66,7 +66,7 @@ const getAllData = async ( job ) => {
 		orderBy: { field: username }
 	}
 	while ( keepGoing ) {
-		let response = await request( {
+		let response = await graphQLClient.request( {
 			baseURL,
 			query,
 			variables
