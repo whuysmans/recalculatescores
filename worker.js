@@ -14,7 +14,7 @@ let pointsPossible = -1
 let puntentotaal = 0
 let mcType = ''
 let olodType = 'eolod'
-let workQueue = new Queue( 'workprod', REDIS_URL )
+let workQueue = new Queue( 'workprodgraphql', REDIS_URL )
 let assignmentID = 0
 let token = ''
 let quizType = ''
@@ -101,6 +101,7 @@ const getAllData = async ( job ) => {
 			console.error( JSON.stringify( err ) )
 		}
 	return rows 
+	}
 }
 		
 const start = () => {
