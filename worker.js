@@ -100,8 +100,8 @@ const getAllData = async ( job ) => {
 		} catch ( err ) {
 			console.error( JSON.stringify( err ) )
 		}
-	return rows 
 	}
+	return rows 
 }
 		
 const start = () => {
