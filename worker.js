@@ -19,6 +19,7 @@ let workQueue = new Queue( 'workprodgraphql', REDIS_URL )
 let assignmentID = 0
 let token = ''
 let quizType = ''
+let errorString = ''
 
 const getAllData = async ( job ) => {
 	console.log( 'baseURL', baseURL )
@@ -99,7 +100,8 @@ const getAllData = async ( job ) => {
 				variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 			}
 		} catch ( err ) {
-			console.log( err )
+			// console.log( err )
+			errorString = JSON.stringify( err )
 		}
 	}
 	return rows 
