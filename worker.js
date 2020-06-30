@@ -68,12 +68,11 @@ const getAllData = async ( job ) => {
 		try {
 			console.log( 'start query' )
 			let response = await graphQLClient.request( {
-				baseURL,
 				query,
 				variables
 			} )
 			console.log( 'first round' )
-			console.log( response )
+			// console.log( response )
 			let resultArray = response.data.assignment.submissionsConnection.edges
 			if ( ! pointsPossible ) {
 				pointsPossible = response.data.assignment.pointsPossible
