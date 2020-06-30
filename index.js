@@ -31,7 +31,7 @@ let authorizationUri = null
 const { check, validationResult } = require('express-validator')
 let Queue = require('bull')
 let REDIS_URL = process.env.REDIS_URL
-let workQueue = new Queue( 'workprod', REDIS_URL )
+let workQueue = new Queue( 'workprodgraphql', REDIS_URL )
 let job = null
 let result = null
 
