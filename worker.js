@@ -67,12 +67,12 @@ const getAllData = async ( job ) => {
 	}
 	while ( keepGoing ) {
 		try {
-			console.log( 'start query' )
+			// console.log( 'start query' )
 			let response = await graphQLClient.request( {
 				query,
 				variables
 			} )
-			console.log( 'first round' )
+			// console.log( 'first round' )
 			// console.log( response )
 			let resultArray = response.data.assignment.submissionsConnection.edges
 			if ( ! pointsPossible ) {
@@ -98,7 +98,7 @@ const getAllData = async ( job ) => {
 				variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 			}
 		} catch ( err ) {
-			console.log( err )
+			// console.log( err )
 		}
 	}
 	return rows 
