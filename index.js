@@ -6,13 +6,11 @@ let port = process.env.PORT || 3000
 const axios = require('axios')
 let school = process.env.SCHOOL
 let assignmentID = 0
-let courseID = 0
 let token = '' 
 const XLSX = require('xlsx')
 const FileSaver = require('file-saver')
 const path = require('path')
 const parse = require('parse-link-header')
-let pointsPossible = 10
 let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
@@ -35,11 +33,7 @@ const { check, validationResult } = require('express-validator')
 let Queue = require('bull')
 let REDIS_URL = process.env.REDIS_URL
 let workQueue = new Queue( 'workprod', REDIS_URL )
-let answerRes = null
-let statusElement = null
 let job = null
-let intervalID = null
-let p = 0
 let result = null
 
 
@@ -95,53 +89,23 @@ app.post('/test', jsonParser, [
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
 	assignmentID = req.body.assignment
-	courseID = req.body.course
 	mcType = req.body.mcselect
 	puntentotaal = req.body.puntentotaal
-	quizType = req.body.typeselect
 	olodType = req.body.olodselect
 	baseURL = `${ school }/api/v1/`
-	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
-		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
-	try {
-		const assignment = await axios({
-			method: 'get',
-			url: assignmentURL,
-			headers: {
-				'Authorization': `Bearer ${ token }`
-			}
-		})
-		pointsPossible = parseInt( assignment.data.points_possible )
-		const getResultsFromWorkers = async () => {
-				job = await workQueue.add( { 
-				token: token, 
-				quizType: quizType,
-				mcType: mcType,
-				pointsPossible: pointsPossible,
-				puntentotaal: puntentotaal,
-				olodType: olodType,
-				courseID: courseID,
-				assignmentID: assignmentID
-			} )
-		}
-		p = 1	
-		res.redirect( '/start' )
-		getResultsFromWorkers()
-		
+	const getResultsFromWorkers = async () => {
+		job = await workQueue.add( { 
+			token: token, 
+			mcType: mcType,
+			puntentotaal: puntentotaal,
+			olodType: olodType,
+			assignmentID: assignmentID
+		} )
 	}
-	catch ( err ) {
-		res.send( err )
-	}
+	p = 1	
+	res.redirect( '/start' )
+	getResultsFromWorkers()
 } )
-
-app.get( '/update', async ( req, res ) => {
-	if ( job ) {
-		res.json( { progress: p } )
-	} else {
-		res.json( { progress: 0 } )
-	}
-} )
-
 
 const getRandomIdent = () => {
 	return Math.random().toString(36).substring(4)
@@ -194,12 +158,8 @@ const server = app.listen( port, () =>  {
 
 workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 	console.log(`Job completed with result ${ apiResult }`)
-	p = 100
 	result = apiResult
 	writeExcel( result )
-} )
-workQueue.on( 'global:progress', ( jobId, progress ) => {
-	p = progress
 } )
 
 app.get( '/download', ( req, res ) => {
@@ -214,7 +174,6 @@ app.get( '/download', ( req, res ) => {
 app.get( '/reset', async ( req, res ) => {
 	// await cleanQueue()
 	job = null
-	p = 0
 	await cleanQueue()
 	res.redirect( '/start' )
 } )

@@ -3,97 +3,99 @@ let Queue = require('bull')
 const axios = require('axios')
 let port = process.env.PORT || 3000
 let school = process.env.SCHOOL
-const baseURL = `${ school }/api/v1/`
+const baseURL = `${ school }/api/graphql`
 const events = require('events')
+const { GraphQLClient } = require('graphql-request')
 
 let REDIS_URL = process.env.REDIS_URL
 let workers = process.env.WEB_CONCURRENCY || 2
 let maxJobsPerWorker = 100
-let pointsPossible = 0
+let pointsPossible = -1
 let puntentotaal = 0
 let mcType = ''
 let olodType = 'eolod'
 let workQueue = new Queue( 'workprod', REDIS_URL )
-let courseID = 0
 let assignmentID = 0
-const parse = require('parse-link-header')
 let token = ''
 let quizType = ''
 
-const getSubmissions = async ( job ) => {
+const getAllData = async ( job ) => {
 	token = job.data.token
-	quizType = job.data.quizType
 	puntentotaal = job.data.puntentotaal
-	pointsPossible = job.data.pointsPossible
 	mcType = job.data.mcType
 	olodType = job.data.olodType
-	courseID = job.data.courseID
 	assignmentID = job.data.assignmentID
 	let rows = []
 	let keepGoing = true
-	let result = []
-	let submissionsURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }/submissions?per_page=50` :
-		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }/submissions?per_page=50`
-	while ( keepGoing ) {
-		let response = await axios({
-			method: 'get',
-			url: submissionsURL,
-			headers: {
-				'Authorization': `Bearer ${ token }`
+	const graphQLClient = new GraphQLClient( baseURL, {
+		headers: {
+			authorization: `Bearer ${ token }`
+		}
+	} )
+	const query = `
+	query getAllData( $id: Int! )
+		assignment(id: $id) {
+			quiz {
+			_id
 			}
-		})
-		const resultArray = quizType === 'quiz' ? response.data.quiz_submissions : response.data
-		resultArray.map( ( resultObject ) => {
-			result.push( resultObject )
-		} )
-		let parsed = parse( response.headers.link )
-		if ( parseInt( parsed.current.page ) >= parseInt( parsed.last.page ) ) {
-			keepGoing = false
-		} else {
-			submissionsURL = parsed.next.url
+			submissionsConnection(first: Int!, after: String, orderBy: Object) {
+			edges {
+				cursor
+				node {
+					grade
+					user {
+					email
+					name
+					sortableName
+					}
+				}
+			}
+			pageInfo {
+				hasNextPage
+				endCursor
+			}
+			}
+			pointsPossible
 		}
 	}
-	return result
-}
-
-const getUserDetails = async ( job ) => {
-	const result = await getSubmissions( job )
-	let rows = []
-	const numberOfSubmissions = result.length
-	for ( const single_result of result ) {
-		const user_id = single_result.user_id
-
-		if ( ! single_result.score && ! single_result.entered_grade ) {
-			continue	
-		}
-		try {
-			const user_details = await axios( {
-				method: 'get',
-				url: `${ baseURL }users/${ user_id }`,
-				headers: {
-					'Authorization': `Bearer ${ token }`
-				}
-			} )
+	`
+	let variables = {
+		id: assignmentID,
+		first: 50,
+		after: "",
+		orderBy: { field: username }
+	}
+	while ( keepGoing ) {
+		let response = await request( {
+			baseURL,
+			query,
+			variables
+		} )
+		let resultArray = response.data.assignment.submissionsConnection.edges
+		if ( ! pointsPossible ) {
+			pointsPossible = response.data.assignment.pointsPossible
+		} 
+		resultArray.map( ( resultObject ) => {
 			let row = []
-			let points = quizType === 'quiz' ? single_result.score : single_result.entered_grade
-			let correctedScore = recalculateScore( parseFloat( points ) )
-			let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) :
-				roundTo( correctedScore, 1 )
+			let correctedScore = recalculateScore( parseFloat( resultObject.node.grade ) )
+			let afgerondeScore = olodType === 'dolod' ? roundTo( correctedScore, 0.1 ) : roundTo( correctedScore, 1 )
 			row.push( 
-				user_details.data.sortable_name ? user_details.data.sortable_name : 'onbekend',
-				user_details.data.name ? user_details.data.name : 'onbekend', 
-				user_details.data.email ? user_details.data.email : 'onbekend',
-				points,
+				resultObject.node.user.sortableName,
+				resultObject.node.user.name,
+				resultObject.node.user.email,
+				resultObject.node.grade,
 				correctedScore,
 				afgerondeScore
 			)
 			rows.push( row )
-			job.progress( parseInt( ( rows.length / numberOfSubmissions ) * 100 ) )
-		} catch ( err ) {
-			console.log( err )
+		} )
+		if ( ! response.data.assignment.submissionsConnection.pageInfo.hasNextPage ) {
+			keepGoing = false
+		} else {
+			variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 		}
 	}
-	return rows
+	return result
 }
 		
 const start = () => {
