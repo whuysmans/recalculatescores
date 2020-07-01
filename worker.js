@@ -77,6 +77,9 @@ const getAllData = async ( job ) => {
 			if ( ! pointsPossible ) {
 				pointsPossible = response.data.assignment.pointsPossible
 			} 
+			if ( ! resultArray ) {
+				keepGoing = false
+			}
 			resultArray.map( ( resultObject ) => {
 				let row = []
 				let correctedScore = recalculateScore( parseFloat( resultObject.node.grade ) )
