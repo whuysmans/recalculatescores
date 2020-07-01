@@ -32,7 +32,7 @@ const getAllData = async ( job ) => {
 	let keepGoing = true
 	const graphQLClient = new GraphQLClient( baseURL, {
 		headers: {
-			'Authorization': `Bearer ${ token }`
+			Authorization: `Bearer ${ token }`
 		}
 	} )
 	const query = `
