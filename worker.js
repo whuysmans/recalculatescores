@@ -36,7 +36,7 @@ const getAllData = async ( job ) => {
 		}
 	} )
 	const query = `
-	query getAllData( $id: ID!, $first: Int!, $after: String ) {
+	allData( $id: ID!, $first: Int!, $after: String ) {
 		assignment(id: $id) {
 			submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
 				edges {
@@ -94,6 +94,7 @@ const getAllData = async ( job ) => {
 			if ( ! response.data.assignment.submissionsConnection.pageInfo.hasNextPage ) {
 				keepGoing = false
 			} else {
+				console.log( variables )
 				variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 			}
 		} catch ( err ) {
