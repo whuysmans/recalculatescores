@@ -72,7 +72,7 @@ const getAllData = async ( job ) => {
 				variables
 			} )
 			// console.log( 'first round' )
-			console.log( response )
+			console.log( response.errors )
 			let resultArray = response.data.assignment.submissionsConnection.edges
 			if ( ! pointsPossible ) {
 				pointsPossible = response.data.assignment.pointsPossible
