@@ -38,25 +38,22 @@ const getAllData = async ( job ) => {
 	const query = `
 	query getAllData( $id: ID!, $first: Int!, $after: String ) {
 		assignment(id: $id) {
-			quiz {
-			_id
-			}
 			submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
-			edges {
-				cursor
-				node {
-					grade
-					user {
-					email
-					name
-					sortableName
+				edges {
+					cursor
+					node {
+						grade
+						user {
+						email
+						name
+						sortableName
+						}
 					}
 				}
-			}
-			pageInfo {
-				hasNextPage
-				endCursor
-			}
+				pageInfo {
+					hasNextPage
+					endCursor
+				}
 			}
 			pointsPossible
 		}
