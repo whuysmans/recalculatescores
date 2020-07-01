@@ -144,7 +144,7 @@ const server = app.listen( port, () =>  {
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
-		scope: `url:GET|/api/v1/courses/:course_id/assignments/:id url:GET|/api/v1/courses/:course_id/quizzes/:id url:GET|/api/v1/courses/:course_id/quizzes/:quiz_id/submissions url:GET|/api/v1/courses/:course_id/assignments/:assignment_id/submissions url:GET|/api/v1/users/:id`,
+		// scope: `url:GET|/api/v1/courses/:course_id/assignments/:id url:GET|/api/v1/courses/:course_id/quizzes/:id url:GET|/api/v1/courses/:course_id/quizzes/:quiz_id/submissions url:GET|/api/v1/courses/:course_id/assignments/:assignment_id/submissions url:GET|/api/v1/users/:id`,
 		state: state
 	} )
 
