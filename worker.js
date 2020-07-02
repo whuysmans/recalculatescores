@@ -72,7 +72,7 @@ const getAllData = async ( job ) => {
 				variables
 			} )
 			// console.log( 'first round' )
-			console.log( response.errors )
+			console.log( JSON.stringify( response ) )
 			let resultArray = response.data.assignment.submissionsConnection.edges
 			if ( ! pointsPossible ) {
 				pointsPossible = response.data.assignment.pointsPossible
@@ -112,7 +112,7 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		const result = await getAllData( job )
+		const result = await getAllData( job ).catch( ( err ) => console.error( err ) )
 		return result
 	} )	
 }
