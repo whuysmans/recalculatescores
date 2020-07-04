@@ -68,10 +68,10 @@ const getAllData = async ( job ) => {
 		try {
 			// console.log( 'start query' )
 			let query = JSON.stringify( query )
-			let response = await graphQLClient.request( {
+			let response = await graphQLClient.request( JSON.stringify( {
 				query,
 				variables
-			} )
+			} ) )
 			// console.log( 'first round' )
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.data.assignment.submissionsConnection.edges
