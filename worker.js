@@ -102,7 +102,7 @@ const getAllData = async ( job ) => {
 				variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 			}
 		} catch ( err ) {
-			console.log( err )
+			// console.log( err )
 			// errorString = JSON.stringify( err )
 		}
 	}
