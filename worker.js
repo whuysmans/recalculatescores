@@ -67,6 +67,7 @@ const getAllData = async ( job ) => {
 	while ( keepGoing ) {
 		try {
 			// console.log( 'start query' )
+			let query = JSON.stringify( query )
 			let response = await graphQLClient.request( {
 				query,
 				variables
