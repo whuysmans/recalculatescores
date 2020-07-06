@@ -23,6 +23,7 @@ let errorString = ''
 
 const getAllData = async ( job ) => {
 	console.log( 'baseURL', baseURL )
+	console.log( job.data )
 	token = job.data.token
 	puntentotaal = job.data.puntentotaal
 	mcType = job.data.mcType
@@ -59,6 +60,7 @@ const getAllData = async ( job ) => {
 		}
 	}
 	`
+	console.log( JSON.stringify( query ) )
 	let variables = {
 		id: assignmentID,
 		first: 50,
