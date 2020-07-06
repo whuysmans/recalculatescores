@@ -113,7 +113,7 @@ const start = () => {
 	workQueue.process( maxJobsPerWorker, async ( job ) => {
 		// console.log( job )
 		console.log( 'start process' )
-		const result = await getAllData( job ).catch( ( err ) => console.error( err ) )
+		const result = await getAllData( job )
 		return result
 	} )	
 }

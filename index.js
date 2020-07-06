@@ -89,6 +89,7 @@ app.post('/test', jsonParser, [
 	puntentotaal = req.body.puntentotaal
 	olodType = req.body.olodselect
 	const getResultsFromWorkers = async () => {
+		console.log( 'get the results' )
 		job = await workQueue.add( { 
 			token: token, 
 			mcType: mcType,
