@@ -37,29 +37,29 @@ const getAllData = async ( job ) => {
 		}
 	} )
 	const query = `
-	allData( $id: ID!, $first: Int!, $after: String ) {
-		assignment(id: $id) {
-			submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
-				edges {
-					cursor
-					node {
-						grade
-						user {
-						email
-						name
-						sortableName
-						}
-					}
-				}
-				pageInfo {
-					hasNextPage
-					endCursor
-				}
-			}
-			pointsPossible
-		}
-	}
-	`
+query AllData( $id: ID!, $first: Int!, $after: String ) {
+ assignment(id: $id) {
+  submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
+   edges {
+    cursor
+    node {
+      grade
+      user {
+       email
+       name
+       sortableName
+      }
+    }
+   }
+   pageInfo {
+    hasNextPage
+    endCursor
+   }
+  }
+  pointsPossible
+ }
+}
+`
 	console.log( JSON.stringify( query ) )
 	let variables = {
 		id: assignmentID,
@@ -68,7 +68,7 @@ const getAllData = async ( job ) => {
 	}
 	while ( keepGoing ) {
 		try {
-			// console.log( 'start query' )
+			console.log( 'start query' )
 			let query = JSON.stringify( query )
 			let response = await graphQLClient.request( JSON.stringify( {
 				query,
