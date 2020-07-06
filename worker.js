@@ -75,7 +75,7 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 				variables
 			} ) )
 			// console.log( 'first round' )
-			console.log( JSON.stringify( response ) )
+			// console.log( JSON.stringify( response ) )
 			let resultArray = response.data.assignment.submissionsConnection.edges
 			if ( ! pointsPossible ) {
 				pointsPossible = response.data.assignment.pointsPossible
