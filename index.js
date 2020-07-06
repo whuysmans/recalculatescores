@@ -31,7 +31,7 @@ let authorizationUri = null
 const { check, validationResult } = require('express-validator')
 let Queue = require('bull')
 let REDIS_URL = process.env.REDIS_URL
-let workQueue = new Queue( 'workprodgraphql', REDIS_URL )
+let workQueue = new Queue( 'work', REDIS_URL )
 let job = null
 let result = null
 
@@ -69,7 +69,7 @@ app.get( '/start', ( req, res ) => {
 	res.render( 'index' )
 } )
 
-app.post('/test', jsonParser, [
+app.post('/scores', jsonParser, [
 	check( 'assignment' ).isLength({ min: 1, max: 10 }),
 	check( 'assignment' ).isNumeric(),
 	check( 'mcselect' ).isLength({ min: 3, max: 3 }),
@@ -90,6 +90,7 @@ app.post('/test', jsonParser, [
 	olodType = req.body.olodselect
 	const getResultsFromWorkers = async () => {
 		console.log( 'get the results' )
+		console.log( 'token', token )
 		job = await workQueue.add( { 
 			token: token, 
 			mcType: mcType,
