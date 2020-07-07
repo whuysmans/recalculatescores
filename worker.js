@@ -36,7 +36,7 @@ const getAllData = async ( job ) => {
 			Authorization: `Bearer ${ token }`
 		}
 	} )
-	const query = /* GraphQL */ `
+	const query = `
 { query AllData( $id: ID!, $first: Int!, $after: String ) {
  assignment(id: $id) {
   submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
