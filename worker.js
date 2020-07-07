@@ -36,7 +36,7 @@ const getAllData = async ( job ) => {
 			Authorization: `Bearer ${ token }`
 		}
 	} )
-	const query = `
+	const q = `
 query AllData( $id: ID!, $first: Int!, $after: String ) {
  assignment(id: $id) {
   submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
@@ -61,12 +61,13 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 }
 `
 	
-	console.log( JSON.stringify( query ) )
+	// console.log( JSON.stringify( query ) )
 	let vars = {
 		id: assignmentID,
 		first: 50,
 		after: ""
 	}
+	let query = JSON.stringify( q )
 	while ( keepGoing < 10 ) {
 		try {
 			// console.log( 'start query' )
