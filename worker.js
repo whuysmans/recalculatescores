@@ -36,8 +36,8 @@ const getAllData = async ( job ) => {
 			Authorization: `Bearer ${ token }`
 		}
 	} )
-	const query = `
-query AllData( $id: ID!, $first: Int!, $after: String ) {
+	const query = /* GraphQL */ `
+{ query AllData( $id: ID!, $first: Int!, $after: String ) {
  assignment(id: $id) {
   submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
    edges {
@@ -58,7 +58,7 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
   }
   pointsPossible
  }
-}
+} }
 `
 	console.log( JSON.stringify( query ) )
 	let variables = {
@@ -69,11 +69,11 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 	while ( keepGoing < 10 ) {
 		try {
 			// console.log( 'start query' )
-			let query = JSON.stringify( query )
-			let response = await graphQLClient.request( JSON.stringify( {
+			// let query = JSON.stringify( query )
+			let response = await graphQLClient.request( {
 				query,
 				variables
-			} ) )
+			} )
 			// console.log( 'first round' )
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.data.assignment.submissionsConnection.edges
