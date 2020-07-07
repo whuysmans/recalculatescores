@@ -75,7 +75,7 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 				variables
 			} ) )
 			// console.log( 'first round' )
-			// console.log( JSON.stringify( response ) )
+			console.log( JSON.stringify( response ) )
 			let resultArray = response.data.assignment.submissionsConnection.edges
 			if ( ! pointsPossible ) {
 				pointsPossible = response.data.assignment.pointsPossible
@@ -97,7 +97,6 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 				)
 				rows.push( row )
 			} )
-			keepGoing++
 			// if ( ! response.data.assignment.submissionsConnection.pageInfo.hasNextPage ) {
 			// 	keepGoing = false
 			// } else {
@@ -105,8 +104,10 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 			// 	variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 			// }
 		} catch ( err ) {
-			// console.log( err )
+			console.log( err )
 			// errorString = JSON.stringify( err )
+		} finally {
+			keepGoing++
 		}
 	}
 	return rows 
