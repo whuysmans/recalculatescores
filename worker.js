@@ -71,9 +71,10 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 		try {
 			// console.log( 'start query' )
 			// let query = JSON.stringify( query )
+			let vars = JSON.stringify( variables )
 			let response = await graphQLClient.request( {
 				query,
-				variables
+				vars
 			} )
 			// console.log( 'first round' )
 			console.log( JSON.stringify( response ) )
