@@ -62,7 +62,7 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 `
 	
 	console.log( JSON.stringify( query ) )
-	let variables = {
+	let vars = {
 		id: assignmentID,
 		first: 50,
 		after: ""
@@ -71,10 +71,10 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 		try {
 			// console.log( 'start query' )
 			// let query = JSON.stringify( query )
-			let vars = JSON.stringify( variables )
+			let variables = JSON.stringify( vars )
 			let response = await graphQLClient.request( {
 				query,
-				vars
+				variables
 			} )
 			// console.log( 'first round' )
 			console.log( JSON.stringify( response ) )
@@ -103,7 +103,7 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 			// 	keepGoing = false
 			// } else {
 			// 	console.log( variables )
-			// 	variables.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
+			// 	vars.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
 			// }
 		} catch ( err ) {
 			console.log( err )
