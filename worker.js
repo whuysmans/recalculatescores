@@ -36,15 +36,38 @@ const getAllData = async ( job ) => {
 			Authorization: `Bearer ${ token }`
 		}
 	} )
-	const q = `query AllData( $id: ID!, $first: Int!, $after: String ) { assignment(id: $id) { submissionsConnection(first: $first, after: $after, orderBy: { field: username }) { edges { cursor node { grade user { email name sortableName } } } pageInfo { hasNextPage endCursor } } pointsPossible } }`
+	const query = `
+query AllData( $id: ID!, $first: Int!, $after: String ) {
+ assignment(id: $id) {
+  submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
+   edges {
+    cursor
+    node {
+      grade
+      user {
+       email
+       name
+       sortableName
+      }
+    }
+   }
+   pageInfo {
+    hasNextPage
+    endCursor
+   }
+  }
+  pointsPossible
+ }
+}
+`
 	
-	// console.log( JSON.stringify( query ) )
+	console.log( JSON.stringify( query ) )
 	let vars = {
 		id: assignmentID,
 		first: 50,
 		after: ""
 	}
-	let query = JSON.stringify( q )
+
 	while ( keepGoing < 10 ) {
 		try {
 			// console.log( 'start query' )
