@@ -36,8 +36,8 @@ const getAllData = async ( job ) => {
 			Authorization: `Bearer ${ token }`
 		}
 	} )
-	const query = /* GraphQL */ `
-query AllData( $id: ID!, $first: Int!, $after: String ) {
+	const query = `
+{ AllData( $id: ID!, $first: Int!, $after: String ) {
  assignment(id: $id) {
   submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
    edges {
@@ -58,6 +58,7 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
   }
   pointsPossible
  }
+}
 }
 `
 	console.log( JSON.stringify( query ) )
