@@ -36,52 +36,31 @@ const getAllData = async ( job ) => {
 			Authorization: `Bearer ${ token }`
 		}
 	} )
-// 	const query = `
-// { AllData( $id: ID!, $first: Int!, $after: String ) {
-//  assignment(id: $id) {
-//   submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
-//    edges {
-//     cursor
-//     node {
-//       grade
-//       user {
-//        email
-//        name
-//        sortableName
-//       }
-//     }
-//    }
-//    pageInfo {
-//     hasNextPage
-//     endCursor
-//    }
-//   }
-//   pointsPossible
-//  }
-// }
-// }
-// `
-	
 	const query = `
- query AllData {
-  assignment(id: "34946") {
-   submissionsConnection {
-    edges {
-	  cursor
-     node {
-		grade
+query AllData( $id: ID!, $first: Int!, $after: String ) {
+ assignment(id: $id) {
+  submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
+   edges {
+    cursor
+    node {
+      grade
       user {
-		 email
-		 name
-		 sortableName
+       email
+       name
+       sortableName
       }
-	  }
-	 }
-	}
-   pointsPossible
+    }
+   }
+   pageInfo {
+    hasNextPage
+    endCursor
+   }
   }
- }	
-`	
+  pointsPossible
+ }
+}
+`
+	
 	console.log( JSON.stringify( query ) )
 	let variables = {
 		id: assignmentID,
