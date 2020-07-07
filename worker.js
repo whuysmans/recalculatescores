@@ -37,7 +37,7 @@ const getAllData = async ( job ) => {
 		}
 	} )
 	const query = `
-{ query AllData( $id: ID!, $first: Int!, $after: String ) {
+query AllData( $id: ID!, $first: Int!, $after: String ) {
  assignment(id: $id) {
   submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
    edges {
@@ -58,7 +58,7 @@ const getAllData = async ( job ) => {
   }
   pointsPossible
  }
-} }
+}
 `
 	console.log( JSON.stringify( query ) )
 	let variables = {
