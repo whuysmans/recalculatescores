@@ -72,10 +72,10 @@ query AllData( $id: ID!, $first: Int!, $after: String ) {
 			// console.log( 'start query' )
 			// let query = JSON.stringify( query )
 			let variables = JSON.stringify( vars )
-			let response = await graphQLClient.request( {
+			let response = await graphQLClient.request( 
 				query,
 				variables
-			} )
+			)
 			// console.log( 'first round' )
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.data.assignment.submissionsConnection.edges
