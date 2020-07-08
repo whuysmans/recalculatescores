@@ -57,13 +57,6 @@ const getAllData = async ( job ) => {
     endCursor
    }
   }
-  course {
-   submissionsConnection {
-    edges {
-     cursor
-	 }
-	}
-  }
  }
 }`
 	
@@ -83,8 +76,6 @@ const getAllData = async ( job ) => {
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.assignment.submissionsConnection.edges
 			pointsPossible = response.assignment.pointsPossible
-			numberOfSubmissions = response.assignment.course.submissionsConnection.edges.length
-			console.log( 'number of submissions', numberOfSubmissions )
 			if ( ! resultArray ) {
 				keepGoing = false
 			}
