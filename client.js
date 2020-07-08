@@ -2,6 +2,9 @@ let downloadLink = null
 let refreshLink = null
 let btn = null
 let logoutBtn = null
+let progress = 0
+let intervalID = 0
+let progressElement = null
 
 const getResults = async ( event ) => {
 	event.preventDefault()
@@ -24,6 +27,17 @@ const getResults = async ( event ) => {
 	downloadLink.classList.remove( 'pure-button-disabled' )
 }
 
+const getUpdate = async () => {
+	let update = await fetch( '/update' )
+	let response = await update.json()
+	if ( response.progress === 100 ) {
+		clearInterval( intervalID )
+		downloadLink.classList.remove( 'pure-button-disabled' )
+	}
+	progressElement.value = response.progress
+	progressElement.innerHTML = response.progress
+}
+
 const clearForm = () => {
 	const form = document.querySelector( '#resultForm' )
 	const elements = form.elements
@@ -40,6 +54,7 @@ window.onload = () => {
 	const form = document.querySelector( '#scoreForm' )
 	downloadLink = document.querySelector( '#downloadLink' )
 	refreshLink = document.querySelector( '#refreshLink' )
+	intervalID = setInterval( getUpdate, 500 )
 	btn.addEventListener( 'click', async ( event ) => {
 		console.log( 'clicked!' )
 		btn.classList.add( 'pure-button-disabled' )

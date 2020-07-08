@@ -17,3 +17,11 @@ body {
  #result-buttons > a {
 	 margin-right: 1em;
  }
+
+ #progress-part {
+	 margin: 2em 0 2em 4em;
+ }
+
+ progress {
+	 margin: .5em 0 0 1em;
+ }

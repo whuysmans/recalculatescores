@@ -31,6 +31,9 @@ html(lang='en')
 							option(value='MC4', selected) MC4
 					div.pure-controls
 						button#resultSubmit.pure-button.pure-button-primary(type='submit') Submit
+			div#progress-part 
+				label(for="progress") Progress:
+				progress#progress(max="100", value="0")
 			div#result-buttons
 				a.pure-button.pure-button-primary(id="downloadLink", href="/download", download) Download Excel
 				a.pure-button.pure-button-primary(id="refreshLink", href="/start") Calculate other scores

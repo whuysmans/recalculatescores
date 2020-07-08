@@ -34,6 +34,7 @@ let REDIS_URL = process.env.REDIS_URL
 let workQueue = new Queue( 'work', REDIS_URL )
 let job = null
 let result = null
+let p = 0
 
 
 app.get('/', ( req, res ) => {
@@ -66,7 +67,7 @@ app.get( '/start', ( req, res ) => {
 	if ( token === '' ) {
 		return res.redirect( '/' )
 	}
-	res.render( 'index' )
+	res.render( 'index', { progress: p } )
 } )
 
 app.post('/scores', jsonParser, [
@@ -99,6 +100,7 @@ app.post('/scores', jsonParser, [
 			assignmentID: assignmentID
 		} )
 	}
+	p = 1
 	res.redirect( '/start' )
 	await getResultsFromWorkers()
 } )
@@ -106,6 +108,14 @@ app.post('/scores', jsonParser, [
 const getRandomIdent = () => {
 	return Math.random().toString(36).substring(4)
 }
+
+app.get( '/update', async ( req, res ) => {
+	if ( job ) {
+		res.json( { progress: p } )
+	} else {
+		res.json( { progress: 0 } )
+	}
+} )
 
 
 
@@ -156,6 +166,10 @@ workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 	console.log(`Job completed with result ${ apiResult }`)
 	result = apiResult
 	writeExcel( result )
+} )
+
+workQueue.on( 'global:progress', ( jobId, progress ) => {
+	p = progress
 } )
 
 app.get( '/download', ( req, res ) => {
