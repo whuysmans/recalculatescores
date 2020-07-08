@@ -39,7 +39,7 @@ const getAllData = async ( job ) => {
 	const query = `
 query AllData( $id: ID!, $first: Int!, $after: String ) {
  assignment(id: $id) {
-  submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
+  submissionsConnection(first: $first, after: $after) {
    edges {
     cursor
     node {
