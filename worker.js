@@ -74,7 +74,7 @@ const getAllData = async ( job ) => {
 			)
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.assignment.submissionsConnection.edges
-			if ( ! pointsPossible ) {
+			if ( pointsPossible === -1 ) {
 				pointsPossible = response.assignment.pointsPossible
 			} 
 			if ( ! resultArray ) {
@@ -118,6 +118,7 @@ const start = () => {
 }
 
 const recalculateScore = ( score ) => {
+	console.log( 'pointsPossible', pointsPossible )
 	let ces = mcType === 'MC4' ? 0.625 : 0.6667
 	let tellerLeft = score / pointsPossible * puntentotaal
 	let tellerRight = puntentotaal * ces
