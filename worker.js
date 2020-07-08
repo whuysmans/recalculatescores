@@ -30,7 +30,7 @@ const getAllData = async ( job ) => {
 	olodType = job.data.olodType
 	assignmentID = job.data.assignmentID
 	let rows = []
-	let keepGoing = 0
+	let keepGoing = true
 	const graphQLClient = new GraphQLClient( baseURL, {
 		headers: {
 			Authorization: `Bearer ${ token }`
@@ -38,6 +38,7 @@ const getAllData = async ( job ) => {
 	} )
 	const query = `query AllData( $id: ID!, $first: Int!, $after: String ) {
  assignment(id: $id) {
+  pointsPossible
   submissionsConnection(first: $first, after: $after, orderBy: { field: username }) {
    edges {
     cursor
@@ -55,7 +56,6 @@ const getAllData = async ( job ) => {
     endCursor
    }
   }
-  pointsPossible
  }
 }`
 	
@@ -66,7 +66,7 @@ const getAllData = async ( job ) => {
 		after: ""
 	}
 
-	while ( keepGoing < 10 ) {
+	while ( keepGoing ) {
 		try {
 			let response = await graphQLClient.request( 
 				query,
@@ -94,18 +94,16 @@ const getAllData = async ( job ) => {
 				)
 				rows.push( row )
 			} )
-			// if ( ! response.data.assignment.submissionsConnection.pageInfo.hasNextPage ) {
-			// 	keepGoing = false
-			// } else {
-			// 	console.log( variables )
-			// 	vars.after = response.data.assignment.submissionsConnection.pageInfo.endCursor
-			// }
+			if ( ! response.assignment.submissionsConnection.pageInfo.hasNextPage ) {
+				keepGoing = false
+			} else {
+				console.log( variables )
+				variables.after = response.assignment.submissionsConnection.pageInfo.endCursor
+			}
 		} catch ( err ) {
 			console.log( err )
 			// errorString = JSON.stringify( err )
-		} finally {
-			keepGoing++
-		}
+		} 
 	}
 	return rows 
 }
