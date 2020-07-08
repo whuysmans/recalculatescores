@@ -100,7 +100,7 @@ app.post('/scores', jsonParser, [
 		} )
 	}
 	res.redirect( '/start' )
-	getResultsFromWorkers()
+	await getResultsFromWorkers()
 } )
 
 const getRandomIdent = () => {
