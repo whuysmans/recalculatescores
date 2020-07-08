@@ -54,6 +54,7 @@ window.onload = () => {
 	const form = document.querySelector( '#scoreForm' )
 	downloadLink = document.querySelector( '#downloadLink' )
 	refreshLink = document.querySelector( '#refreshLink' )
+	progressElement = document.querySelector( '#progress' )
 	intervalID = setInterval( getUpdate, 500 )
 	btn.addEventListener( 'click', async ( event ) => {
 		console.log( 'clicked!' )
