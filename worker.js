@@ -83,6 +83,7 @@ const getAllData = async ( job ) => {
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.assignment.submissionsConnection.edges
 			pointsPossible = response.assignment.pointsPossible
+			console.log( 'numberOfSubmissions', response.assignment.course.submissionsConnection.edges.length )
 			if ( ! resultArray ) {
 				keepGoing = false
 			}
