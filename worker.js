@@ -60,7 +60,7 @@ const getAllData = async ( job ) => {
 }`
 	
 	console.log( JSON.stringify( query ) )
-	let vars = {
+	let variables = {
 		id: parseInt( assignmentID ),
 		first: 50,
 		after: ""
@@ -68,7 +68,6 @@ const getAllData = async ( job ) => {
 
 	while ( keepGoing < 10 ) {
 		try {
-			let variables = JSON.stringify( vars )
 			let response = await graphQLClient.request( 
 				query,
 				variables
