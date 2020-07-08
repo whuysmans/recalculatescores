@@ -3,7 +3,7 @@ let Queue = require('bull')
 const axios = require('axios')
 let port = process.env.PORT || 3000
 let school = process.env.SCHOOL
-const baseURL = `${ school }/api/graphql`
+const baseURL = `${ school }/api/v1/graphql`
 const events = require('events')
 const { GraphQLClient } = require('graphql-request')
 const { request } = require('graphql-request')
@@ -69,15 +69,11 @@ const getAllData = async ( job ) => {
 
 	while ( keepGoing < 10 ) {
 		try {
-			// console.log( 'start query' )
-			// let query = JSON.stringify( query )
 			let variables = JSON.stringify( vars )
 			let response = await graphQLClient.request( 
 				query,
-				variables,
-				{ operationName: "AllData" }
+				variables
 			)
-			// console.log( 'first round' )
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.data.assignment.submissionsConnection.edges
 			if ( ! pointsPossible ) {
