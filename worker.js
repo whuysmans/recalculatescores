@@ -74,7 +74,8 @@ const getAllData = async ( job ) => {
 			let variables = JSON.stringify( vars )
 			let response = await graphQLClient.request( 
 				query,
-				variables
+				variables,
+				{ operationName: "AllData" }
 			)
 			// console.log( 'first round' )
 			console.log( JSON.stringify( response ) )
