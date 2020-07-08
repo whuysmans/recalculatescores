@@ -29,6 +29,7 @@ const getAllData = async ( job ) => {
 	mcType = job.data.mcType
 	olodType = job.data.olodType
 	assignmentID = job.data.assignmentID
+	let numberOfSubmissions = 0
 	let rows = []
 	let keepGoing = true
 	const graphQLClient = new GraphQLClient( baseURL, {
@@ -56,6 +57,13 @@ const getAllData = async ( job ) => {
     endCursor
    }
   }
+  course {
+   submissionsConnection {
+    edges {
+     cursor
+	 }
+	}
+  }
  }
 }`
 	
@@ -75,6 +83,8 @@ const getAllData = async ( job ) => {
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.assignment.submissionsConnection.edges
 			pointsPossible = response.assignment.pointsPossible
+			numberOfSubmissions = response.assignment.course.submissionsConnection.edges.length
+			console.log( 'number of submissions', numberOfSubmissions )
 			if ( ! resultArray ) {
 				keepGoing = false
 			}

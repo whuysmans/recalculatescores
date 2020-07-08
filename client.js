@@ -56,8 +56,7 @@ window.onload = () => {
 	logoutBtn = document.querySelector('#logoutButton')
 	logoutBtn.addEventListener( 'click', async ( event ) => {
 		event.preventDefault()
-		fetch( '/logout' ).then( ( response ) => {
-			return response.redirect( '/' )
-		} )
+		fetch( '/logout' )
+		window.location.href = '/'
 	} )
 }
