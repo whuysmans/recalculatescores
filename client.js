@@ -40,10 +40,10 @@ window.onload = () => {
 	const form = document.querySelector( '#scoreForm' )
 	downloadLink = document.querySelector( '#downloadLink' )
 	refreshLink = document.querySelector( '#refreshLink' )
-	btn.addEventListener( 'click', ( event ) => {
+	btn.addEventListener( 'click', async ( event ) => {
 		console.log( 'clicked!' )
 		btn.classList.add( 'pure-button-disabled' )
-		getResults( event )
+		await getResults( event )
 	} )
 	refreshLink.addEventListener( 'click', ( event ) => {
 		event.preventDefault()
@@ -56,7 +56,8 @@ window.onload = () => {
 	logoutBtn = document.querySelector('#logoutButton')
 	logoutBtn.addEventListener( 'click', async ( event ) => {
 		event.preventDefault()
-		fetch( '/logout' )
-		window.open( '/' )
+		fetch( '/logout' ).then( ( response ) => {
+			return response.redirect( '/' )
+		} )
 	} )
 }
