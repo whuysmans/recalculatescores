@@ -74,9 +74,7 @@ const getAllData = async ( job ) => {
 			)
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.assignment.submissionsConnection.edges
-			if ( pointsPossible === -1 ) {
-				pointsPossible = response.assignment.pointsPossible
-			} 
+			pointsPossible = response.assignment.pointsPossible
 			if ( ! resultArray ) {
 				keepGoing = false
 			}
