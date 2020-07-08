@@ -57,12 +57,11 @@ const getAllData = async ( job ) => {
   }
   pointsPossible
  }
-}
-`
+}`
 	
 	console.log( JSON.stringify( query ) )
 	let vars = {
-		id: assignmentID,
+		id: parseInt( assignmentID ),
 		first: 50,
 		after: ""
 	}
