@@ -57,6 +57,13 @@ const getAllData = async ( job ) => {
     endCursor
    }
   }
+  course {
+   submissionsConnection {
+    edges {
+     cursor
+	 }
+	}
+  }
  }
 }`
 	
