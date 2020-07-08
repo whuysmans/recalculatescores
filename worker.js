@@ -99,8 +99,8 @@ const getAllData = async ( job ) => {
 					afgerondeScore
 				)
 				rows.push( row )
-				job.progress( parseInt( ( rows.length / numberOfSubmissions ) * 100 ) )
 			} )
+			job.progress( parseInt( ( rows.length / numberOfSubmissions ) * 100 ) )
 			if ( ! response.assignment.submissionsConnection.pageInfo.hasNextPage ) {
 				keepGoing = false
 			} else {

@@ -30,6 +30,7 @@ const getResults = async ( event ) => {
 const getUpdate = async () => {
 	let update = await fetch( '/update' )
 	let response = await update.json()
+	console.log( 'update', response )
 	if ( response.progress === 100 ) {
 		clearInterval( intervalID )
 		downloadLink.classList.remove( 'pure-button-disabled' )
@@ -55,7 +56,7 @@ window.onload = () => {
 	downloadLink = document.querySelector( '#downloadLink' )
 	refreshLink = document.querySelector( '#refreshLink' )
 	progressElement = document.querySelector( '#progress' )
-	intervalID = setInterval( getUpdate, 500 )
+	intervalID = setInterval( getUpdate, 5000 )
 	btn.addEventListener( 'click', async ( event ) => {
 		console.log( 'clicked!' )
 		btn.classList.add( 'pure-button-disabled' )
@@ -66,6 +67,7 @@ window.onload = () => {
 		console.log( 'refresh clicked!' )
 		fetch( '/reset' )
 		downloadLink.classList.add( 'pure-button-disabled' )
+		intervalID = setInterval( getUpdate, 5000 )
 		clearForm()
 	} )
 	downloadLink.classList.add( 'pure-button-disabled' )
