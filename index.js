@@ -6,13 +6,10 @@ let port = process.env.PORT || 3000
 const axios = require('axios')
 let school = process.env.SCHOOL
 let assignmentID = 0
-let courseID = 0
 let token = '' 
 const XLSX = require('xlsx')
 const FileSaver = require('file-saver')
 const path = require('path')
-const parse = require('parse-link-header')
-let pointsPossible = 10
 let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
@@ -34,13 +31,10 @@ let authorizationUri = null
 const { check, validationResult } = require('express-validator')
 let Queue = require('bull')
 let REDIS_URL = process.env.REDIS_URL
-let workQueue = new Queue( 'workprod', REDIS_URL )
-let answerRes = null
-let statusElement = null
+let workQueue = new Queue( 'work', REDIS_URL )
 let job = null
-let intervalID = null
-let p = 0
 let result = null
+let p = 0
 
 
 app.get('/', ( req, res ) => {
@@ -70,63 +64,50 @@ app.get( '/callback', async ( req, res ) => {
 } )
 
 app.get( '/start', ( req, res ) => {
+	if ( token === '' ) {
+		return res.redirect( '/' )
+	}
 	res.render( 'index', { progress: p } )
 } )
 
-app.post('/test', jsonParser, [
-	check( 'course' ).isLength({ min: 1, max: 10 }),
-	check( 'course' ).isNumeric(),
+app.post('/scores', jsonParser, [
 	check( 'assignment' ).isLength({ min: 1, max: 10 }),
 	check( 'assignment' ).isNumeric(),
 	check( 'mcselect' ).isLength({ min: 3, max: 3 }),
 	check( 'puntentotaal' ).isNumeric(),
 	check( 'olodselect' ).isLength({ min: 4, max: 5 })
 ], async ( req, res, next ) => {
+	if ( token === '' ) {
+		return res.redirect( '/' )
+	}
 	console.log( 'received' )
 	const errors = validationResult( req )
-	answerRes = res
 	if ( ! errors.isEmpty() ) {
 		return res.status( 422 ).json( { errors: errors.array() } )
 	}
 	assignmentID = req.body.assignment
-	courseID = req.body.course
 	mcType = req.body.mcselect
 	puntentotaal = req.body.puntentotaal
-	quizType = req.body.typeselect
 	olodType = req.body.olodselect
-	baseURL = `${ school }/api/v1/`
-	let assignmentURL = quizType === 'quiz' ? `${ baseURL }courses/${ courseID }/quizzes/${ assignmentID }` :
-		`${ baseURL }courses/${ courseID }/assignments/${ assignmentID }`
-	try {
-		const assignment = await axios({
-			method: 'get',
-			url: assignmentURL,
-			headers: {
-				'Authorization': `Bearer ${ token }`
-			}
-		})
-		pointsPossible = parseInt( assignment.data.points_possible )
-		const getResultsFromWorkers = async () => {
-				job = await workQueue.add( { 
-				token: token, 
-				quizType: quizType,
-				mcType: mcType,
-				pointsPossible: pointsPossible,
-				puntentotaal: puntentotaal,
-				olodType: olodType,
-				courseID: courseID,
-				assignmentID: assignmentID
-			} )
-		}
-		p = 1	
-		res.redirect( '/start' )
-		getResultsFromWorkers()
-		
+	const getResultsFromWorkers = async () => {
+		console.log( 'get the results' )
+		console.log( 'token', token )
+		job = await workQueue.add( { 
+			token: token, 
+			mcType: mcType,
+			puntentotaal: puntentotaal,
+			olodType: olodType,
+			assignmentID: assignmentID
+		} )
 	}
-	catch ( err ) {
-		res.send( err )
-	}
+	p = 1
+	res.redirect( '/start' )
+	await getResultsFromWorkers()
 } )
+
+const getRandomIdent = () => {
+	return Math.random().toString(36).substring(4)
+}
 
 app.get( '/update', async ( req, res ) => {
 	if ( job ) {
@@ -135,11 +116,6 @@ app.get( '/update', async ( req, res ) => {
 		res.json( { progress: 0 } )
 	}
 } )
-
-
-const getRandomIdent = () => {
-	return Math.random().toString(36).substring(4)
-}
 
 
 
@@ -166,7 +142,12 @@ const writeExcel = ( result ) => {
 	XLSX.writeFile( wb, 'text.xlsx' )
 }
 
-
+app.get( '/logout', async ( req, res ) => {
+	let logoutURL = `${ school }/login/oauth2/token`
+	console.log( logoutURL )
+	await axios.delete( logoutURL, { headers: { 'Authorization': `Bearer ${ token }`	} } )
+	token = ''
+} )
 
 
 const server = app.listen( port, () =>  {
@@ -175,7 +156,7 @@ const server = app.listen( port, () =>  {
 	oauth2 = require('simple-oauth2').create( credentials )
 	authorizationUri = oauth2.authorizationCode.authorizeURL( {
 		redirect_uri: `${ process.env.APPURL }/callback`,
-		scope: `url:GET|/api/v1/courses/:course_id/assignments/:id url:GET|/api/v1/courses/:course_id/quizzes/:id url:GET|/api/v1/courses/:course_id/quizzes/:quiz_id/submissions url:GET|/api/v1/courses/:course_id/assignments/:assignment_id/submissions url:GET|/api/v1/users/:id`,
+		// scope: `url:GET|/api/v1/courses/:course_id/assignments/:id url:GET|/api/v1/courses/:course_id/quizzes/:id url:GET|/api/v1/courses/:course_id/quizzes/:quiz_id/submissions url:GET|/api/v1/courses/:course_id/assignments/:assignment_id/submissions url:GET|/api/v1/users/:id`,
 		state: state
 	} )
 
@@ -183,15 +164,18 @@ const server = app.listen( port, () =>  {
 
 workQueue.on( 'global:completed', ( jobId, apiResult ) => {
 	console.log(`Job completed with result ${ apiResult }`)
-	p = 100
 	result = apiResult
 	writeExcel( result )
 } )
+
 workQueue.on( 'global:progress', ( jobId, progress ) => {
 	p = progress
 } )
 
 app.get( '/download', ( req, res ) => {
+	if ( token === '' ) {
+		return res.redirect( '/' )
+	}
 	// res.setHeader( 'Access-Control-Allow-Origin', req.headers.origin )
 	console.log("ok")
 	res.download( './text.xlsx' )

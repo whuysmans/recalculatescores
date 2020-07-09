@@ -10,18 +10,18 @@ body {
 	max-width: 600px;
  }
  
- #progress-part {
-	margin: 2em 0 2em 4em;
- }
- 
- progress {
-	margin: .5em 0 0 1em;
- }
- 
  #result-buttons {
 	margin-left: 2em;
  }
 
  #result-buttons > a {
 	 margin-right: 1em;
+ }
+
+ #progress-part {
+	 margin: 2em 0 2em 4em;
+ }
+
+ progress {
+	 margin: .5em 0 0 1em;
  }

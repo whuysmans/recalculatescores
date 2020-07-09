@@ -1,9 +1,10 @@
-let progress = 0
-let intervalID = 0
 let downloadLink = null
 let refreshLink = null
-let progressElement = null
 let btn = null
+let logoutBtn = null
+let progress = 0
+let intervalID = 0
+let progressElement = null
 
 const getResults = async ( event ) => {
 	event.preventDefault()
@@ -15,16 +16,14 @@ const getResults = async ( event ) => {
 		obj[item.name] = item.value
 	}
 	console.log( 'obj', obj )
-	fetch( '/test', {
+	fetch( '/scores', {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
 			'Content-Type': 'application/json'
 		 },
 		body: JSON.stringify( obj )
-	} ) 
-	// fetch( '/results' )
-	// clearInterval( intervalID )
+	} )
 }
 
 const getUpdate = async () => {
@@ -57,23 +56,24 @@ window.onload = () => {
 	refreshLink = document.querySelector( '#refreshLink' )
 	progressElement = document.querySelector( '#progress' )
 	intervalID = setInterval( getUpdate, 1000 )
-	btn.addEventListener( 'click', ( event ) => {
-		// form.remove()
+	btn.addEventListener( 'click', async ( event ) => {
 		console.log( 'clicked!' )
 		btn.classList.add( 'pure-button-disabled' )
 		getResults( event )
 	} )
 	refreshLink.addEventListener( 'click', ( event ) => {
-		// form.remove()
 		event.preventDefault()
 		console.log( 'refresh clicked!' )
 		fetch( '/reset' )
 		downloadLink.classList.add( 'pure-button-disabled' )
-		intervalID = setInterval( getUpdate, 1000 )
+		intervalID = setInterval( getUpdate, 5000 )
 		clearForm()
 	} )
 	downloadLink.classList.add( 'pure-button-disabled' )
-	// downloadLink.addEventListener( 'click', ( event ) => {
-	// 	fetch( '/download' )
-	// } )
+	logoutBtn = document.querySelector('#logoutButton')
+	logoutBtn.addEventListener( 'click', async ( event ) => {
+		event.preventDefault()
+		fetch( '/logout' )
+		window.location.href = '/'
+	} )
 }
