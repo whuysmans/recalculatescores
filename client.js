@@ -55,7 +55,7 @@ window.onload = () => {
 	downloadLink = document.querySelector( '#downloadLink' )
 	refreshLink = document.querySelector( '#refreshLink' )
 	progressElement = document.querySelector( '#progress' )
-	intervalID = setInterval( getUpdate, 5000 )
+	intervalID = setInterval( getUpdate, 1000 )
 	btn.addEventListener( 'click', async ( event ) => {
 		console.log( 'clicked!' )
 		btn.classList.add( 'pure-button-disabled' )
