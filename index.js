@@ -184,6 +184,7 @@ app.get( '/download', ( req, res ) => {
 app.get( '/reset', async ( req, res ) => {
 	// await cleanQueue()
 	job = null
+	p = 0
 	await cleanQueue()
 	res.redirect( '/start' )
 } )

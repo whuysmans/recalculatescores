@@ -16,7 +16,7 @@ const getResults = async ( event ) => {
 		obj[item.name] = item.value
 	}
 	console.log( 'obj', obj )
-	await fetch( '/scores', {
+	fetch( '/scores', {
 		method: 'POST',
 		headers: {
 			'Accept': 'application/json',
@@ -60,7 +60,7 @@ window.onload = () => {
 	btn.addEventListener( 'click', async ( event ) => {
 		console.log( 'clicked!' )
 		btn.classList.add( 'pure-button-disabled' )
-		await getResults( event )
+		getResults( event )
 	} )
 	refreshLink.addEventListener( 'click', ( event ) => {
 		event.preventDefault()
