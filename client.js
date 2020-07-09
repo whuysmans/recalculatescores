@@ -24,7 +24,6 @@ const getResults = async ( event ) => {
 		 },
 		body: JSON.stringify( obj )
 	} )
-	downloadLink.classList.remove( 'pure-button-disabled' )
 }
 
 const getUpdate = async () => {
