@@ -20,6 +20,7 @@ let assignmentID = 0
 let token = ''
 let quizType = ''
 let errorString = ''
+let numberOfResults = 0
 
 const getAllData = async ( job ) => {
 	console.log( 'baseURL', baseURL )
@@ -56,13 +57,11 @@ const getAllData = async ( job ) => {
     endCursor
    }
   }
-  course {
-   submissionsConnection {
+  number: submissionsConnection {
     edges {
      cursor
 	 }
-	}
-  }
+  } 
  }
 }`
 	
@@ -82,8 +81,8 @@ const getAllData = async ( job ) => {
 			console.log( JSON.stringify( response ) )
 			let resultArray = response.assignment.submissionsConnection.edges
 			pointsPossible = response.assignment.pointsPossible
-			let numberOfSubmissions = response.assignment.course.submissionsConnection.edges.length
-			console.log( 'numSubmissions', numberOfSubmissions )
+			numberOfResults = response.assignment.number.submissionsConnection.edges.length
+			console.log( 'numSubmissions', numberOfResults )
 			if ( ! resultArray ) {
 				keepGoing = false
 			}
@@ -101,7 +100,7 @@ const getAllData = async ( job ) => {
 				)
 				rows.push( row )
 			} )
-			job.progress( parseInt( ( rows.length / numberOfSubmissions ) * 100 ) )
+			job.progress( parseInt( ( rows.length / numberOfResults ) * 100 ) )
 			if ( ! response.assignment.submissionsConnection.pageInfo.hasNextPage ) {
 				keepGoing = false
 			} else {
