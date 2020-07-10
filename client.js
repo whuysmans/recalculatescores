@@ -78,6 +78,6 @@ window.onload = () => {
 	logoutBtn.addEventListener( 'click', async ( event ) => {
 		event.preventDefault()
 		await fetch( '/logout' )
-		window.open( '/' )
+		window.location.href = '/'
 	} )
 }
