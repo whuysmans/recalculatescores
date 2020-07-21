@@ -10,6 +10,7 @@ let token = ''
 const XLSX = require('xlsx')
 const FileSaver = require('file-saver')
 const path = require('path')
+const helmet = require('helmet')
 let mcType = 'MC4'
 let puntentotaal = 1
 let quizType = 'quiz'
@@ -198,5 +199,6 @@ const cleanQueue = async () => {
 }
 
 app.use( '/css', express.static( path.join( __dirname, 'css' ) ) )
+app.use( helmet.frameguard( { action: 'DENY' } ) )
 app.get('/client.js', (req, res) => res.sendFile('client.js', { root: __dirname }));
 app.set( 'view engine', 'pug' )
