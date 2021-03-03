@@ -22,7 +22,7 @@
     "file-saver": "^2.0.2",
     "graphql-request": "^2.1.0-next.1",
     "helmet": "^3.23.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "parse-link-header": "^1.0.1",
     "pug": "^3.0.1",
     "redis": "^3.0.2",
